@@ -141,7 +141,7 @@ Compatibility and links
 
 IPy should work on Python version 2.1 to 2.5.
 
-Further Information might be available at: http://c0re.23.nu/c0de/ipy/.
+Further Information might be available at: http://c0re.23.nu/c0de/IPy/.
 Hacked 2001 by drt@un.bewaff.net
 
 TODO
