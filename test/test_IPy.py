@@ -8,8 +8,8 @@ Hacked 2001 by drt@un.bewaff.net
 # TODO: unify assert / FilIf usage
 
 import sys
+import threading
 sys.path.append('..')
-sys.path.append('.')
 
 import IPy
 import unittest
@@ -765,6 +765,44 @@ class NetIPChecks(unittest.TestCase):
         ip = IPy.IP('ffff::/16')
         ip2 = IPy.IP('8000::/16')
         #$T->ok_eqnum ($ip->overlaps($ip2),$IP_NO_OVERLAP,$ip->error());
+
+def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
+    """
+    ASPN receipe written by dustin lee to call a function with
+    a timeout using threads:
+    http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/473878
+
+    Small patch: add setDaemon(True) to allow Python to leave whereas the
+    thread is not done.
+    """
+    class InterruptableThread(threading.Thread):
+        def __init__(self):
+            threading.Thread.__init__(self)
+            self.result = None
+
+        def run(self):
+            try:
+                self.result = func(*args, **kwargs)
+            except:
+                self.result = default
+
+    it = InterruptableThread()
+    it.setDaemon(True)
+    it.start()
+    it.join(timeout_duration)
+    if it.isAlive():
+        return default
+    else:
+        return it.result
+
+class RegressionTest(unittest.TestCase):
+    def testNulNetmask(self):
+        ip = timeout(IPy.IP, ["0.0.0.0/0.0.0.0"], timeout_duration=0.250, default=None)
+        if ip:
+            text = str(ip)
+        else:
+            text = "*TIMEOUT*"
+        self.assertEqual(text, "0.0.0.0/0")
 
 if __name__ == "__main__":
     unittest.main()
