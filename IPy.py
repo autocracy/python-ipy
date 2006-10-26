@@ -129,9 +129,9 @@ __version__ = '0.5'
 
 import types
 
-# New in API 0.5: if true, it allows uncommon net mask like "172.30.1.0/22".
-# Default is disable, ie. raise ValueError on such netmask.
-check_addr_prefixlen = 0
+# New in API 0.5: if true, it rejects uncommon net mask like "172.30.1.0/22".
+# Default is enable, ie. raise ValueError on such netmask.
+check_addr_prefixlen = 1
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space

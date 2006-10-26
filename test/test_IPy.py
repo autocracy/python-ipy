@@ -817,6 +817,19 @@ class RegressionTest(unittest.TestCase):
         """
         self.assertEqual(IPy.IP("169.254.191.164").iptype(), "PRIVATE")
 
+    def testCheckAddrPrefixlenOn(self):
+        self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
+        self.assertRaises(ValueError, IPy.IP, '172.30.1.0/22')
+
+    def testCheckAddrPrefixlenOff(self):
+        old = IPy.check_addr_prefixlen
+        IPy.check_addr_prefixlen = False
+        try:
+            self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
+            self.assertEqual(IPy.IP('172.30.1.0/22'), 1024)
+        finally:
+            IPy.check_addr_prefixlen = old
+
 if __name__ == "__main__":
     unittest.main()
 
