@@ -82,7 +82,7 @@ class parseAddress(unittest.TestCase):
         self.assertEqual(version, 4)
         (result, version) = IPy.parseAddress('0x100000000')
         self.assertEqual(version, 6)
-            
+
     def testEmpty(self):
         """'' should raise an exception"""
         self.assertRaises(ValueError, IPy.parseAddress, '')
@@ -169,7 +169,7 @@ class _intToIP(unittest.TestCase):
             (question, answer) = x
             result  = IPy.intToIp(question, 6)
             self.assertEqual(answer, result, "%r, %r, %r" % (question, answer, result))
- 
+
     def testNegativeIPv4(self):
         """negative IPv4 Values should raise an exception"""
         self.assertRaises(ValueError, IPy.intToIp, -1, 4)
@@ -209,8 +209,8 @@ class ParseAndBack(unittest.TestCase):
                         ((long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))) << 64) +
                         ((long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))) << 96))
             self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 6)), (question, 6), hex(question))
-        
-        
+
+
 class _countXBits(unittest.TestCase):
     def testCount1Bits(self):
         self.assertEqual(IPy._count1Bits(0), 0)
@@ -235,8 +235,8 @@ class _countXBits(unittest.TestCase):
         self.assertEqual(IPy._count0Bits(0x80000000L), 31)
         self.assertEqual(IPy._count0Bits(0xf0000000000000000000000000000000L), 124)
         self.assertEqual(IPy._count0Bits(0x80000000000000000000000000000000L), 127)
-        
-       
+
+
 class _intToBin(unittest.TestCase):
     knownValues = [(0, '0'), (1, '1'), (2, '10'), (3, '11'), (4, '100'), (5, '101'),
                    (6, '110'), (7, '111'), (8, '1000'), (9, '1001'),
@@ -279,7 +279,7 @@ class netmaskPrefixlenConv(unittest.TestCase):
                     (0xFFFFFFFE000000000000000000000000L, 31),
                     (0xC0000000000000000000000000000000L, 2),
                     (0x80000000000000000000000000000000L, 1)]
-    
+
     def testKnownValuesv4n2p(self):
         """conversion of known values values should give known results"""
         for x in self.known4Values:
@@ -371,10 +371,10 @@ class checkChecks(unittest.TestCase):
         self.failIf(IPy._checkPrefix(0x1L, 129, 6))
         self.failIf(IPy._checkPrefix(0xffffffffffffffff0000000000000001L, 64, 6))
         self.failIf(IPy._checkPrefix(0xffffffffffffffff1000000000000000L, 64, 6))
-    
+
 
     # TODO: _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
-    
+
 class PythonObjectBehaviour(unittest.TestCase):
     def testIfUsuableAsDictionaryKey(self):
         """IP Object should be usable as dictionary key"""
@@ -434,7 +434,7 @@ class PythonObjectBehaviour(unittest.TestCase):
         ip = IPy.IP('2001::/124')
         for x in ip:
             self.failUnless(x.strNormal() in ip, "%r not in %r" % (x.strNormal(), ip))
- 
+
     def testIfContainsIPobj(self):
         """__contains__() should work somewhat with IP instances"""
         ip = IPy.IP('127.0.0.0/28')
@@ -451,7 +451,7 @@ class PythonObjectBehaviour(unittest.TestCase):
         self.assertEqual(ip[-1], ip.broadcast())
         self.failUnless(ip[255])
         self.failUnlessRaises(IndexError, ip.__getitem__, 256)
-        
+
     def testStr(self):
         """string() should work somewhat with IP instances"""
         ip = IPy.IP('127.0.0.0/28')
@@ -476,7 +476,7 @@ class PythonObjectBehaviour(unittest.TestCase):
         self.failUnlessEqual(len(IPy.IP('127.0.0.0/30')), 4)
         self.failUnlessEqual(len(IPy.IP('127.0.0.0/26')), 64)
         self.failUnlessEqual(len(IPy.IP('127.0.0.0/16')), 2**16)
-        
+
     # cmp
     # IP[0xffffffff]
     # IP + IP
@@ -510,7 +510,7 @@ class IPobject(unittest.TestCase):
                   '1:0:0:2::3',
                   '1::2:0:0:3']
         for question in testValues:
-            result = IPy.IP(question).strCompressed() 
+            result = IPy.IP(question).strCompressed()
             self.failUnlessEqual(question, result, (question, result))
 
     def testStrBin(self):
@@ -530,7 +530,7 @@ class IPobject(unittest.TestCase):
                       ('127.0.0.1', '01111111000000000000000000000001'),
                       ('1::2:0:0:3', '00000000000000010000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000011')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strBin() 
+            result = IPy.IP(question).strBin()
             self.failUnlessEqual(answer, result, (question, answer, result))
 
     def testStrNormal(self):
@@ -544,7 +544,7 @@ class IPobject(unittest.TestCase):
                       (1L, '0.0.0.1'),
                       (3588059479L, '213.221.113.87')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strNormal(question) 
+            result = IPy.IP(question).strNormal(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testStrFullsize(self):
@@ -558,7 +558,7 @@ class IPobject(unittest.TestCase):
                       (1L, '0.0.0.1'),
                       (3588059479L, '213.221.113.87')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strFullsize(question) 
+            result = IPy.IP(question).strFullsize(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testStrHex(self):
@@ -572,7 +572,7 @@ class IPobject(unittest.TestCase):
                       (3588059479L, '0xD5DD7157'),
                       (0x12345678, '0x12345678')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strHex(question) 
+            result = IPy.IP(question).strHex(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testStrDec(self):
@@ -585,7 +585,7 @@ class IPobject(unittest.TestCase):
                       (0xFFFFFFFFL, '4294967295'),
                       (0xD5DD7157L, '3588059479')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strDec(question) 
+            result = IPy.IP(question).strDec(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testNet(self):
@@ -594,7 +594,7 @@ class IPobject(unittest.TestCase):
         self.failUnlessEqual(str(IPy.IP("0.0.0.0/0").net()), "0.0.0.0")
         self.failUnlessEqual(str(IPy.IP("2001:1234:5678:1234::/64").net()), "2001:1234:5678:1234:0000:0000:0000:0000")
 
-        
+
     def testBroadcast(self):
         """Returning of broadcast address."""
         self.failUnlessEqual(str(IPy.IP("127.0.0.1").broadcast()), "127.0.0.1")
@@ -625,7 +625,7 @@ class IPobject(unittest.TestCase):
         self.failUnlessEqual(IPy.IP("0000:0000:0000:0000:0000:0000:0000:0000").int(), 0)
         self.failUnlessEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffffL)
         self.failUnlessEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008L)
-    
+
 
     def testPrefixlen(self):
         """Prefixlen"""
@@ -636,7 +636,7 @@ class IPobject(unittest.TestCase):
         self.failUnlessEqual(IPy.IP("10.0.0.0/255.255.255.0").prefixlen(), 24)
         self.failUnlessEqual(IPy.IP("2001::/64").prefixlen(), 64)
 
-    
+
     def testVersion(self):
         """IP-version detection should work"""
         self.failUnlessEqual(IPy.IP("0.0.0.0/0").version(), 4)
@@ -661,7 +661,7 @@ class IPobject(unittest.TestCase):
                       ('127.0.0.1', '127.0.0.1', 1),
                       ('127.0.0.1', '127.0.0.2', 0)]
         for (a, b, answer) in testValues:
-            result = IPy.IP(a).overlaps(b) 
+            result = IPy.IP(a).overlaps(b)
             self.failUnlessEqual(answer, result, (a, b, result, answer))
 
     def testNetmask(self):
@@ -674,11 +674,11 @@ class IPobject(unittest.TestCase):
                       (4294967295l, '0xFFFFFFFF'),
                       (3588059479L, '0xD5DD7157')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strHex(question) 
+            result = IPy.IP(question).strHex(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
 # TODO
-#eval(repr(IPy)) 
+#eval(repr(IPy))
 # differences between IP and IPint
 
 
@@ -703,30 +703,30 @@ class NetIPChecks(unittest.TestCase):
 
         ip = IPy.IP('202.31.4/24')
         self.assertEqual(str(ip.net()),'202.31.4.0')
-        
-        self.failUnlessRaises(ValueError, IPy.IP, '234.245.252.253/2')        
+
+        self.failUnlessRaises(ValueError, IPy.IP, '234.245.252.253/2')
 
         # because we ar using integer representation we don't need a special "binadd"
         ip = IPy.IP('62.33.41.9')
         ip2 = IPy.IP('0.1.0.5')
         self.assertEqual(str(IPy.IP(ip.int() + ip2.int())),'62.34.41.14')
         #$T->ok_eq ($ip->binadd($ip2)->ip(),'62.34.41.14',$ip->error());
-        
+
         ip = IPy.IP('133.45.0/24')
         ip2 = IPy.IP('133.45.1/24')
         self.assertEqual((ip + ip2).prefixlen(),23)
-        
+
         ip2 = IPy.IP('133.44.255.255');
         #$T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
 
         # this is something we can't do with IPy
         #ip = IPy.IP('133.44.255.255-133.45.0.42');
         #$T->ok_eq (($ip->find_prefixes())[3],'133.45.0.40/31',$ip->error());
-        
+
         ip = IPy.IP('201.33.128.0/22');
         ip2 = IPy.IP('201.33.129.0/24');
         #$T->ok_eqnum ($ip->overlaps($ip2),$IP_B_IN_A_OVERLAP,$ip->error());
-        
+
         ip = IPy.IP('dead:beef:0::/48')
         self.assertEqual(str(ip.net()),'dead:beef:0000:0000:0000:0000:0000:0000')
         self.assertEqual(ip.int(), 295990755014133383690938178081940045824L)
@@ -739,7 +739,7 @@ class NetIPChecks(unittest.TestCase):
         self.assertEqual(ip.iptype(),'UNASSIGNED')
         self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.int.')
         self.assertEqual(str(ip.broadcast()),'dead:beef:0000:ffff:ffff:ffff:ffff:ffff')
-        
+
         ip = IPy.IP('202.31.4/24')
         self.assertEqual(str(ip.net()),'202.31.4.0')
 
@@ -751,21 +751,21 @@ class NetIPChecks(unittest.TestCase):
         ip = IPy.IP('ff00:0:f000::')
         ip2 = IPy.IP('0:0:1000::')
         self.assertEqual(IPy.IP(ip.int() + ip2.int()).strCompressed(), 'ff00:1::')
-    
+
         ip = IPy.IP('::e000:0/112')
         ip2 = IPy.IP('::e001:0/112')
         self.assertEqual(ip.__add__(ip2).prefixlen(),111)
-        
+
         ip2 = IPy.IP('::dfff:ffff')
         #$T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
-        
+
         #ip = IPy.IP('::e000:0 - ::e002:42')
         #$T->ok_eq (($ip->find_prefixes())[2],'0000:0000:0000:0000:0000:0000:e002:0040/127',$ip->error());
-        
+
         ip = IPy.IP('ffff::/16')
         ip2 = IPy.IP('8000::/16')
         #$T->ok_eqnum ($ip->overlaps($ip2),$IP_NO_OVERLAP,$ip->error());
 
 if __name__ == "__main__":
     unittest.main()
-                
+
