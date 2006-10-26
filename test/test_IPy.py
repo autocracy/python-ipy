@@ -9,6 +9,7 @@ Hacked 2001 by drt@un.bewaff.net
 
 import sys
 import threading
+sys.path.append('.')
 sys.path.append('..')
 
 import IPy
