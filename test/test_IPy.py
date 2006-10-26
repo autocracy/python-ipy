@@ -810,6 +810,11 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(bool(ip), True)
 
     def testPrivate169(self):
+        """
+        RFC 3330 indicates that 169.254.0.0/16 addresses are private.
+        They are automatically configured for links in the absence of other
+        information and should not be used on the internet
+        """
         self.assertEqual(IPy.IP("169.254.191.164").iptype(), "PRIVATE")
 
 if __name__ == "__main__":
