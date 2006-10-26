@@ -1236,10 +1236,18 @@ def _checkNetmask(netmask, masklen):
 
 def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
     """Check if a base addess of e network is compatible with a prefixlen"""
-    if net & _prefixlenToNetmask(prefixlen, version) == net:
-        return 1
+    global check_addr_prefixlen
+    if check_addr_prefixlen:
+        if net & _prefixlenToNetmask(prefixlen, version) == net:
+            return 1
+        else:
+            return 0
     else:
-        return 0
+        if prefixlen < 0:
+            return 0
+        if _ipVersionToLen(version) < prefixlen:
+            return 0
+        return 1
 
 
 def _netmaskToPrefixlen(netmask):
@@ -1260,15 +1268,11 @@ def _prefixlenToNetmask(prefixlen, version):
     From 'IP address conversion functions with the builtin socket module' by Alex Martelli
     http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66517
     """
-    global check_addr_prefixlen
     if prefixlen == 0:
         return 0
     elif prefixlen < 0:
         raise ValueError, "Prefixlen must be > 0"
-    if check_addr_prefixlen:
-        return ((2L<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
-    else:
-        return 1
+    return ((2L<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
 
 
 def _test():

@@ -806,8 +806,7 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(text, "0.0.0.0/0")
 
     def testNonZeroType(self):
-        ip = IPy.IP("0.0.0.0/0")
-        self.assertEqual(bool(ip), True)
+        self.assertEqual(bool(IPy.IP("0.0.0.0/0")), True)
 
     def testPrivate169(self):
         """
@@ -818,6 +817,7 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(IPy.IP("169.254.191.164").iptype(), "PRIVATE")
 
     def testCheckAddrPrefixlenOn(self):
+        self.assertEqual(len(IPy.IP('192.168.0.0/24')), 256)
         self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
         self.assertRaises(ValueError, IPy.IP, '172.30.1.0/22')
 
@@ -825,8 +825,9 @@ class RegressionTest(unittest.TestCase):
         old = IPy.check_addr_prefixlen
         IPy.check_addr_prefixlen = False
         try:
+            self.assertEqual(len(IPy.IP('192.168.0.0/24')), 256)
             self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
-            self.assertEqual(IPy.IP('172.30.1.0/22'), 1024)
+            self.assertEqual(len(IPy.IP('172.30.1.0/22')), 1024)
         finally:
             IPy.check_addr_prefixlen = old
 
