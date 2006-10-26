@@ -14,5 +14,5 @@ IPy.html: README
 	rst2html README $@ --stylesheet=rest.css
 
 clean:
-	rm -f README IPy.html *.pyc
+	rm -rf README IPy.html *.pyc build
 
