@@ -1,0 +1,15 @@
+2006-10-26
+	* Apply Jean Gillaux patch for netmask "/0.0.0.0" bug
+	* Apply William McVey patch for __nonzero__() bug
+	* Apply Victor Stinner patch: setup.py can use setuptools and fix URLs
+	* Add regression test for netmask "/0.0.0.0" and __nonzero__() bugs
+	* Create AUTHORS file
+
+2004-08-22
+	* IPy 0.42 works on Python 2.3 without warnings
+
+2002-01-16
+	* IPy 0.41 has Python < 2.2 compatible unit tests and a README file
+
+2001-12-22
+	* IPy 0.4 was the first public relase
