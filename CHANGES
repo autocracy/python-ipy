@@ -1,0 +1,5 @@
+IPy 0.42 works on Python 2.3 without warnings
+
+IPy 0.41 has Python < 2.2 compatible unit tests and a README file
+
+IPy 0.4 was the first public relase
