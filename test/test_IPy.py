@@ -809,6 +809,9 @@ class RegressionTest(unittest.TestCase):
         ip = IPy.IP("0.0.0.0/0")
         self.assertEqual(bool(ip), True)
 
+    def testPrivate169(self):
+        self.assertEqual(IPy.IP("169.254.191.164").iptype(), "PRIVATE")
+
 if __name__ == "__main__":
     unittest.main()
 
