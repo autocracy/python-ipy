@@ -1,15 +1,12 @@
 """ IPy - class and tools for handling of IPv4 and IPv6 Addresses and Networks.
 
-$HeadURL$
-
-$Id$
-
 The IP class allows a comfortable parsing and handling for most
 notations in use for IPv4 and IPv6 Addresses and Networks. It was
 greatly inspired bei RIPE's Perl module NET::IP's interface but
 doesn't share the Implementation. It doesn't share non-CIDR netmasks,
 so funky stuff lixe a netmask 0xffffff0f can't be done here.
 
+    >>> from IPy import IP
     >>> ip = IP('127.0.0.0/30')
     >>> for x in ip:
     ...  print x
@@ -57,6 +54,28 @@ and networks, parse them and distinguish between IPv4 and IPv6 addresses.
     127.0.0.0/8
     >>> print IP('127.0.0.0-127.255.255.255')
     127.0.0.0/8
+    >>> IP('10.0.0.0/24').strNormal('q')
+    '10.0.0.0/24'
+    >>> IP('10.0.0.0/24').strNormal(2)
+    '10.0.0.0/255.255.255.0'
+    >>> IP('10.0.0.0/24').strNormal(3)
+    '10.0.0.0-10.0.0.255'
+
+By default, IPy rejects uncommon netmask like 172.30.1.0/22:
+
+    >>> ips = IP('172.30.1.0/22')
+    Traceback (most recent call last):
+      ...
+    ValueError: 0xAC1E0100L goes not well with prefixlen 22
+
+You can change this behaviour with global option check_addr_prefixlen:
+
+    >>> import IPy
+    >>> IPy.check_addr_prefixlen = False
+    >>> ips = IP('172.30.1.0/22')
+    >>> len(ips)
+    1024
+
 
 Nearly all class methods which return a string have an optional
 parameter 'wantprefixlen' which controlles if the prefixlen or netmask
@@ -95,33 +114,38 @@ WantPrefixLen
     >>> print ip
     10.0.0.0-10.0.0.0
 
+IPy should work with python 2.2 and my python 2.1.
 
-Further Information might be available at http://c0re.jp/c0de/IPy/
-
+Further Information might be available at: http://c0re.23.nu/c0de/ipy/.
 Hacked 2001 by drt@un.bewaff.net
 
+$HeadURL$
+
+$Id$
+
 TODO:
-      * better comparison (__cmp__ and friends)
-      * tests for __cmp__
-      * always write hex values lowercase
-      * interpret 2001:1234:5678:1234/64 as 2001:1234:5678:1234::/64
-      * move size in bits into class variables to get rid of some "if self._ipversion ..."
-      * support for base85 encoding
-      * support for output of IPv6 encoded IPv4 Addresses
-      * update address type tables
-      * first-last notation should be allowed for IPv6
-      * add IPv6 docstring examples
-      * check better for negative parameters
-      * add addition / aggregation
-      * move reverse name stuff out of the classes and refactor it
-      * support for aggregation of more than two nets at once
-      * support for aggregation with "holes"
-      * support for finding common prefix
-      * '>>' and '<<' for prefix manipulation
-      * add our own exceptions instead ValueError all the time
-      * rename checkPrefix to checkPrefixOk
-      * add more documentation and doctests
-      * refactor
+
+ * better comparison (__cmp__ and friends)
+ * tests for __cmp__
+ * always write hex values lowercase
+ * interpret 2001:1234:5678:1234/64 as 2001:1234:5678:1234::/64
+ * move size in bits into class variables to get rid of some "if self._ipversion ..."
+ * support for base85 encoding
+ * support for output of IPv6 encoded IPv4 Addresses
+ * update address type tables
+ * first-last notation should be allowed for IPv6
+ * add IPv6 docstring examples
+ * check better for negative parameters
+ * add addition / aggregation
+ * move reverse name stuff out of the classes and refactor it
+ * support for aggregation of more than two nets at once
+ * support for aggregation with "holes"
+ * support for finding common prefix
+ * '>>' and '<<' for prefix manipulation
+ * add our own exceptions instead ValueError all the time
+ * rename checkPrefix to checkPrefixOk
+ * add more documentation and doctests
+ * refactor
 """
 
 __rcsid__ = '$Id$'
