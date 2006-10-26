@@ -125,15 +125,13 @@ TODO:
 """
 
 __rcsid__ = '$Id$'
-__version__ = '0.42'
+__version__ = '0.5'
 
 import types
 
-# Define True for Python < 2.3
-try:
-    assert True
-except:
-    True = 1
+# New in API 0.5: if true, it allows uncommon net mask like "172.30.1.0/22".
+# Default is disable, ie. raise ValueError on such netmask.
+check_addr_prefixlen = 0
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -612,7 +610,7 @@ class IPint:
         0.0.0.0/0, the __len__() of the object becomes 0, which is used
         as the boolean value of the object.
         """
-        return True
+        return 1
 
 
     def __len__(self):
@@ -1262,11 +1260,15 @@ def _prefixlenToNetmask(prefixlen, version):
     From 'IP address conversion functions with the builtin socket module' by Alex Martelli
     http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66517
     """
+    global check_addr_prefixlen
     if prefixlen == 0:
         return 0
     elif prefixlen < 0:
         raise ValueError, "Prefixlen must be > 0"
-    return ((2L<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
+    if check_addr_prefixlen:
+        return ((2L<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
+    else:
+        return 1
 
 
 def _test():
