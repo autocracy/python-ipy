@@ -4,6 +4,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
+import IPy
+
 LONG_DESCRIPTION=open('README').read()
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
@@ -18,7 +20,7 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Natural Language :: English',
     'Programming Language :: Python']
-URL = "http://c0re.23.nu/c0de/IPy/"
+URL = "https://software.inl.fr/trac/trac.cgi/wiki/IPy"
 
 setup(name="IPy",
       version=IPy.__version__,

@@ -7,6 +7,9 @@ test: README
 	@echo "[ test README ]"
 	python -c "import doctest; doctest.testfile('README', optionflags=doctest.ELLIPSIS)" || exit $$?
 
+egg: README
+	python setup.py bdist_egg
+
 README: IPy.py
 	python -c "import IPy; open('README', 'w').write(IPy.__doc__)"
 
