@@ -1,5 +1,8 @@
 """ IPy - class and tools for handling of IPv4 and IPv6 Addresses and Networks.
 
+Presentation of the API
+=======================
+
 The IP class allows a comfortable parsing and handling for most
 notations in use for IPv4 and IPv6 Addresses and Networks. It was
 greatly inspired bei RIPE's Perl module NET::IP's interface but
@@ -25,13 +28,21 @@ so funky stuff lixe a netmask 0xffffff0f can't be done here.
     >>> ip.iptype()
     'PRIVATE'
 
+
+Support all IP addresses
+========================
+
 It can detect about a dozen different ways of expressing IP addresses
-and networks, parse them and distinguish between IPv4 and IPv6 addresses.
+and networks, parse them and distinguish between IPv4 and IPv6 addresses:
 
     >>> IP('10.0.0.0/8').version()
     4
     >>> IP('::1').version()
     6
+
+IPv4 addresses
+--------------
+
     >>> print IP(0x7f000001)
     127.0.0.1
     >>> print IP('0x7f000001')
@@ -40,6 +51,10 @@ and networks, parse them and distinguish between IPv4 and IPv6 addresses.
     127.0.0.1
     >>> print IP('10')
     10.0.0.0
+
+IPv6 addresses
+--------------
+
     >>> print IP('1080:0:0:0:8:800:200C:417A')
     1080:0000:0000:0000:0008:0800:200c:417a
     >>> print IP('1080::8:800:200C:417A')
@@ -48,18 +63,20 @@ and networks, parse them and distinguish between IPv4 and IPv6 addresses.
     0000:0000:0000:0000:0000:0000:0000:0001
     >>> print IP('::13.1.68.3')
     0000:0000:0000:0000:0000:0000:0d01:4403
+
+Network mask
+------------
+
     >>> print IP('127.0.0.0/8')
     127.0.0.0/8
     >>> print IP('127.0.0.0/255.0.0.0')
     127.0.0.0/8
     >>> print IP('127.0.0.0-127.255.255.255')
     127.0.0.0/8
-    >>> IP('10.0.0.0/24').strNormal('q')
-    '10.0.0.0/24'
-    >>> IP('10.0.0.0/24').strNormal(2)
-    '10.0.0.0/255.255.255.0'
-    >>> IP('10.0.0.0/24').strNormal(3)
-    '10.0.0.0-10.0.0.255'
+
+
+Option check_addr_prefixlen
+===========================
 
 By default, IPy rejects uncommon netmask like 172.30.1.0/22:
 
@@ -77,20 +94,25 @@ You can change this behaviour with global option check_addr_prefixlen:
     1024
 
 
+Convert address to string
+=========================
+
 Nearly all class methods which return a string have an optional
 parameter 'wantprefixlen' which controlles if the prefixlen or netmask
 is printed. Per default the prefilen is always shown if the net
-contains more than one address.
+contains more than one address::
 
-wantprefixlen == 0 / None        don't return anything    1.2.3.0
-wantprefixlen == 1               /prefix                  1.2.3.0/24
-wantprefixlen == 2               /netmask                 1.2.3.0/255.255.255.0
-wantprefixlen == 3               -lastip                  1.2.3.0-1.2.3.255
+    wantprefixlen == 0 / None        don't return anything    1.2.3.0
+    wantprefixlen == 1               /prefix                  1.2.3.0/24
+    wantprefixlen == 2               /netmask                 1.2.3.0/255.255.255.0
+    wantprefixlen == 3               -lastip                  1.2.3.0-1.2.3.255
 
-You can also change the defaults on an per-object basis by fiddeling with the class members
+You can also change the defaults on an per-object basis by fiddeling with the class members:
 
-NoPrefixForSingleIp
-WantPrefixLen
+ * NoPrefixForSingleIp
+ * WantPrefixLen
+
+Examples of string conversions:
 
     >>> IP('10.0.0.0/32').strNormal()
     '10.0.0.0'
@@ -114,16 +136,16 @@ WantPrefixLen
     >>> print ip
     10.0.0.0-10.0.0.0
 
-IPy should work with python 2.2 and my python 2.1.
+Compatibility and links
+=======================
+
+IPy should work on Python version 2.1 to 2.5.
 
 Further Information might be available at: http://c0re.23.nu/c0de/ipy/.
 Hacked 2001 by drt@un.bewaff.net
 
-$HeadURL$
-
-$Id$
-
-TODO:
+TODO
+====
 
  * better comparison (__cmp__ and friends)
  * tests for __cmp__
@@ -147,6 +169,9 @@ TODO:
  * add more documentation and doctests
  * refactor
 """
+
+# $HeadURL$
+# $Id$
 
 __rcsid__ = '$Id$'
 __version__ = '0.5'

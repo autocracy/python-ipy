@@ -10,3 +10,6 @@ test: README
 README: IPy.py
 	python -c "import IPy; open('README', 'w').write(IPy.__doc__)"
 
+IPy.html: README
+	rst2html README $@
+
