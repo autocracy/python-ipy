@@ -804,6 +804,10 @@ class RegressionTest(unittest.TestCase):
             text = "*TIMEOUT*"
         self.assertEqual(text, "0.0.0.0/0")
 
+    def testNonZeroType(self):
+        ip = IPy.IP("0.0.0.0/0")
+        self.assertEqual(bool(ip), True)
+
 if __name__ == "__main__":
     unittest.main()
 
