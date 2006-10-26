@@ -1,4 +1,0 @@
-Mark Johnston - bringing IPy to Python 2.3
-Shell, Hin-lik Hung - bring IPy to OpenBSD ports
-Samuel Krempp - fix __cmp__() bug
-Skinny Puppy - __add__() now always  returns a value
