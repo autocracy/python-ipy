@@ -136,12 +136,29 @@ Examples of string conversions:
     >>> print ip
     10.0.0.0-10.0.0.0
 
+
+What's new?
+===========
+
+Changes between version 0.42 and 0.5: Fix all known bugs:
+
+ * Apply Jean Gillaux's patch for netmask "/0.0.0.0" bug
+ * Apply William McVey's patch for __nonzero__() bug
+ * Apply Victor Stinner patch: setup.py can use setuptools and fix URLs
+ * Allow "172.30.1.0/22" with new option IPy.check_addr_prefixlen=False
+
+Other changes:
+
+ * Add regression tests
+ * Create AUTHORS file
+
+
 Compatibility and links
 =======================
 
 IPy should work on Python version 2.1 to 2.5.
 
-Further Information might be available at: https://software.inl.fr/trac/trac.cgi/wiki/IPy
+Further Information might be available at: http://software.inl.fr/trac/trac.cgi/wiki/IPy
 
 TODO
 ====

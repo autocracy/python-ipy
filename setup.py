@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # $Id: setup.py 671 2004-08-22 21:02:29Z md $
+
 try:
     from setuptools.core import setup
 except ImportError:
@@ -20,7 +22,7 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Natural Language :: English',
     'Programming Language :: Python']
-URL = "https://software.inl.fr/trac/trac.cgi/wiki/IPy"
+URL = "http://software.inl.fr/trac/trac.cgi/wiki/IPy"
 
 setup(name="IPy",
       version=IPy.__version__,

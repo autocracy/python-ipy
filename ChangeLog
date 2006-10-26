@@ -1,8 +1,10 @@
 2006-10-26
+	* Release IPy 0.5
 	* Apply Jean Gillaux patch for netmask "/0.0.0.0" bug
 	* Apply William McVey patch for __nonzero__() bug
 	* Apply Victor Stinner patch: setup.py can use setuptools and fix URLs
-	* Add regression test for netmask "/0.0.0.0" and __nonzero__() bugs
+	* Allow "172.30.1.0/22" with new option IPy.check_addr_prefixlen=False
+	* Add regression tests
 	* Create AUTHORS file
 
 2004-08-22
