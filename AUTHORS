@@ -1,4 +1,9 @@
-Jean Gillaux <jgillaux AT inl.fr> - Fix netmask "/0.0.0.0"
 Teenage mutant ninja hero c0ders <drt@un.bewaff.net> - IPy author(s?)
+
+Jean Gillaux <jgillaux AT inl.fr> - Fix netmask "/0.0.0.0"
 Victor Stinner <victor.stinner AT inl.fr> - Patch setup.py for setuptools
 William McVey <wam AT cisco.com> - Fix IP.__nonzero__()
+Mark Johnston - bringing IPy to Python 2.3
+Shell, Hin-lik Hung - bring IPy to OpenBSD ports
+Samuel Krempp - fix __cmp__() bug
+Skinny Puppy - __add__() now always  returns a value
