@@ -1207,7 +1207,7 @@ def _checkNetmask(netmask, masklen):
     bits = masklen
     
     # remove zero bits at the end
-    while (num & 1) == 0:
+    while (num & 1) == 0 and bits != 0:
         num = num >> 1
         bits -= 1
         if bits == 0:
