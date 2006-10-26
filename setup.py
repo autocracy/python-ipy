@@ -1,10 +1,33 @@
 # $Id: setup.py 671 2004-08-22 21:02:29Z md $
-from distutils.core import setup
+try:
+    from setuptools.core import setup
+except ImportError:
+    from distutils.core import setup
+
+LONG_DESCRIPTION=open('README').read()
+CLASSIFIERS = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'Environment :: Plugins',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Communications',
+    'Topic :: Internet',
+    'Topic :: System :: Networking',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Natural Language :: English',
+    'Programming Language :: Python']
+URL = "http://c0re.23.nu/c0de/IPy/"
+
 setup(name="IPy",
-      version="0.41",
+      version="0.42",
       description="IPv4 and IPv6 parsing and handling class",
+      long_description=LONG_DESCRIPTION,
       author="drt",
       author_email="drt@un.bewaff.net",
-      url="http://c0re.jp/c0de/Ipy/",
+      url=URL,
+      download_url=URL,
+      classifiers= CLASSIFIERS,
       py_modules=["IPy"])
 

@@ -1,9 +1,9 @@
 IPy is a Python module for handling IPv4 and IPv6 Addresses and Networks in
 a fashion similar to perl's Net::IP and friends. The IP class allows a
 comfortable parsing and handling for most notations in use for IPv4 and IPv6
-Addresses and Networks. 
+Addresses and Networks.
 
-It enables code like this: 
+It enables code like this:
 
       >>> ip = IP('127.0.0.0/30')
       >>> for x in ip:
@@ -23,9 +23,9 @@ It enables code like this:
       '0-3.0.0.127.in-addr.arpa.'
       >>> ip.iptype()
       'RESERVED'
-    
+
 It can detect about a dozen different ways of expressing IP addresses and
-networks, parse them and distinguish between IPv4 and IPv6 addresses. 
+networks, parse them and distinguish between IPv4 and IPv6 addresses.
 
       >>> IP('10.0.0.0/8').version()
       4
@@ -60,7 +60,7 @@ networks, parse them and distinguish between IPv4 and IPv6 addresses.
       >>> IP('10.0.0.0/24').strNormal(3)
       '10.0.0.0-10.0.0.255'
 
-To install type 
+To install type
 
 $ python setup.py install
 $ pydoc -w IPy
@@ -71,5 +71,5 @@ Read IPy.html for usage Instructions.
 
 IPy has been tested with python 2.2 and pyton 2.1.
 
-Further Information can be found at http://c0re.jp/c0de/IPy/ 
+Further Information can be found at http://c0re.23.nu/c0de/IPy/
   --drt@un.bewaff.net
