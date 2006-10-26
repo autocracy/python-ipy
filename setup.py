@@ -21,7 +21,7 @@ CLASSIFIERS = [
 URL = "http://c0re.23.nu/c0de/IPy/"
 
 setup(name="IPy",
-      version="0.42",
+      version=IPy.__version__,
       description="IPv4 and IPv6 parsing and handling class",
       long_description=LONG_DESCRIPTION,
       author="drt",

@@ -1,8 +1,8 @@
 """ IPy - class and tools for handling of IPv4 and IPv6 Addresses and Networks.
 
-$HeadURL: http://svn.23.nu/svn/repos/IPy/trunk/IPy.py $
+$HeadURL$
 
-$Id: IPy.py 671 2004-08-22 21:02:29Z md $
+$Id$
 
 The IP class allows a comfortable parsing and handling for most
 notations in use for IPv4 and IPv6 Addresses and Networks. It was
@@ -124,7 +124,7 @@ TODO:
       * refactor
 """
 
-__rcsid__ = '$Id: IPy.py 671 2004-08-22 21:02:29Z md $'
+__rcsid__ = '$Id$'
 __version__ = '0.42'
 
 import types
