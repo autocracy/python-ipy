@@ -1,5 +1,4 @@
 .PHONY: test
-PYTHON=/opt/python25/bin/python
 PYTHON=python
 
 test: README
