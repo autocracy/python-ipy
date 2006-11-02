@@ -162,7 +162,9 @@ Other changes:
 Compatibility and links
 =======================
 
-IPy should work on Python version 2.1 to 2.5.
+IPy works on Python version 2.2 to 2.5.
+
+This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at: http://software.inl.fr/trac/trac.cgi/wiki/IPy
 
