@@ -148,27 +148,27 @@ class _intToIP(unittest.TestCase):
                 (0xf, '0.0.0.15'),
                 (0xff, '0.0.0.255'),
                 (0xFFFFFFFFL, '255.255.255.255')]
-    v6values = [(0x7f000001, '0000:0000:0000:0000:0000:0000:7F00:0001'),
+    v6values = [(0x7f000001, '0000:0000:0000:0000:0000:0000:7f00:0001'),
                 (0x0, '0000:0000:0000:0000:0000:0000:0000:0000'),
                 (0x1, '0000:0000:0000:0000:0000:0000:0000:0001'),
-                (0xf, '0000:0000:0000:0000:0000:0000:0000:000F'),
-                (0xff, '0000:0000:0000:0000:0000:0000:0000:00FF'),
-                (0xFFFFFFFFL, '0000:0000:0000:0000:0000:0000:FFFF:FFFF'),
+                (0xf, '0000:0000:0000:0000:0000:0000:0000:000f'),
+                (0xff, '0000:0000:0000:0000:0000:0000:0000:00ff'),
+                (0xFFFFFFFFL, '0000:0000:0000:0000:0000:0000:ffff:ffff'),
                 (0x100000000L, '0000:0000:0000:0000:0000:0001:0000:0000'),
-                (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, 'FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF')]
+                (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff')]
 
     def testKnownValuesv4(self):
         """printing of known IPv4 values should give known results"""
         for x in self.v4values:
             (question, answer) = x
-            result  = IPy.intToIp(question, 4)
+            result  = IPy.intToIp(question, 4).lower()
             self.assertEqual(answer, result, "%r, %r, %r" % (question, answer, result))
 
     def testKnownValuesv6(self):
         """printing of known IPv6 values should give known results"""
         for x in self.v6values:
             (question, answer) = x
-            result  = IPy.intToIp(question, 6)
+            result  = IPy.intToIp(question, 6).lower()
             self.assertEqual(answer, result, "%r, %r, %r" % (question, answer, result))
 
     def testNegativeIPv4(self):
@@ -564,16 +564,16 @@ class IPobject(unittest.TestCase):
 
     def testStrHex(self):
         """Hex string Output."""
-        testValues = [(338770000845734292534325025077361652240L, '0xFEDCBA9876543210FEDCBA9876543210'),
-                      (21932261930451111902915077091070067066L, '0x108000000000000000080800200C417A'),
-                      (338958331222012082418099330867817087043L, '0xFF010000000000000000000000000043'),
+        testValues = [(338770000845734292534325025077361652240L, '0xfedcba9876543210fedcba9876543210'),
+                      (21932261930451111902915077091070067066L, '0x108000000000000000080800200c417a'),
+                      (338958331222012082418099330867817087043L, '0xff010000000000000000000000000043'),
                       (0L, '0x0'),
                       (1L, '0x1'),
-                      (4294967295l, '0xFFFFFFFF'),
-                      (3588059479L, '0xD5DD7157'),
+                      (4294967295l, '0xffffffff'),
+                      (3588059479L, '0xd5dd7157'),
                       (0x12345678, '0x12345678')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strHex(question)
+            result = IPy.IP(question).strHex(question).lower()
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testStrDec(self):
@@ -667,15 +667,15 @@ class IPobject(unittest.TestCase):
 
     def testNetmask(self):
         """Normal string Output."""
-        testValues = [(338770000845734292534325025077361652240L, '0xFEDCBA9876543210FEDCBA9876543210'),
-                      (21932261930451111902915077091070067066L, '0x108000000000000000080800200C417A'),
-                      (338958331222012082418099330867817087043L, '0xFF010000000000000000000000000043'),
+        testValues = [(338770000845734292534325025077361652240L, '0xfedcba9876543210fedcba9876543210'),
+                      (21932261930451111902915077091070067066L, '0x108000000000000000080800200c417a'),
+                      (338958331222012082418099330867817087043L, '0xff010000000000000000000000000043'),
                       (0L, '0x0'),
                       (1L, '0x1'),
-                      (4294967295l, '0xFFFFFFFF'),
-                      (3588059479L, '0xD5DD7157')]
+                      (4294967295l, '0xffffffff'),
+                      (3588059479L, '0xd5dd7157')]
         for (question, answer) in testValues:
-            result = IPy.IP(question).strHex(question)
+            result = IPy.IP(question).strHex(question).lower()
             self.failUnlessEqual(answer, result, (question, result, answer))
 
 # TODO
