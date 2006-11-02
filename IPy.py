@@ -190,7 +190,7 @@ TODO
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.5'
+__version__ = '0.51'
 
 import types
 
