@@ -80,15 +80,16 @@ Option check_addr_prefixlen
 
 By default, IPy rejects uncommon netmask like 172.30.1.0/22:
 
+    >>> import IPy
+    >>> IPy.check_addr_prefixlen = True    # default value
     >>> ips = IP('172.30.1.0/22')
     Traceback (most recent call last):
       ...
-    ValueError: 0xAC1E0100L goes not well with prefixlen 22
+    ValueError: IP('172.30.1.0/22') has invalid prefix length (22)
 
 You can change this behaviour with global option check_addr_prefixlen:
 
-    >>> import IPy
-    >>> IPy.check_addr_prefixlen = False
+    >>> IPy.check_addr_prefixlen = False   # disable
     >>> ips = IP('172.30.1.0/22')
     >>> len(ips)
     1024
@@ -144,7 +145,9 @@ Changes between version 0.5 and 0.51:
 
  * Use real name of IPy author
  * Use version "0.51" to help packaging since 0.5 was smaller than 0.42
- * Fix unit test on Python 2.3 (don't use doctest.testfile)
+ * Fix unit test for Python 2.3 (don't use doctest.testfile)
+ * Fix unit test for Python 2.5 (problem of hex() lower case)
+ * IPy now works on Python 2.2 to 2.5
 
 Changes between version 0.42 and 0.5: Fix all known bugs:
 
@@ -162,7 +165,9 @@ Other changes:
 Compatibility and links
 =======================
 
-IPy should work on Python version 2.1 to 2.5.
+IPy works on Python version 2.2 to 2.5.
+
+This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at: http://software.inl.fr/trac/trac.cgi/wiki/IPy
 
@@ -372,7 +377,7 @@ class IPint:
             self._prefixlen = int(prefixlen)
 
             if not _checkNetaddrWorksWithPrefixlen(self.ip, self._prefixlen, self._ipversion):
-                raise ValueError, "%s goes not well with prefixlen %d" % (hex(self.ip), self._prefixlen)
+                raise ValueError, "%s has invalid prefix length (%s)" % (repr(self), self._prefixlen)
 
 
     def int(self):
@@ -380,8 +385,8 @@ class IPint:
 
         The same as IP[0].
 
-        >>> hex(IP('10.0.0.0/8').int())
-        '0xA000000L'
+        >>> "%X" % IP('10.0.0.0/8').int()
+        'A000000'
         """
         return self.ip
 
@@ -553,12 +558,12 @@ class IPint:
         return intToIp(self.ip, self._ipversion).lower() + self._printPrefix(wantprefixlen)
 
     def strHex(self, wantprefixlen = None):
-        """Return a string representation in hex format.
+        """Return a string representation in hex format in lower case.
 
-        >>> print IP('127.0.0.1').strHex()
-        0x7F000001
-        >>> print IP('2001:0658:022a:cafe:0200::1').strHex()
-        0x20010658022ACAFE0200000000000001
+        >>> IP('127.0.0.1').strHex()
+        '0x7f000001'
+        >>> IP('2001:0658:022a:cafe:0200::1').strHex()
+        '0x20010658022acafe0200000000000001'
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
@@ -567,7 +572,7 @@ class IPint:
         x = hex(self.ip)
         if x[-1] == 'L':
             x = x[:-1]
-        return x + self._printPrefix(wantprefixlen)
+        return x.lower() + self._printPrefix(wantprefixlen)
 
     def strDec(self, wantprefixlen = None):
         """Return a string representation in decimal format.
@@ -622,8 +627,8 @@ class IPint:
     def netmask(self):
         """Return netmask as an integer.
 
-        >>> print hex(IP('195.185.0.0/16').netmask().int())
-        0xFFFF0000L
+        >>> "%X" % IP('195.185.0.0/16').netmask().int()
+        'FFFF0000'
         """
 
         # TODO: unify with prefixlenToNetmask?
@@ -701,16 +706,16 @@ class IPint:
 
         >>> ip=IP('127.0.0.0/30')
         >>> for x in ip:
-        ...  print hex(x.int())
+        ...  print repr(x)
         ...
-        0x7F000000L
-        0x7F000001L
-        0x7F000002L
-        0x7F000003L
-        >>> hex(ip[2].int())
-        '0x7F000002L'
-        >>> hex(ip[-1].int())
-        '0x7F000003L'
+        IP('127.0.0.0')
+        IP('127.0.0.1')
+        IP('127.0.0.2')
+        IP('127.0.0.3')
+        >>> ip[2]
+        IP('127.0.0.2')
+        >>> ip[-1]
+        IP('127.0.0.3')
         """
 
         if type(key) != types.IntType and type(key) != types.LongType:
@@ -730,8 +735,8 @@ class IPint:
         Should return true if item is in self, false otherwise. Item
         can be other IP-objects, strings or ints.
 
-        >>> print IP('195.185.1.1').strHex()
-        0xC3B90101
+        >>> IP('195.185.1.1').strHex()
+        '0xc3b90101'
         >>> 0xC3B90101L in IP('195.185.1.0/24')
         1
         >>> '127.0.0.1' in IP('127.0.0.0/24')
@@ -855,8 +860,8 @@ class IPint:
         required property is that objects which compare equal have the
         same hash value
 
-        >>> hex(IP('10.0.0.0/24').__hash__())
-        '0xf5ffffe7'
+        >>> IP('10.0.0.0/24').__hash__()
+        -167772185
         """
 
         thehash = int(-1)
