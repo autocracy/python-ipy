@@ -140,6 +140,12 @@ Examples of string conversions:
 What's new?
 ===========
 
+Changes between version 0.5 and 0.51:
+
+ * Use real name of IPy author
+ * Use version "0.51" to help packaging since 0.5 was smaller than 0.42
+ * Fix unit test on Python 2.3 (don't use doctest.testfile)
+
 Changes between version 0.42 and 0.5: Fix all known bugs:
 
  * Apply Jean Gillaux's patch for netmask "/0.0.0.0" bug
