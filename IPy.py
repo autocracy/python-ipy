@@ -80,6 +80,8 @@ Option check_addr_prefixlen
 
 By default, IPy rejects uncommon netmask like 172.30.1.0/22:
 
+    >>> import IPy
+    >>> IPy.check_addr_prefixlen = True    # default value
     >>> ips = IP('172.30.1.0/22')
     Traceback (most recent call last):
       ...
@@ -87,8 +89,7 @@ By default, IPy rejects uncommon netmask like 172.30.1.0/22:
 
 You can change this behaviour with global option check_addr_prefixlen:
 
-    >>> import IPy
-    >>> IPy.check_addr_prefixlen = False
+    >>> IPy.check_addr_prefixlen = False   # disable
     >>> ips = IP('172.30.1.0/22')
     >>> len(ips)
     1024
@@ -857,8 +858,8 @@ class IPint:
         required property is that objects which compare equal have the
         same hash value
 
-        >>> hex(IP('10.0.0.0/24').__hash__())
-        '0xf5ffffe7'
+        >>> IP('10.0.0.0/24').__hash__()
+        -167772185
         """
 
         thehash = int(-1)
