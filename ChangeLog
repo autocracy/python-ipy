@@ -1,3 +1,9 @@
+2006-11-02
+	* Release IPy 0.51
+	* Write real name of IPy author (Maximillian Dornseif)
+	* Use version "0.51" to help packaging since 0.5 was smaller than 0.42
+	* Fix unit test on Python 2.3 (don't use doctest.testfile)
+
 2006-10-26
 	* Release IPy 0.5
 	* Apply Jean Gillaux patch for netmask "/0.0.0.0" bug

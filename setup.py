@@ -26,9 +26,9 @@ URL = "http://software.inl.fr/trac/trac.cgi/wiki/IPy"
 
 setup(name="IPy",
       version=IPy.__version__,
-      description="IPv4 and IPv6 parsing and handling class",
+      description="Class and tools for handling of IPv4 and IPv6 addresses and networks",
       long_description=LONG_DESCRIPTION,
-      author="drt",
+      author="Maximillian Dornseif",
       maintainer="Victor Stinner",
       maintainer_email="victor.stinner AT inl.fr",
       license="BSD License",
