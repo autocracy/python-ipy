@@ -141,6 +141,10 @@ Examples of string conversions:
 What's new?
 ===========
 
+Changes between version 0.51 and 0.52:
+
+ * Fix strCompressed() for IPv6 "ffff:ffff:ffff:ffff:ffff:f:f:fffc/127"
+
 Changes between version 0.5 and 0.51:
 
  * Use real name of IPy author
