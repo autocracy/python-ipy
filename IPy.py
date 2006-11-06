@@ -484,10 +484,12 @@ class IPint:
     def strCompressed(self, wantprefixlen = None):
         """Return a string representation in compressed format using '::' Notation.
 
-        >>> print IP('127.0.0.1').strCompressed()
-        127.0.0.1
-        >>> print IP('2001:0658:022a:cafe:0200::1').strCompressed()
-        2001:658:22a:cafe:200::1
+        >>> IP('127.0.0.1').strCompressed()
+        '127.0.0.1'
+        >>> IP('2001:0658:022a:cafe:0200::1').strCompressed()
+        '2001:658:22a:cafe:200::1'
+        >>> IP('ffff:ffff:ffff:ffff:ffff:f:f:fffc/127').strCompressed()
+        'ffff:ffff:ffff:ffff:ffff:f:f:fffc/127'
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
@@ -518,7 +520,7 @@ class IPint:
                     hextets = [''] + hextets
                 return ':'.join(hextets) + self._printPrefix(wantprefixlen)
             else:
-                return self.strNormal() + self._printPrefix(wantprefixlen)
+                return self.strNormal(0) + self._printPrefix(wantprefixlen)
 
     def strNormal(self, wantprefixlen = None):
         """Return a string representation in the usual format.
