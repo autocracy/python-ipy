@@ -159,6 +159,10 @@ Examples of string conversions:
 What's new?
 ===========
 
+Changes between version 0.52 and 0.53:
+
+ * Reject '0.0.0.0-0.0.0.4' if check_addr_prefixlen is enable
+
 Changes between version 0.51 and 0.52:
 
  * Fix strCompressed() for IPv6 "ffff:ffff:ffff:ffff:ffff:f:f:fffc/127"
@@ -223,7 +227,7 @@ TODO
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.51'
+__version__ = '0.52'
 
 import types
 
