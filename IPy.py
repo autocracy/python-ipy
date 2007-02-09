@@ -1,13 +1,13 @@
-""" IPy - class and tools for handling of IPv4 and IPv6 Addresses and Networks.
+""" IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 
 Presentation of the API
 =======================
 
 The IP class allows a comfortable parsing and handling for most
-notations in use for IPv4 and IPv6 Addresses and Networks. It was
-greatly inspired bei RIPE's Perl module NET::IP's interface but
-doesn't share the Implementation. It doesn't share non-CIDR netmasks,
-so funky stuff lixe a netmask 0xffffff0f can't be done here.
+notations in use for IPv4 and IPv6 addresses and networks. It was
+greatly inspired by RIPE's Perl module NET::IP's interface but
+doesn't share the implementation. It doesn't share non-CIDR netmasks,
+so funky stuff like a netmask of 0xffffff0f can't be done here.
 
     >>> from IPy import IP
     >>> ip = IP('127.0.0.0/30')
@@ -29,8 +29,8 @@ so funky stuff lixe a netmask 0xffffff0f can't be done here.
     'PRIVATE'
 
 
-Support all IP addresses
-========================
+Supports most IP address formats
+==================================
 
 It can detect about a dozen different ways of expressing IP addresses
 and networks, parse them and distinguish between IPv4 and IPv6 addresses:
@@ -64,8 +64,8 @@ IPv6 addresses
     >>> print IP('::13.1.68.3')
     0000:0000:0000:0000:0000:0000:0d01:4403
 
-Network mask
-------------
+Network mask and prefixes
+-------------------------
 
     >>> print IP('127.0.0.0/8')
     127.0.0.0/8
@@ -78,7 +78,7 @@ Network mask
 Option check_addr_prefixlen
 ===========================
 
-By default, IPy rejects uncommon netmask like 172.30.1.0/22:
+By default, IPy rejects uncommon netmasks like 172.30.1.0/22:
 
     >>> import IPy
     >>> IPy.check_addr_prefixlen = True    # default value
@@ -99,8 +99,8 @@ Convert address to string
 =========================
 
 Nearly all class methods which return a string have an optional
-parameter 'wantprefixlen' which controlles if the prefixlen or netmask
-is printed. Per default the prefilen is always shown if the net
+parameter 'wantprefixlen' which controls if the prefixlen or netmask
+is printed. Per default the prefilen is always shown if the network
 contains more than one address::
 
     wantprefixlen == 0 / None        don't return anything    1.2.3.0
@@ -108,7 +108,7 @@ contains more than one address::
     wantprefixlen == 2               /netmask                 1.2.3.0/255.255.255.0
     wantprefixlen == 3               -lastip                  1.2.3.0-1.2.3.255
 
-You can also change the defaults on an per-object basis by fiddeling with the class members:
+You can also change the defaults on an per-object basis by fiddling with the class members:
 
  * NoPrefixForSingleIp
  * WantPrefixLen
@@ -281,8 +281,8 @@ class IPint:
         """Create an instance of an IP object.
 
         Data can be a network specification or a single IP. IP
-        Addresses can be specified in all forms understood by
-        parseAddress.() the size of a network can be specified as
+        addresses can be specified in all forms understood by
+        parseAddress(). The size of a network can be specified as
 
         /prefixlen        a.b.c.0/24               2001:658:22a:cafe::/64
         -lastIP           a.b.c.0-a.b.c.255        2001:658:22a:cafe::-2001:658:22a:cafe:ffff:ffff:ffff:ffff
@@ -427,7 +427,7 @@ class IPint:
         """Prints Prefixlen/Netmask.
 
         Not really. In fact it is our universal Netmask/Prefixlen printer.
-        This is considered an internel function.
+        This is considered an internal function.
 
         want == 0 / None        don't return anything    1.2.3.0
         want == 1               /prefix                  1.2.3.0/24
@@ -445,7 +445,7 @@ class IPint:
                 want = 1
         if want:
             if want == 2:
-                # this should work wit IP and IPint
+                # this should work with IP and IPint
                 netmask = self.netmask()
                 if type(netmask) != types.IntType and type(netmask) != types.LongType:
                     netmask = netmask.int()
@@ -458,7 +458,7 @@ class IPint:
         else:
             return ''
 
-        # We have different Favours to convert to:
+        # We have different flavours to convert to:
         # strFullsize   127.0.0.1    2001:0658:022a:cafe:0200:c0ff:fe8d:08fa
         # strNormal     127.0.0.1    2001:658:22a:cafe:200:c0ff:fe8d:08fa
         # strCompressed 127.0.0.1    2001:658:22a:cafe::1
@@ -505,7 +505,7 @@ class IPint:
             # find the longest sequence of '0'
             hextets = [int(x, 16) for x in self.strFullsize(0).split(':')]
             # every element of followingzeros will contain the number of zeros
-            # following the corrospondending element of hextetes
+            # following the corresponding element of hextets
             followingzeros = [0] * 8
             for i in range(len(hextets)):
                 followingzeros[i] = _countFollowingZeros(hextets[i:])
@@ -550,7 +550,7 @@ class IPint:
         return ret + self._printPrefix(wantprefixlen)
 
     def strFullsize(self, wantprefixlen = None):
-        """Return a string representation in the non mangled format.
+        """Return a string representation in the non-mangled format.
 
         >>> print IP('127.0.0.1').strFullsize()
         127.0.0.1
@@ -668,7 +668,7 @@ class IPint:
             raise ValueError, "only IPv4 and IPv6 supported"
 
     def len(self):
-        """Return the length of an subnet.
+        """Return the length of a subnet.
 
         >>> print IP('195.185.1.0/28').len()
         16
@@ -688,7 +688,7 @@ class IPint:
 
     def __nonzero__(self):
         """All IPy objects should evaluate to true in boolean context.
-        Ordinarily, they do, but if handling a default route expressed as
+        Ordinarily they do, but if handling a default route expressed as
         0.0.0.0/0, the __len__() of the object becomes 0, which is used
         as the boolean value of the object.
         """
@@ -696,13 +696,13 @@ class IPint:
 
 
     def __len__(self):
-        """Return the length of an subnet.
+        """Return the length of a subnet.
 
         Called to implement the built-in function len().
         It breaks with IPv6 Networks. Anybody knows how to fix this."""
 
         # Python < 2.2 has this silly restriction which breaks IPv6
-        # how about Python >= 2.2 ... ouch - it presists!
+        # how about Python >= 2.2 ... ouch - it persists!
 
         return int(self.len())
 
@@ -761,7 +761,7 @@ class IPint:
     def overlaps(self, item):
         """Check if two IP address ranges overlap.
 
-        Returns 0 if the two ranged don't overlap, 1 if the given
+        Returns 0 if the two ranges don't overlap, 1 if the given
         range overlaps at the end and -1 if it does at the beginning.
 
         >>> IP('192.168.0.0/23').overlaps('192.168.1.0/24')
@@ -795,7 +795,7 @@ class IPint:
         """Print a representation of the Object.
 
         Used to implement repr(IP). Returns a string which evaluates
-        to an identical Object (without the wnatprefixlen stuff - see
+        to an identical Object (without the wantprefixlen stuff - see
         module docstring.
 
         >>> print repr(IP('10.0.0.0/24'))
@@ -813,10 +813,10 @@ class IPint:
 
         Networks with different prefixlen are considered non-equal.
         Networks with the same prefixlen and differing addresses are
-        considered non equal but are compared by thair base address
+        considered non equal but are compared by their base address
         integer value to aid sorting of IP objects.
 
-        The Version of Objects is not put into consideration.
+        The version of Objects is not put into consideration.
 
         >>> IP('10.0.0.0/24') > IP('10.0.0.0')
         1
@@ -861,7 +861,7 @@ class IPint:
 
     def __hash__(self):
         """Called for the key object for dictionary operations, and by
-        the built-in function hash()  Should return a 32-bit integer
+        the built-in function hash(). Should return a 32-bit integer
         usable as a hash value for dictionary operations. The only
         required property is that objects which compare equal have the
         same hash value
@@ -880,7 +880,7 @@ class IPint:
 
 
 class IP(IPint):
-    """Class for handling IP Addresses and Networks."""
+    """Class for handling IP addresses and networks."""
 
     def net(self):
         """Return the base (first) address of a network as an IP object.
@@ -966,11 +966,11 @@ class IP(IPint):
 
 
     def reverseName(self):
-        """Return the value for reverse lookup/PTR records as RfC 2317 look alike.
+        """Return the value for reverse lookup/PTR records as RFC 2317 look alike.
 
-        RfC 2317 is an ugly hack which only works for sub-/24 e.g. not
-        for /23. Do not use it. Better set up a Zone for every
-        address. See reverseName for a way to arcive that.
+        RFC 2317 is an ugly hack which only works for sub-/24 e.g. not
+        for /23. Do not use it. Better set up a zone for every
+        address. See reverseName for a way to achieve that.
 
         >>> print IP('195.185.1.1').reverseName()
         1.1.185.195.in-addr.arpa.
@@ -1057,9 +1057,9 @@ class IP(IPint):
             return ret
 
 def parseAddress(ipstr):
-    """Parse a string and return the corrospondending IPaddress and the a guess of the IP version.
+    """Parse a string and return the corresponding IP address and a guess of the IP version.
 
-    Following Forms ar recorgnized:
+    Following address formats are recognized:
     0x0123456789abcdef           # IPv4 if <= 0xffffffff else IPv6
     123.123.123.123              # IPv4
     123.123                      # 0-padded IPv4
@@ -1096,10 +1096,10 @@ def parseAddress(ipstr):
             hextets.append(hex(v4 >> 16)[2:-1])
             hextets.append(hex(v4 & 0xffff)[2:-1])
         if len(hextets) > 8:
-            raise ValueError, "%r: IPv6 Address with more than 8 hexletts" % (ipstr)
+            raise ValueError, "%r: IPv6 Address with more than 8 hextets" % (ipstr)
         if len(hextets) < 8:
             if '' not in hextets:
-                raise ValueError, "%r IPv6 Address with less than 8 hexletts and without '::'" % (ipstr)
+                raise ValueError, "%r IPv6 Address with less than 8 hextets and without '::'" % (ipstr)
             # catch :: at the beginning or end
             if hextets.index('') < len(hextets) - 1 and hextets[hextets.index('')+1] == '':
                 hextets.remove('')
@@ -1145,7 +1145,7 @@ def parseAddress(ipstr):
         # will be interpreted as IPv4 first byte
         ret = long(ipstr)
         if ret > 0xffffffffffffffffffffffffffffffffL:
-            raise ValueError, "IP Address cant be bigger than 2^128"
+            raise ValueError, "IP Address can't be bigger than 2^128"
         if ret <= 0xffffffffL:
             return (ret, 4)
         else:
@@ -1207,7 +1207,7 @@ def _ipVersionToLen(version):
 
 
 def _countFollowingZeros(l):
-    """Return Nr. of elements containing 0 at the beginning th the list."""
+    """Return number of elements containing 0 at the beginning of the list."""
     if len(l) == 0:
         return 0
     elif l[0] != 0:
@@ -1225,7 +1225,7 @@ def _intToBin(val):
     """Return the binary representation of an integer as string."""
 
     if val < 0:
-        raise ValueError, "Only positive Values allowed"
+        raise ValueError, "Only positive values allowed"
     s = hex(val).lower()
     ret = ''
     if s[-1] == 'l':
@@ -1297,7 +1297,7 @@ def _checkPrefix(ip, prefixlen, version):
 
 
 def _checkNetmask(netmask, masklen):
-    """Checks if a netmask is expressable as e prefixlen."""
+    """Checks if a netmask is expressable as a prefixlen."""
 
     num = long(netmask)
     bits = masklen
@@ -1317,7 +1317,7 @@ def _checkNetmask(netmask, masklen):
 
 
 def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
-    """Check if a base addess of e network is compatible with a prefixlen"""
+    """Check if a base addess of a network is compatible with a prefixlen"""
     global check_addr_prefixlen
     if check_addr_prefixlen:
         if net & _prefixlenToNetmask(prefixlen, version) == net:
@@ -1333,7 +1333,7 @@ def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
 
 
 def _netmaskToPrefixlen(netmask):
-    """Convert an Integer reprsenting a Netmask to an prefixlen.
+    """Convert an Integer representing a netmask to a prefixlen.
 
     E.g. 0xffffff00 (255.255.255.0) returns 24
     """
@@ -1347,7 +1347,8 @@ def _netmaskToPrefixlen(netmask):
 def _prefixlenToNetmask(prefixlen, version):
     """Return a mask of n bits as a long integer.
 
-    From 'IP address conversion functions with the builtin socket module' by Alex Martelli
+    From 'IP address conversion functions with the builtin socket module'
+    by Alex Martelli
     http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66517
     """
     if prefixlen == 0:
