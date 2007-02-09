@@ -95,6 +95,24 @@ You can change this behaviour with global option check_addr_prefixlen:
     1024
 
 
+The behaviour change with global check_addr_prefixlen option:
+
+    >>> import IPy
+    >>> IPy.check_addr_prefixlen = True
+    >>> IP('0.0.0.0-0.0.0.4')
+    Traceback (most recent call last):
+    ...
+    ValueError: the range 0.0.0.0-0.0.0.4 is not on a network boundary.
+    >>> IPy.check_addr_prefixlen
+    True
+
+    >>> IPy.check_addr_prefixlen = False
+    >>> IP('0.0.0.0-0.0.0.4')
+    IP('0.0.0.0/29')
+    >>> IPy.check_addr_prefixlen
+    False
+
+
 Convert address to string
 =========================
 
@@ -301,6 +319,7 @@ class IPint:
         See module documentation for more examples.
         """
 
+        global check_addr_prefixlen
         self.NoPrefixForSingleIp = 1  # Print no Prefixlen for /32 and /128
         self.WantPrefixLen = None     # Do we want prefix printed by default? see _printPrefix()
 
@@ -345,6 +364,13 @@ class IPint:
                     raise ValueError, "last address should be larger than first"
                 size = last - self.ip
                 netbits = _count1Bits(size)
+                if check_addr_prefixlen:
+                    # make sure the broadcast is the same as the last ip
+                    # otherwise it will return /16 for something like:
+                    # 192.168.0.0-192.168.191.255
+                    if IP('%s/%s' % (ip, 32-netbits)).broadcast().int() != last:
+                        raise ValueError, \
+                            "the range %s is not on a network boundary." % data
             elif len(x) == 1:
                 x = data.split('/')
                 # if no prefix is given use defaults
