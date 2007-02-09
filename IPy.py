@@ -934,7 +934,7 @@ class IP(IPint):
         """
 
         if self._ipversion == 4:
-            ret =[]
+            ret = []
             # TODO: Refactor. Add support for IPint objects
             if self.len() < 2**8:
                 for x in self:
@@ -1167,13 +1167,13 @@ def intToIp(ip, version):
             raise ValueError, "IPv4 Addresses can't be larger than 0xffffffff: %s" % (hex(ip))
         for l in range(4):
             ret = str(ip & 0xffL) + '.' + ret
-            ip = ip >> 8;
+            ip = ip >> 8
         ret = ret[:-1]
     elif version == 6:
         if ip > 0xffffffffffffffffffffffffffffffffL:
             raise ValueError, "IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip))
         l = '0' * 32 + hex(ip)[2:-1]
-        for x in range(1,33):
+        for x in range(1, 33):
             ret = l[-x] + ret
             if x % 4 == 0:
                 ret = ':' + ret
@@ -1181,7 +1181,7 @@ def intToIp(ip, version):
     else:
         raise ValueError, "only IPv4 and IPv6 supported"
 
-    return ret;
+    return ret
 
 def _ipVersionToLen(version):
     """Return number of bits in address for a certain IP version.
