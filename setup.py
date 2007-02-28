@@ -1,14 +1,25 @@
 #!/usr/bin/env python
 # $Id: setup.py 671 2004-08-22 21:02:29Z md $
 
-try:
-    from setuptools.core import setup
-except ImportError:
+import sys
+if "--setuptools" in sys.argv:
+    sys.argv.remove("--setuptools")
+    from setuptools import setup
+else:
     from distutils.core import setup
 
-import IPy
+# Open IPy.py to read version
+from imp import load_source
+IPy = load_source("IPy", "IPy.py")
 
-LONG_DESCRIPTION=open('README').read()
+README = open('README').read().strip() + "\n\n"
+ChangeLog = \
+    "What's new\n" + \
+    "==========\n" + \
+    "\n" + \
+    open('ChangeLog').read().strip()
+
+LONG_DESCRIPTION = README + ChangeLog
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',

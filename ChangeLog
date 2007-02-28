@@ -1,3 +1,12 @@
+2007-02-28
+	* Release IPy 0.53
+	* Reject '0.0.0.0-0.0.0.4' if check_addr_prefixlen is enable
+	* Fix many english spelling mistakes
+
+2006-11-06
+	* Release IPy 0.52
+	* Fix strCompressed() for IPv6 "ffff:ffff:ffff:ffff:ffff:f:f:fffc/127"
+
 2006-11-02
 	* Release IPy 0.51
 	* Write real name of IPy author (Maximillian Dornseif)

@@ -1,233 +1,16 @@
-""" IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
+"""
+IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
+See README file for learn how to use IPy.
 
-Presentation of the API
-=======================
-
-The IP class allows a comfortable parsing and handling for most
-notations in use for IPv4 and IPv6 addresses and networks. It was
-greatly inspired by RIPE's Perl module NET::IP's interface but
-doesn't share the implementation. It doesn't share non-CIDR netmasks,
-so funky stuff like a netmask of 0xffffff0f can't be done here.
-
-    >>> from IPy import IP
-    >>> ip = IP('127.0.0.0/30')
-    >>> for x in ip:
-    ...  print x
-    ...
-    127.0.0.0
-    127.0.0.1
-    127.0.0.2
-    127.0.0.3
-    >>> ip2 = IP('0x7f000000/30')
-    >>> ip == ip2
-    1
-    >>> ip.reverseNames()
-    ['0.0.0.127.in-addr.arpa.', '1.0.0.127.in-addr.arpa.', '2.0.0.127.in-addr.arpa.', '3.0.0.127.in-addr.arpa.']
-    >>> ip.reverseName()
-    '0-3.0.0.127.in-addr.arpa.'
-    >>> ip.iptype()
-    'PRIVATE'
-
-
-Supports most IP address formats
-==================================
-
-It can detect about a dozen different ways of expressing IP addresses
-and networks, parse them and distinguish between IPv4 and IPv6 addresses:
-
-    >>> IP('10.0.0.0/8').version()
-    4
-    >>> IP('::1').version()
-    6
-
-IPv4 addresses
---------------
-
-    >>> print IP(0x7f000001)
-    127.0.0.1
-    >>> print IP('0x7f000001')
-    127.0.0.1
-    >>> print IP('127.0.0.1')
-    127.0.0.1
-    >>> print IP('10')
-    10.0.0.0
-
-IPv6 addresses
---------------
-
-    >>> print IP('1080:0:0:0:8:800:200C:417A')
-    1080:0000:0000:0000:0008:0800:200c:417a
-    >>> print IP('1080::8:800:200C:417A')
-    1080:0000:0000:0000:0008:0800:200c:417a
-    >>> print IP('::1')
-    0000:0000:0000:0000:0000:0000:0000:0001
-    >>> print IP('::13.1.68.3')
-    0000:0000:0000:0000:0000:0000:0d01:4403
-
-Network mask and prefixes
--------------------------
-
-    >>> print IP('127.0.0.0/8')
-    127.0.0.0/8
-    >>> print IP('127.0.0.0/255.0.0.0')
-    127.0.0.0/8
-    >>> print IP('127.0.0.0-127.255.255.255')
-    127.0.0.0/8
-
-
-Option check_addr_prefixlen
-===========================
-
-By default, IPy rejects uncommon netmasks like 172.30.1.0/22:
-
-    >>> import IPy
-    >>> IPy.check_addr_prefixlen = True    # default value
-    >>> ips = IP('172.30.1.0/22')
-    Traceback (most recent call last):
-      ...
-    ValueError: IP('172.30.1.0/22') has invalid prefix length (22)
-
-You can change this behaviour with global option check_addr_prefixlen:
-
-    >>> IPy.check_addr_prefixlen = False   # disable
-    >>> ips = IP('172.30.1.0/22')
-    >>> len(ips)
-    1024
-
-
-The behaviour change with global check_addr_prefixlen option:
-
-    >>> import IPy
-    >>> IPy.check_addr_prefixlen = True
-    >>> IP('0.0.0.0-0.0.0.4')
-    Traceback (most recent call last):
-    ...
-    ValueError: the range 0.0.0.0-0.0.0.4 is not on a network boundary.
-    >>> IPy.check_addr_prefixlen
-    True
-
-    >>> IPy.check_addr_prefixlen = False
-    >>> IP('0.0.0.0-0.0.0.4')
-    IP('0.0.0.0/29')
-    >>> IPy.check_addr_prefixlen
-    False
-
-
-Convert address to string
-=========================
-
-Nearly all class methods which return a string have an optional
-parameter 'wantprefixlen' which controls if the prefixlen or netmask
-is printed. Per default the prefilen is always shown if the network
-contains more than one address::
-
-    wantprefixlen == 0 / None        don't return anything    1.2.3.0
-    wantprefixlen == 1               /prefix                  1.2.3.0/24
-    wantprefixlen == 2               /netmask                 1.2.3.0/255.255.255.0
-    wantprefixlen == 3               -lastip                  1.2.3.0-1.2.3.255
-
-You can also change the defaults on an per-object basis by fiddling with the class members:
-
- * NoPrefixForSingleIp
- * WantPrefixLen
-
-Examples of string conversions:
-
-    >>> IP('10.0.0.0/32').strNormal()
-    '10.0.0.0'
-    >>> IP('10.0.0.0/24').strNormal()
-    '10.0.0.0/24'
-    >>> IP('10.0.0.0/24').strNormal(0)
-    '10.0.0.0'
-    >>> IP('10.0.0.0/24').strNormal(1)
-    '10.0.0.0/24'
-    >>> IP('10.0.0.0/24').strNormal(2)
-    '10.0.0.0/255.255.255.0'
-    >>> IP('10.0.0.0/24').strNormal(3)
-    '10.0.0.0-10.0.0.255'
-    >>> ip = IP('10.0.0.0')
-    >>> print ip
-    10.0.0.0
-    >>> ip.NoPrefixForSingleIp = None
-    >>> print ip
-    10.0.0.0/32
-    >>> ip.WantPrefixLen = 3
-    >>> print ip
-    10.0.0.0-10.0.0.0
-
-
-What's new?
-===========
-
-Changes between version 0.52 and 0.53:
-
- * Reject '0.0.0.0-0.0.0.4' if check_addr_prefixlen is enable
-
-Changes between version 0.51 and 0.52:
-
- * Fix strCompressed() for IPv6 "ffff:ffff:ffff:ffff:ffff:f:f:fffc/127"
-
-Changes between version 0.5 and 0.51:
-
- * Use real name of IPy author
- * Use version "0.51" to help packaging since 0.5 was smaller than 0.42
- * Fix unit test for Python 2.3 (don't use doctest.testfile)
- * Fix unit test for Python 2.5 (problem of hex() lower case)
- * IPy now works on Python 2.2 to 2.5
-
-Changes between version 0.42 and 0.5: Fix all known bugs:
-
- * Apply Jean Gillaux's patch for netmask "/0.0.0.0" bug
- * Apply William McVey's patch for __nonzero__() bug
- * Apply Victor Stinner patch: setup.py can use setuptools and fix URLs
- * Allow "172.30.1.0/22" with new option IPy.check_addr_prefixlen=False
-
-Other changes:
-
- * Add regression tests
- * Create AUTHORS file
-
-
-Compatibility and links
-=======================
-
-IPy works on Python version 2.2 to 2.5.
-
-This Python module is under BSD license: see COPYING file.
-
-Further Information might be available at: http://software.inl.fr/trac/trac.cgi/wiki/IPy
-
-TODO
-====
-
- * better comparison (__cmp__ and friends)
- * tests for __cmp__
- * always write hex values lowercase
- * interpret 2001:1234:5678:1234/64 as 2001:1234:5678:1234::/64
- * move size in bits into class variables to get rid of some "if self._ipversion ..."
- * support for base85 encoding
- * support for output of IPv6 encoded IPv4 Addresses
- * update address type tables
- * first-last notation should be allowed for IPv6
- * add IPv6 docstring examples
- * check better for negative parameters
- * add addition / aggregation
- * move reverse name stuff out of the classes and refactor it
- * support for aggregation of more than two nets at once
- * support for aggregation with "holes"
- * support for finding common prefix
- * '>>' and '<<' for prefix manipulation
- * add our own exceptions instead ValueError all the time
- * rename checkPrefix to checkPrefixOk
- * add more documentation and doctests
- * refactor
+Further Information might be available at:
+http://software.inl.fr/trac/trac.cgi/wiki/IPy
 """
 
 # $HeadURL$
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.52'
+__version__ = '0.53'
 
 import types
 
@@ -324,8 +107,12 @@ class IPint:
         """
 
         global check_addr_prefixlen
-        self.NoPrefixForSingleIp = 1  # Print no Prefixlen for /32 and /128
-        self.WantPrefixLen = None     # Do we want prefix printed by default? see _printPrefix()
+
+        # Print no Prefixlen for /32 and /128
+        self.NoPrefixForSingleIp = 1
+
+        # Do we want prefix printed by default? see _printPrefix()
+        self.WantPrefixLen = None
 
         netbits = 0
         prefixlen = -1
@@ -410,7 +197,8 @@ class IPint:
             self._ipversion = ipversion
             self._prefixlen = int(prefixlen)
 
-            if not _checkNetaddrWorksWithPrefixlen(self.ip, self._prefixlen, self._ipversion):
+            if not _checkNetaddrWorksWithPrefixlen(self.ip,
+            self._prefixlen, self._ipversion):
                 raise ValueError, "%s has invalid prefix length (%s)" % (repr(self), self._prefixlen)
 
 
@@ -443,12 +231,14 @@ class IPint:
         return self._prefixlen
 
     def net(self):
-        """Return the base (first) address of a network as an (long) integer."""
-
+        """
+        Return the base (first) address of a network as an (long) integer.
+        """
         return self.int()
 
     def broadcast(self):
-        """Return the broadcast (last) address of a network as an (long) integer.
+        """
+        Return the broadcast (last) address of a network as an (long) integer.
 
         The same as IP[-1]."""
         return self.int() + self.len() - 1
@@ -477,7 +267,8 @@ class IPint:
             if want == 2:
                 # this should work with IP and IPint
                 netmask = self.netmask()
-                if type(netmask) != types.IntType and type(netmask) != types.LongType:
+                if type(netmask) != types.IntType \
+                and type(netmask) != types.LongType:
                     netmask = netmask.int()
                 return "/%s" % (intToIp(netmask, self._ipversion))
             elif want == 3:
