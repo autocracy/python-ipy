@@ -157,38 +157,6 @@ Examples of string conversions:
     10.0.0.0-10.0.0.0
 
 
-What's new?
-===========
-
-Changes between version 0.52 and 0.53:
-
- * Reject '0.0.0.0-0.0.0.4' if check_addr_prefixlen is enable
-
-Changes between version 0.51 and 0.52:
-
- * Fix strCompressed() for IPv6 "ffff:ffff:ffff:ffff:ffff:f:f:fffc/127"
-
-Changes between version 0.5 and 0.51:
-
- * Use real name of IPy author
- * Use version "0.51" to help packaging since 0.5 was smaller than 0.42
- * Fix unit test for Python 2.3 (don't use doctest.testfile)
- * Fix unit test for Python 2.5 (problem of hex() lower case)
- * IPy now works on Python 2.2 to 2.5
-
-Changes between version 0.42 and 0.5: Fix all known bugs:
-
- * Apply Jean Gillaux's patch for netmask "/0.0.0.0" bug
- * Apply William McVey's patch for __nonzero__() bug
- * Apply Victor Stinner patch: setup.py can use setuptools and fix URLs
- * Allow "172.30.1.0/22" with new option IPy.check_addr_prefixlen=False
-
-Other changes:
-
- * Add regression tests
- * Create AUTHORS file
-
-
 Compatibility and links
 =======================
 
@@ -198,6 +166,7 @@ This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
 http://software.inl.fr/trac/trac.cgi/wiki/IPy
+
 
 TODO
 ====
