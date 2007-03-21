@@ -1,3 +1,4 @@
+James Teh <james.teh AT netboxblue.com> - make_net option patch
 Jean Gillaux <jgillaux AT inl.fr> - Fix netmask "/0.0.0.0"
 Mark Johnston - bringing IPy to Python 2.3
 Matthew Flanagan <mattimustang AT gmail.com> - Fix strCompressed()

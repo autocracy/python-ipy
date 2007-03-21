@@ -82,7 +82,7 @@ class IPint:
     Use class IP instead because some features are not implemented for
     IPint."""
 
-    def __init__(self, data, ipversion = 0):
+    def __init__(self, data, ipversion = 0, make_net = 0):
         """Create an instance of an IP object.
 
         Data can be a network specification or a single IP. IP
@@ -96,11 +96,16 @@ class IPint:
         If no size specification is given a size of 1 address (/32 for
         IPv4 and /128 for IPv6) is assumed.
 
+        If make_net is True, an IP address will be transformed into the network
+        address by applying the specified netmask.
+
         >>> print IP('127.0.0.0/8')
         127.0.0.0/8
         >>> print IP('127.0.0.0/255.0.0.0')
         127.0.0.0/8
         >>> print IP('127.0.0.0-127.255.255.255')
+        127.0.0.0/8
+        >>> print IP('127.0.0.1/255.0.0.0', make_net=True)
         127.0.0.0/8
 
         See module documentation for more examples.
@@ -197,10 +202,12 @@ class IPint:
             self._ipversion = ipversion
             self._prefixlen = int(prefixlen)
 
+            if make_net:
+                self.ip = self.ip & _prefixlenToNetmask(self._prefixlen, self._ipversion)
+
             if not _checkNetaddrWorksWithPrefixlen(self.ip,
             self._prefixlen, self._ipversion):
                 raise ValueError, "%s has invalid prefix length (%s)" % (repr(self), self._prefixlen)
-
 
     def int(self):
         """Return the first / base / network addess as an (long) integer.

@@ -75,6 +75,15 @@ Network mask and prefixes
     127.0.0.0/8
 
 
+Derive network address
+===========================
+
+IPy can transform an IP address into a network address by applying the given
+netmask:
+>>> print IP('127.0.0.1/255.0.0.0', make_net=True)
+127.0.0.0/8
+
+
 Option check_addr_prefixlen
 ===========================
 
