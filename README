@@ -83,6 +83,10 @@ netmask:
 >>> print IP('127.0.0.1/255.0.0.0', make_net=True)
 127.0.0.0/8
 
+This can also be done for existing IP instances:
+>>> print IP('127.0.0.1').make_net('255.0.0.0')
+127.0.0.0/8
+
 
 Option check_addr_prefixlen
 ===========================
