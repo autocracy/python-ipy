@@ -10,7 +10,7 @@ http://software.inl.fr/trac/trac.cgi/wiki/IPy
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.53'
+__version__ = '0.54'
 
 import types
 
@@ -897,24 +897,156 @@ class IP(IPint):
             ret._prefixlen = self.prefixlen() - 1
             return ret
 
-def parseAddress(ipstr):
-    """Parse a string and return the corresponding IP address and a guess of the IP version.
 
-    Following address formats are recognized:
-    0x0123456789abcdef           # IPv4 if <= 0xffffffff else IPv6
-    123.123.123.123              # IPv4
-    123.123                      # 0-padded IPv4
-    1080:0000:0000:0000:0008:0800:200C:417A
-    1080:0:0:0:8:800:200C:417A
-    1080:0::8:800:200C:417A
-    ::1
-    ::
-    0:0:0:0:0:FFFF:129.144.52.38
-    ::13.1.68.3
-    ::FFFF:129.144.52.38
+def _parseAddressIPv6(ipstr):
+    """
+    Internal function used by parseAddress() to parse IPv6 address with ':'.
+
+    >>> _parseAddressIPv6('::')
+    0L
+    >>> _parseAddressIPv6('::1')
+    1L
+    >>> _parseAddressIPv6('0:0:0:0:0:0:0:1')
+    1L
+    >>> _parseAddressIPv6('0:0:0::0:0:1')
+    1L
+    >>> _parseAddressIPv6('0:0:0:0:0:0:0:0')
+    0L
+    >>> _parseAddressIPv6('0:0:0::0:0:0')
+    0L
+
+    >>> _parseAddressIPv6('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210')
+    338770000845734292534325025077361652240L
+    >>> _parseAddressIPv6('1080:0000:0000:0000:0008:0800:200C:417A')
+    21932261930451111902915077091070067066L
+    >>> _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
+    21932261930451111902915077091070067066L
+    >>> _parseAddressIPv6('1080:0::8:800:200C:417A')
+    21932261930451111902915077091070067066L
+    >>> _parseAddressIPv6('1080::8:800:200C:417A')
+    21932261930451111902915077091070067066L
+    >>> _parseAddressIPv6('FF01:0:0:0:0:0:0:43')
+    338958331222012082418099330867817087043L
+    >>> _parseAddressIPv6('FF01:0:0::0:0:43')
+    338958331222012082418099330867817087043L
+    >>> _parseAddressIPv6('FF01::43')
+    338958331222012082418099330867817087043L
+    >>> _parseAddressIPv6('0:0:0:0:0:0:13.1.68.3')
+    218186755L
+    >>> _parseAddressIPv6('::13.1.68.3')
+    218186755L
+    >>> _parseAddressIPv6('0:0:0:0:0:FFFF:129.144.52.38')
+    281472855454758L
+    >>> _parseAddressIPv6('::FFFF:129.144.52.38')
+    281472855454758L
+    >>> _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
+    21932261930451111902915077091070067066L
+    >>> _parseAddressIPv6('1080::8:800:200C:417A')
+    21932261930451111902915077091070067066L
+    >>> _parseAddressIPv6('::1:2:3:4:5:6')
+    1208962713947218704138246L
+    >>> _parseAddressIPv6('1:2:3:4:5:6::')
+    5192455318486707404433266432802816L
     """
 
-    # TODO: refactor me!
+    # Split string into a list, example:
+    #   '1080:200C::417A' => ['1080', '200C', '417A'] and fill_pos=2
+    # and fill_pos is the position of '::' in the list
+    items = []
+    index = 0
+    fill_pos = None
+    while index < len(ipstr):
+        text = ipstr[index:]
+        if text.startswith("::"):
+            if fill_pos is not None:
+                # Invalid IPv6, eg. '1::2::'
+                raise ValueError("%r: Invalid IPv6 address: more than one '::'" % ipstr)
+            fill_pos = len(items)
+            index += 2
+            continue
+        pos = text.find(':')
+        if pos == 0:
+            # Invalid IPv6, eg. '1::2:'
+            raise ValueError("%r: Invalid IPv6 address" % ipstr)
+        if pos != -1:
+            items.append(text[:pos])
+            if text[pos:pos+2] == "::":
+                index += pos
+            else:
+                index += pos+1
+
+            if index == len(ipstr):
+                # Invalid IPv6, eg. '1::2:'
+                raise ValueError("%r: Invalid IPv6 address" % ipstr)
+        else:
+            items.append(text)
+            break
+
+    if items and '.' in items[-1]:
+        # IPv6 ending with IPv4 like '::ffff:192.168.0.1'
+        if not (fill_pos <= len(items)-1):
+            # Invalid IPv6: 'ffff:192.168.0.1::'
+            raise ValueError("%r: Invalid IPv6 address: '::' after IPv4" % ipstr)
+        value = parseAddress(items[-1])[0]
+        items = items[:-1] + ["%04x" % (value >> 16), "%04x" % (value & 0xffff)]
+
+    # Expand fill_pos to fill with '0'
+    # ['1','2'] with fill_pos=1 => ['1', '0', '0', '0', '0', '0', '0', '2']
+    if fill_pos is not None:
+        diff = 8 - len(items)
+        items = items[:fill_pos] + ['0']*diff + items[fill_pos:]
+
+    # Here we have a list of 8 strings
+    if len(items) != 8:
+        # Invalid IPv6, eg. '1:2:3'
+        raise ValueError("%r: Invalid IPv6 address: should have 8 hextets" % ipstr)
+
+    # Convert strings to long integer
+    value = 0L
+    index = 0
+    for item in items:
+        try:
+            item = int(item, 16)
+            error = not(0 <= item <= 0xFFFF)
+        except ValueError:
+            error = True
+        if error:
+            raise ValueError("%r: Invalid IPv6 address: invalid hexlet %r" % (ipstr, item))
+        value = (value << 16) + item
+        index += 1
+    return value
+
+def parseAddress(ipstr):
+    """
+    Parse a string and return the corresponding IP address (as integer)
+    and a guess of the IP version.
+
+    Following address formats are recognized:
+
+    >>> parseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
+    (81985529216486895L, 6)
+    >>> parseAddress('123.123.123.123')              # IPv4
+    (2071690107L, 4)
+    >>> parseAddress('123.123')                      # 0-padded IPv4
+    (2071658496L, 4)
+    >>> parseAddress('1080:0000:0000:0000:0008:0800:200C:417A')
+    (21932261930451111902915077091070067066L, 6)
+    >>> parseAddress('1080:0:0:0:8:800:200C:417A')
+    (21932261930451111902915077091070067066L, 6)
+    >>> parseAddress('1080:0::8:800:200C:417A')
+    (21932261930451111902915077091070067066L, 6)
+    >>> parseAddress('::1')
+    (1L, 6)
+    >>> parseAddress('::')
+    (0L, 6)
+    >>> parseAddress('0:0:0:0:0:FFFF:129.144.52.38')
+    (281472855454758L, 6)
+    >>> parseAddress('::13.1.68.3')
+    (218186755L, 6)
+    >>> parseAddress('::FFFF:129.144.52.38')
+    (281472855454758L, 6)
+    """
+
     if ipstr.startswith('0x'):
         ret = long(ipstr[2:], 16)
         if ret > 0xffffffffffffffffffffffffffffffffL:
@@ -925,44 +1057,7 @@ def parseAddress(ipstr):
             return (ret, 6)
 
     if ipstr.find(':') != -1:
-        # assume IPv6
-        if ipstr.find(':::') != -1:
-            raise ValueError, "%r: IPv6 Address can't contain ':::'" % (ipstr)
-        hextets = ipstr.split(':')
-        if ipstr.find('.') != -1:
-            # this might be a mixed address like '0:0:0:0:0:0:13.1.68.3'
-            (v4, foo) = parseAddress(hextets[-1])
-            assert foo == 4
-            del(hextets[-1])
-            hextets.append(hex(v4 >> 16)[2:-1])
-            hextets.append(hex(v4 & 0xffff)[2:-1])
-        if len(hextets) > 8:
-            raise ValueError, "%r: IPv6 Address with more than 8 hextets" % (ipstr)
-        if len(hextets) < 8:
-            if '' not in hextets:
-                raise ValueError, "%r IPv6 Address with less than 8 hextets and without '::'" % (ipstr)
-            # catch :: at the beginning or end
-            if hextets.index('') < len(hextets) - 1 and hextets[hextets.index('')+1] == '':
-                hextets.remove('')
-            # catch '::'
-            if hextets.index('') < len(hextets) - 1 and hextets[hextets.index('')+1] == '':
-                hextets.remove('')
-
-            for foo in range(9-len(hextets)):
-                hextets.insert(hextets.index(''), '0')
-            hextets.remove('')
-            if '' in hextets:
-                raise ValueError, "%r IPv6 Address may contain '::' only once" % (ipstr)
-        if '' in hextets:
-            raise ValueError, "%r IPv6 Address may contain '::' only if it has less than 8 hextets" % (ipstr)
-        num = ''
-        for x in hextets:
-            if len(x) < 4:
-                x = ((4 - len(x)) * '0') + x
-            if int(x, 16) < 0 or int(x, 16) > 0xffff:
-                raise ValueError, "%r: single hextet must be 0 <= hextet <= 0xffff which isn't true for %s" % (ipstr, x)
-            num += x
-        return (long(num, 16), 6)
+        return (_parseAddressIPv6(ipstr), 6)
 
     elif len(ipstr) == 32:
         # assume IPv6 in pure hexadecimal notation
@@ -984,7 +1079,7 @@ def parseAddress(ipstr):
         # we try to interprete it as a decimal digit -
         # this ony works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
-        ret = long(ipstr)
+        ret = long(ipstr, 10)
         if ret > 0xffffffffffffffffffffffffffffffffL:
             raise ValueError, "IP Address can't be bigger than 2^128"
         if ret <= 0xffffffffL:
