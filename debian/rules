@@ -1,0 +1,47 @@
+#!/usr/bin/make -f
+
+build_dir   = build
+install_dir = debian/python2.3-ipy/usr
+setup       = /usr/bin/python2.3 ./setup.py --quiet
+
+binary: binary-indep
+   
+binary-indep: build install
+	dh_testdir  
+	dh_testroot 
+	dh_installchangelogs ChangeLog
+	dh_installdocs
+	dh_installman
+	dh_installexamples
+	dh_install --list-missing --sourcedir $(install_dir) 
+	dh_fixperms
+	dh_compress -X.py
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_installdirs 
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(setup) build --build-base $(build_dir) install --no-compile --prefix $(install_dir)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	$(setup) clean
+	find . -name "*.pyc" | xargs rm -f
+	find . -name "*.pyo" | xargs rm -f
+	rm -rf $(build_dir) $(install_dir)
+	dh_clean
+
+.PHONY: binary binary-indep install build clean
+
+

@@ -1,0 +1,15 @@
+This package was debianized by Damien Boucard (INL) <damien.boucard@inl.fr> on
+Wed, 28 Feb 2007 10:35:58 +0100.
+
+It was downloaded from
+ http://software.inl.fr/trac/trac.cgi/wiki/IPy
+
+Original Upstream Author    : Doobee R Tzeck ( hackers AT c0re.23.nu )
+Current Upstream Maintainer : Victor Stinner ( victor.stinner AT inl.fr )
+
+Copyright Holder: (exact copy of text from http://c0re.23.nu/c0de//IPy/):
+
+If you think you need a license for anything you might think of this
+as beeing unter a "BSD Style License" [1].
+
+[1] http://www.opensource.org/licenses/bsd-license.html
