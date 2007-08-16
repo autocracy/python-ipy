@@ -1,3 +1,7 @@
+2007-08-16
+	* Release IPy 0.55
+	* Rewrite IPv6 parser to allow address "1:2:3:4:5:6::"
+
 2007-06-22
 	* Release IPy 0.54
 	* make_net() match from James Teh: transform an IP address into a network
