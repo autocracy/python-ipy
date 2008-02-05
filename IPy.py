@@ -994,6 +994,8 @@ def _parseAddressIPv6(ipstr):
     # ['1','2'] with fill_pos=1 => ['1', '0', '0', '0', '0', '0', '0', '2']
     if fill_pos is not None:
         diff = 8 - len(items)
+        if not diff:
+            raise ValueError("%r: Invalid IPv6 address: '::' is not needed" % ipstr)
         items = items[:fill_pos] + ['0']*diff + items[fill_pos:]
 
     # Here we have a list of 8 strings
