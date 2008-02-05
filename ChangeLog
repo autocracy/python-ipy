@@ -1,3 +1,9 @@
+2008-02-05
+	* Release IPy 0.56
+	* Fix IPv6 parser for unit tests: reject
+	  '1111::2222:3333:4444:5555:6666:7777:8888' address since '::' is
+	  useless
+
 2007-08-16
 	* Release IPy 0.55
 	* Rewrite IPv6 parser to allow address "1:2:3:4:5:6::"
