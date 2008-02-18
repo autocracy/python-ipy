@@ -618,7 +618,7 @@ class IPint:
 
         Used to implement str(IP)."""
 
-        return self.strFullsize()
+        return self.strCompressed()
 
 
     def __repr__(self):

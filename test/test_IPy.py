@@ -593,7 +593,7 @@ class IPobject(unittest.TestCase):
         """Returning of the Network Address"""
         self.failUnlessEqual(str(IPy.IP("127.0.0.1").net()), "127.0.0.1")
         self.failUnlessEqual(str(IPy.IP("0.0.0.0/0").net()), "0.0.0.0")
-        self.failUnlessEqual(str(IPy.IP("2001:1234:5678:1234::/64").net()), "2001:1234:5678:1234:0000:0000:0000:0000")
+        self.failUnlessEqual(str(IPy.IP("2001:1234:5678:1234::/64").net()), "2001:1234:5678:1234::")
 
 
     def testBroadcast(self):
@@ -729,17 +729,17 @@ class NetIPChecks(unittest.TestCase):
         #$T->ok_eqnum ($ip->overlaps($ip2),$IP_B_IN_A_OVERLAP,$ip->error());
 
         ip = IPy.IP('dead:beef:0::/48')
-        self.assertEqual(str(ip.net()),'dead:beef:0000:0000:0000:0000:0000:0000')
+        self.assertEqual(str(ip.net()),'dead:beef::')
         self.assertEqual(ip.int(), 295990755014133383690938178081940045824L)
         self.assertEqual(ip.strBin(),'11011110101011011011111011101111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
         self.assertEqual(ip.strCompressed(),'dead:beef::/48')
         self.assertEqual(ip.prefixlen(), 48)
         self.assertEqual(ip.version(), 6)
         self.assertEqual(ip.strNetmask(),'/48')
-        self.assertEqual(str(ip.netmask()),'ffff:ffff:ffff:0000:0000:0000:0000:0000')
+        self.assertEqual(str(ip.netmask()),'ffff:ffff:ffff::')
         self.assertEqual(ip.iptype(),'UNASSIGNED')
         self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.int.')
-        self.assertEqual(str(ip.broadcast()),'dead:beef:0000:ffff:ffff:ffff:ffff:ffff')
+        self.assertEqual(str(ip.broadcast()),'dead:beef:0:ffff:ffff:ffff:ffff:ffff')
 
         ip = IPy.IP('202.31.4/24')
         self.assertEqual(str(ip.net()),'202.31.4.0')
