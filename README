@@ -173,7 +173,7 @@ Examples of string conversions:
 Compatibility and links
 =======================
 
-IPy works on Python version 2.2 to 2.5.
+IPy 0.60 works on Python version 2.4 and 2.5.
 
 This Python module is under BSD license: see COPYING file.
 

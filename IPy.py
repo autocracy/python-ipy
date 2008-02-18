@@ -10,7 +10,7 @@ http://software.inl.fr/trac/trac.cgi/wiki/IPy
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.56'
+__version__ = '0.60'
 
 import types
 
@@ -330,6 +330,8 @@ class IPint:
         if self._ipversion == 4:
             return self.strFullsize(wantprefixlen)
         else:
+            if self.ip >> 32 == 0xffff:
+                return "::ffff:%s" % intToIp(self.ip & 0xffffffff, 4)
             # find the longest sequence of '0'
             hextets = [int(x, 16) for x in self.strFullsize(0).split(':')]
             # every element of followingzeros will contain the number of zeros

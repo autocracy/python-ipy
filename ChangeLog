@@ -1,3 +1,6 @@
+Version 0.60
+	* strCompressed() formats '::ffff:a.b.c.d' correctly
+
 2008-02-05
 	* Release IPy 0.56
 	* Fix IPv6 parser for unit tests: reject

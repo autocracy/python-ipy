@@ -1,7 +1,7 @@
 .PHONY: test
 PYTHON=python
 
-test:
+tests:
 	@echo "[ run unit tests ]"
 	PYTHONPATH=$(PWD) $(PYTHON) test/test_IPy.py || exit $$?
 	@echo

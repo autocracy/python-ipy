@@ -2,18 +2,21 @@
 import doctest
 import sys
 if hasattr(doctest, "testfile"):
-    print "=== Test README ==="
+    print "=== Test file: README ==="
     failure,  tests = doctest.testfile('README', optionflags=doctest.ELLIPSIS)
+    if failure:
+        sys.exit(1)
 
-    print "=== Test IPy ==="
+    print "=== Test file: test.rst ==="
+    failure, tests = doctest.testfile('test/test.rst', optionflags=doctest.ELLIPSIS)
+    if failure:
+        sys.exit(1)
+
+    print "=== Test IPy module ==="
     import IPy
-    failure2, tests2 = doctest.testmod(IPy)
-    failure += failure2
+    failure, tests = doctest.testmod(IPy)
+    if failure:
+        sys.exit(1)
 else:
     sys.stderr.write("WARNING: doctest has no function testfile (before Python 2.4), unable to check README\n")
-    failure = 0
-if failure:
-    sys.exit(1)
-else:
-    sys.exit(0)
 
