@@ -1,5 +1,8 @@
 Version 0.60
 	* strCompressed() formats '::ffff:a.b.c.d' correctly
+	* Use strCompressed() instead of strFullsize() to format IP addresses,
+	  ouput is smarter with IPv6 address
+	* Remove check_addr_prefixlen because it generates invalid IP address
 
 2008-02-05
 	* Release IPy 0.56
