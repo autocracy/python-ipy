@@ -1,4 +1,4 @@
-Version 0.60
+Version 0.60 (2008-05-16)
 	* strCompressed() formats '::ffff:a.b.c.d' correctly
 	* Use strCompressed() instead of strFullsize() to format IP addresses,
 	  ouput is smarter with IPv6 address
