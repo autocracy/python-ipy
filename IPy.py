@@ -14,10 +14,6 @@ __version__ = '0.60'
 
 import types
 
-# New in API 0.5: if true, it rejects uncommon net mask like "172.30.1.0/22".
-# Default is enable, ie. raise ValueError on such netmask.
-check_addr_prefixlen = 1
-
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
 # and www.iana.org/assignments/multicast-addresses
@@ -111,8 +107,6 @@ class IPint:
         See module documentation for more examples.
         """
 
-        global check_addr_prefixlen
-
         # Print no Prefixlen for /32 and /128
         self.NoPrefixForSingleIp = 1
 
@@ -160,13 +154,12 @@ class IPint:
                     raise ValueError, "last address should be larger than first"
                 size = last - self.ip
                 netbits = _count1Bits(size)
-                if check_addr_prefixlen:
-                    # make sure the broadcast is the same as the last ip
-                    # otherwise it will return /16 for something like:
-                    # 192.168.0.0-192.168.191.255
-                    if IP('%s/%s' % (ip, 32-netbits)).broadcast().int() != last:
-                        raise ValueError, \
-                            "the range %s is not on a network boundary." % data
+                # make sure the broadcast is the same as the last ip
+                # otherwise it will return /16 for something like:
+                # 192.168.0.0-192.168.191.255
+                if IP('%s/%s' % (ip, 32-netbits)).broadcast().int() != last:
+                    raise ValueError, \
+                        "the range %s is not on a network boundary." % data
             elif len(x) == 1:
                 x = data.split('/')
                 # if no prefix is given use defaults
@@ -1258,18 +1251,10 @@ def _checkNetmask(netmask, masklen):
 
 def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
     """Check if a base addess of a network is compatible with a prefixlen"""
-    global check_addr_prefixlen
-    if check_addr_prefixlen:
-        if net & _prefixlenToNetmask(prefixlen, version) == net:
-            return 1
-        else:
-            return 0
-    else:
-        if prefixlen < 0:
-            return 0
-        if _ipVersionToLen(version) < prefixlen:
-            return 0
+    if net & _prefixlenToNetmask(prefixlen, version) == net:
         return 1
+    else:
+        return 0
 
 
 def _netmaskToPrefixlen(netmask):
