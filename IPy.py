@@ -549,10 +549,14 @@ class IPint:
 
         if type(key) != types.IntType and type(key) != types.LongType:
             raise TypeError
-        if abs(key) >= self.len():
-            raise IndexError
         if key < 0:
-            key = self.len() - abs(key)
+            if abs(key) <= self.len():
+                key = self.len() - abs(key)
+            else:
+                raise IndexError
+        else:
+            if key >= self.len():
+                raise IndexError
 
         return self.ip + long(key)
 
