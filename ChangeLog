@@ -1,3 +1,7 @@
+Version 0.61 (2008-06-12)
+	* Patch from Aras Vaichas allowing the [-1] operator
+	  to work with an IP object of size 1.
+
 Version 0.60 (2008-05-16)
 	* strCompressed() formats '::ffff:a.b.c.d' correctly
 	* Use strCompressed() instead of strFullsize() to format IP addresses,
