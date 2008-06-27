@@ -757,7 +757,8 @@ class IP(IPint):
         ['128.in-addr.arpa.']
         >>> IP('128.0.0.0/7').reverseNames()
         ['128.in-addr.arpa.', '129.in-addr.arpa.']
-
+        >>> IP('::1:2').reverseNames()
+        ['2.0.0.0.1.ip6.arpa.']
         """
 
         if self._ipversion == 4:
@@ -786,7 +787,7 @@ class IP(IPint):
             s.reverse()
             s = '.'.join(s)
             first_nibble_index = int(32 - (self._prefixlen / 4)) * 2
-            return ["%s.ip6.int." % s[first_nibble_index:]]
+            return ["%s.ip6.arpa." % s[first_nibble_index:]]
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
 
