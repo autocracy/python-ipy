@@ -738,7 +738,7 @@ class NetIPChecks(unittest.TestCase):
         self.assertEqual(ip.strNetmask(),'/48')
         self.assertEqual(str(ip.netmask()),'ffff:ffff:ffff::')
         self.assertEqual(ip.iptype(),'UNASSIGNED')
-        self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.int.')
+        self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.arpa.')
         self.assertEqual(str(ip.broadcast()),'dead:beef:0:ffff:ffff:ffff:ffff:ffff')
 
         ip = IPy.IP('202.31.4/24')
