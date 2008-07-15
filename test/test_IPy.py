@@ -738,7 +738,7 @@ class NetIPChecks(unittest.TestCase):
         self.assertEqual(ip.strNetmask(),'/48')
         self.assertEqual(str(ip.netmask()),'ffff:ffff:ffff::')
         self.assertEqual(ip.iptype(),'UNASSIGNED')
-        self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.int.')
+        self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.arpa.')
         self.assertEqual(str(ip.broadcast()),'dead:beef:0:ffff:ffff:ffff:ffff:ffff')
 
         ip = IPy.IP('202.31.4/24')
@@ -822,14 +822,8 @@ class RegressionTest(unittest.TestCase):
         self.assertRaises(ValueError, IPy.IP, '172.30.1.0/22')
 
     def testCheckAddrPrefixlenOff(self):
-        old = IPy.check_addr_prefixlen
-        IPy.check_addr_prefixlen = False
-        try:
-            self.assertEqual(len(IPy.IP('192.168.0.0/24')), 256)
-            self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
-            self.assertEqual(len(IPy.IP('172.30.1.0/22')), 1024)
-        finally:
-            IPy.check_addr_prefixlen = old
+        self.assertEqual(len(IPy.IP('192.168.0.0/24')), 256)
+        self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
 
 if __name__ == "__main__":
     unittest.main()
