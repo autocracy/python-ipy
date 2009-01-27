@@ -324,7 +324,9 @@ class IPint:
             return self.strFullsize(wantprefixlen)
         else:
             if self.ip >> 32 == 0xffff:
-                return "::ffff:%s" % intToIp(self.ip & 0xffffffff, 4)
+                ipv4 = intToIp(self.ip & 0xffffffff, 4)
+                text = "::ffff:" + ipv4 + self._printPrefix(wantprefixlen)
+                return text
             # find the longest sequence of '0'
             hextets = [int(x, 16) for x in self.strFullsize(0).split(':')]
             # every element of followingzeros will contain the number of zeros

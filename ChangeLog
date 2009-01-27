@@ -1,6 +1,7 @@
 Version 0.62
 	* Fix reverse DNS of IPv6 address: use ".ip6.arpa." suffix instead of
 	  deprecated ".ip6.int." suffix
+	* Fix formatting of "IPv4 in IPv6" network: IP('::ffff:192.168.10.0/120')
 
 Version 0.61 (2008-06-12)
 	* Patch from Aras Vaichas allowing the [-1] operator
