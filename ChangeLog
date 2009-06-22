@@ -1,5 +1,6 @@
 Version 0.63
 	* Fix formatting of "IPv4 in IPv6" network: IP('::ffff:192.168.10.0/120')
+	* Fix IP.net() of the network "::/0"
 
 Version 0.62 (2008-07-15)
 	* Fix reverse DNS of IPv6 address: use ".ip6.arpa." suffix instead of

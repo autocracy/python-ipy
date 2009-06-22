@@ -78,7 +78,7 @@ class IPint:
     Use class IP instead because some features are not implemented for
     IPint."""
 
-    def __init__(self, data, ipversion = 0, make_net = 0):
+    def __init__(self, data, ipversion=0, make_net=0):
         """Create an instance of an IP object.
 
         Data can be a network specification or a single IP. IP
@@ -719,7 +719,7 @@ class IP(IPint):
         >>> IP('10.0.0.0/8').net()
         IP('10.0.0.0')
         """
-        return IP(IPint.net(self))
+        return IP(IPint.net(self), ipversion=self._ipversion)
 
     def broadcast(self):
         """Return the broadcast (last) address of a network as an IP object.
