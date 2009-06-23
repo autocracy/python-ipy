@@ -719,7 +719,7 @@ class IP(IPint):
         >>> IP('10.0.0.0/8').net()
         IP('10.0.0.0')
         """
-        return IP(IPint.net(self), ipversion=self._ipversion)
+        return IP(IPint.net(self))
 
     def broadcast(self):
         """Return the broadcast (last) address of a network as an IP object.
