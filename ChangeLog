@@ -1,3 +1,6 @@
+Version 0.64 (2009-08-19)
+	* Create MANIFEST.in to fix setup.py bdist_rpm, fix by Robert Nickel
+
 Version 0.63 (2009-06-23)
 	* Fix formatting of "IPv4 in IPv6" network, eg. IP('::ffff:192.168.10.0/120'),
 	  the netmask ("/120" in the example) was missing!

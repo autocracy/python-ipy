@@ -21,6 +21,8 @@ Mark Johnston
    > bringing IPy to Python 2.3
 Matthew Flanagan <mattimustang AT gmail.com>
    > fix strCompressed()
+Robert Nickel <rnickel AT scea.com>
+   > fix setup.py bdist_rpm
 Samuel Krempp
    > fix __cmp__() bug
 Shell, Hin-lik Hung
