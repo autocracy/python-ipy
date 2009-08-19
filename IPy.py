@@ -10,7 +10,7 @@ http://software.inl.fr/trac/trac.cgi/wiki/IPy
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.64'
+__version__ = '0.65'
 
 import types
 
