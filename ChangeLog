@@ -1,4 +1,7 @@
-Version 0.70
+Version 0.71
+	* xxx
+
+Version 0.70 (2009-10-29)
 	* New "major" version because it may break compatibility
 	* Fix __cmp__(): IP('0.0.0.0/0') and IP('0.0.0.0') are not equal
 	* Fix IP.net() of the network "::/0": "::" instead of "0.0.0.0".
