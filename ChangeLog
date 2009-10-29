@@ -1,4 +1,6 @@
-Version 0.65
+Version 0.70
+	* New "major" version because it may break compatibility
+	* Fix __cmp__(): IP('0.0.0.0/0') and IP('0.0.0.0') are not equal
 	* Fix IP.net() of the network "::/0": "::" instead of "0.0.0.0".
 	  IPy 0.63 should fix this bug, but it wasn't.
 

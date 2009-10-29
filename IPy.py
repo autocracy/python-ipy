@@ -10,7 +10,7 @@ http://software.inl.fr/trac/trac.cgi/wiki/IPy
 # $Id$
 
 __rcsid__ = '$Id$'
-__version__ = '0.65'
+__version__ = '0.70'
 
 import types
 
@@ -684,6 +684,9 @@ class IPint:
                 return -1
             elif self.ip > other.ip:
                 return 1
+            elif self._ipversion != other._ipversion:
+                # IP('0.0.0.0'), IP('::/0')
+                return cmp(self._ipversion, other._ipversion)
             else:
                 return 0
 
