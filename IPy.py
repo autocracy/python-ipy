@@ -13,6 +13,7 @@ __rcsid__ = '$Id$'
 __version__ = '0.71'
 
 import types
+import sys
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -1117,7 +1118,13 @@ def intToIp(ip, version):
     elif version == 6:
         if ip > 0xffffffffffffffffffffffffffffffffL:
             raise ValueError, "IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip))
-        l = '0' * 32 + hex(ip)[2:-1]
+        if sys.hexversion >= 0x03000000
+            # Remove "0x" prefix
+            l = hex(ip)[2:]
+        else:
+            # Remove "0x" prefix and "L" suffix
+            l = hex(ip)[2:-1]
+        l = l.zfill(32)
         for x in xrange(1, 33):
             ret = l[-x] + ret
             if x % 4 == 0:
