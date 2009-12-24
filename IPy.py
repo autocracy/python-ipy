@@ -12,7 +12,6 @@ http://software.inl.fr/trac/trac.cgi/wiki/IPy
 __rcsid__ = '$Id$'
 __version__ = '0.71'
 
-import types
 import sys
 
 # Definition of the Ranges for IPv4 IPs
@@ -118,7 +117,7 @@ class IPint:
         prefixlen = -1
 
         # handling of non string values in constructor
-        if type(data) == types.IntType or type(data) == types.LongType:
+        if isinstance(data, (int, long)):
             self.ip = long(data)
             if ipversion == 0:
                 if self.ip < 0x100000000L:
@@ -268,8 +267,7 @@ class IPint:
             if want == 2:
                 # this should work with IP and IPint
                 netmask = self.netmask()
-                if type(netmask) != types.IntType \
-                and type(netmask) != types.LongType:
+                if not isinstance(netmask, (int, long)):
                     netmask = netmask.int()
                 return "/%s" % (intToIp(netmask, self._ipversion))
             elif want == 3:
@@ -550,7 +548,7 @@ class IPint:
         IP('127.0.0.3')
         """
 
-        if type(key) != types.IntType and type(key) != types.LongType:
+        if not isinstance(key, (int, long)):
             raise TypeError
         if key < 0:
             if abs(key) <= self.len():
@@ -679,7 +677,7 @@ class IPint:
             # could happen when launching a sort algorithm..
             # everything's in order with the trivial, attached patch.
 
-            return (self._prefixlen - other.prefixlen()) * -1
+            return other.prefixlen() - self._prefixlen
         else:
             if self.ip < other.ip:
                 return -1
