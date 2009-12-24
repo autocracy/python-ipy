@@ -19,44 +19,44 @@ import random
 testloops = 250
 
 class parseAddress(unittest.TestCase):
-    okValues = [('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210', 338770000845734292534325025077361652240L),
-                ('FEDCBA9876543210FEDCBA9876543210', 338770000845734292534325025077361652240L),
-                ('0xFEDCBA9876543210FEDCBA9876543210', 338770000845734292534325025077361652240L),
-                ('1080:0000:0000:0000:0008:0800:200C:417A', 21932261930451111902915077091070067066L),
-                ('1080:0:0:0:8:800:200C:417A', 21932261930451111902915077091070067066L),
-                ('1080:0::8:800:200C:417A', 21932261930451111902915077091070067066L),
-                ('1080::8:800:200C:417A', 21932261930451111902915077091070067066L),
-                ('FF01:0:0:0:0:0:0:43', 338958331222012082418099330867817087043L),
-                ('FF01:0:0::0:0:43', 338958331222012082418099330867817087043L),
-                ('FF01::43', 338958331222012082418099330867817087043L),
-                ('0:0:0:0:0:0:0:1', 1L),
-                ('0:0:0::0:0:1', 1L),
-                ('::1', 1L),
-                ('0:0:0:0:0:0:0:0', 0L),
-                ('0:0:0::0:0:0', 0L),
-                ('::', 0L),
-                ('0:0:0:0:0:0:13.1.68.3', 218186755L),
-                ('::13.1.68.3', 218186755L),
-                ('0:0:0:0:0:FFFF:129.144.52.38', 281472855454758L),
-                ('::FFFF:129.144.52.38', 281472855454758L),
-                ('1080:0:0:0:8:800:200C:417A', 21932261930451111902915077091070067066L),
-                ('1080::8:800:200C:417A', 21932261930451111902915077091070067066L),
-                ('0.0.0.0', 0L),
-                ('0', 0L),
-                ('127.0.0.1', 2130706433L),
-                ('255.255.255.255', 4294967295L),
-                ('0.0.0.1', 1L),
-                ('1', 16777216L),
-                ('213.221.113.87', 3588059479L),
-                ('0000', 0L),
-                ('127001', 127001L),
-                ('1234576', 1234576L),
-                ('1', 16777216L),
-                ('232111387', 232111387L),
-                ('255', 4278190080L),
-                ('256', 256L),
-                ('0xffffffff', 4294967295L),
-                ('0x100000000', 4294967296L),
+    okValues = [('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210', 338770000845734292534325025077361652240),
+                ('FEDCBA9876543210FEDCBA9876543210', 338770000845734292534325025077361652240),
+                ('0xFEDCBA9876543210FEDCBA9876543210', 338770000845734292534325025077361652240),
+                ('1080:0000:0000:0000:0008:0800:200C:417A', 21932261930451111902915077091070067066),
+                ('1080:0:0:0:8:800:200C:417A', 21932261930451111902915077091070067066),
+                ('1080:0::8:800:200C:417A', 21932261930451111902915077091070067066),
+                ('1080::8:800:200C:417A', 21932261930451111902915077091070067066),
+                ('FF01:0:0:0:0:0:0:43', 338958331222012082418099330867817087043),
+                ('FF01:0:0::0:0:43', 338958331222012082418099330867817087043),
+                ('FF01::43', 338958331222012082418099330867817087043),
+                ('0:0:0:0:0:0:0:1', 1),
+                ('0:0:0::0:0:1', 1),
+                ('::1', 1),
+                ('0:0:0:0:0:0:0:0', 0),
+                ('0:0:0::0:0:0', 0),
+                ('::', 0),
+                ('0:0:0:0:0:0:13.1.68.3', 218186755),
+                ('::13.1.68.3', 218186755),
+                ('0:0:0:0:0:FFFF:129.144.52.38', 281472855454758),
+                ('::FFFF:129.144.52.38', 281472855454758),
+                ('1080:0:0:0:8:800:200C:417A', 21932261930451111902915077091070067066),
+                ('1080::8:800:200C:417A', 21932261930451111902915077091070067066),
+                ('0.0.0.0', 0),
+                ('0', 0),
+                ('127.0.0.1', 2130706433),
+                ('255.255.255.255', 4294967295),
+                ('0.0.0.1', 1),
+                ('1', 16777216),
+                ('213.221.113.87', 3588059479),
+                ('0000', 0),
+                ('127001', 127001),
+                ('1234576', 1234576),
+                ('1', 16777216),
+                ('232111387', 232111387),
+                ('255', 4278190080),
+                ('256', 256),
+                ('0xffffffff', 4294967295),
+                ('0x100000000', 4294967296),
                 ('0xffffffffffffffffffffffffffffffff', 0xffffffffffffffffffffffffffffffffL),
                 ('0xdeadbeef', 0xdeadbeefL),
                 ('0xdeadbabe', 0xdeadbabeL),
@@ -65,8 +65,8 @@ class parseAddress(unittest.TestCase):
                 ('0xc0debabe', 0xc0debabeL),
                 ('0xbabec0de', 0xbabec0deL),
                 ('0xcafebabe', 0xcafebabeL),
-                ('0x1', 1L),
-                ('0xabcdef', 11259375L)]
+                ('0x1', 1),
+                ('0xabcdef', 11259375)]
 
     # TODO: check for more invalid input
 
@@ -154,7 +154,7 @@ class _intToIP(unittest.TestCase):
                 (0xf, '0000:0000:0000:0000:0000:0000:0000:000f'),
                 (0xff, '0000:0000:0000:0000:0000:0000:0000:00ff'),
                 (0xFFFFFFFFL, '0000:0000:0000:0000:0000:0000:ffff:ffff'),
-                (0x100000000L, '0000:0000:0000:0000:0000:0001:0000:0000'),
+                (0x100000000, '0000:0000:0000:0000:0000:0001:0000:0000'),
                 (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff')]
 
     def testKnownValuesv4(self):
@@ -181,11 +181,11 @@ class _intToIP(unittest.TestCase):
 
     def testLargeIPv4(self):
         """IPv4: Values > 0xffffffff should raise an exception"""
-        self.assertRaises(ValueError, IPy.intToIp, 0x100000000L, 4)
+        self.assertRaises(ValueError, IPy.intToIp, 0x100000000, 4)
 
     def testLargeIPv6(self):
         """IPv6: Values > 0xffffffffffffffffffffffffffffffff should raise an exception"""
-        self.assertRaises(ValueError, IPy.intToIp, 0x100000000000000000000000000000000L, 6)
+        self.assertRaises(ValueError, IPy.intToIp, 0x100000000000000000000000000000000, 6)
 
     def testIllegalVersion(self):
         """IPVersion other than 4 and 6 should raise an exception"""
@@ -224,18 +224,18 @@ class _countXBits(unittest.TestCase):
 
     def testCount1Bits(self):
         self.assertEqual(IPy._count0Bits(0), 0)
-        self.assertEqual(IPy._count0Bits(0xf0L), 4)
-        self.assertEqual(IPy._count0Bits(0xf00L), 8)
-        self.assertEqual(IPy._count0Bits(0xf000L), 12)
-        self.assertEqual(IPy._count0Bits(0xf0000L), 16)
-        self.assertEqual(IPy._count0Bits(0xf00000L), 20)
-        self.assertEqual(IPy._count0Bits(0xf000000L), 24)
-        self.assertEqual(IPy._count0Bits(0xf0000000L), 28)
-        self.assertEqual(IPy._count0Bits(0xff000000L), 24)
-        self.assertEqual(IPy._count0Bits(0xfff00000L), 20)
-        self.assertEqual(IPy._count0Bits(0x80000000L), 31)
-        self.assertEqual(IPy._count0Bits(0xf0000000000000000000000000000000L), 124)
-        self.assertEqual(IPy._count0Bits(0x80000000000000000000000000000000L), 127)
+        self.assertEqual(IPy._count0Bits(0xf0), 4)
+        self.assertEqual(IPy._count0Bits(0xf00), 8)
+        self.assertEqual(IPy._count0Bits(0xf000), 12)
+        self.assertEqual(IPy._count0Bits(0xf0000), 16)
+        self.assertEqual(IPy._count0Bits(0xf00000), 20)
+        self.assertEqual(IPy._count0Bits(0xf000000), 24)
+        self.assertEqual(IPy._count0Bits(0xf0000000), 28)
+        self.assertEqual(IPy._count0Bits(0xff000000), 24)
+        self.assertEqual(IPy._count0Bits(0xfff00000), 20)
+        self.assertEqual(IPy._count0Bits(0x80000000), 31)
+        self.assertEqual(IPy._count0Bits(0xf0000000000000000000000000000000), 124)
+        self.assertEqual(IPy._count0Bits(0x80000000000000000000000000000000), 127)
 
 
 class _intToBin(unittest.TestCase):
@@ -243,9 +243,9 @@ class _intToBin(unittest.TestCase):
                    (6, '110'), (7, '111'), (8, '1000'), (9, '1001'),
                    (0xf, '1111'), (0xff, '11111111'),
                    (0xFFFFFFFFL, '11111111111111111111111111111111'),
-                   (0x100000000L, '100000000000000000000000000000000'),
+                   (0x100000000, '100000000000000000000000000000000'),
                    (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, '11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'),
-                   (0x100000000000000000000000000000000L, '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')]
+                   (0x100000000000000000000000000000000, '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')]
 
     def testKnownValues(self):
         """conversion of known values values should give known results"""
@@ -259,27 +259,27 @@ class _intToBin(unittest.TestCase):
         self.assertRaises(ValueError, IPy._intToBin, -1)
 
 class netmaskPrefixlenConv(unittest.TestCase):
-    known4Values = [(0xFFFFFFFFL, 32), (0xFFFFFFFEL, 31), (0xFFFFFFFCL, 30), (0xFFFFFFF8L, 29),
-                    (0xFFFFFFF0L, 28), (0xFFFFFFE0L, 27), (0xFFFFFFC0L, 26), (0xFFFFFF80L, 25),
-                    (0xFFFFFF00L, 24), (0xFFFFFE00L, 23), (0xFFFFFC00L, 22), (0xFFFFF800L, 21),
-                    (0xFFFFF000L, 20), (0xFFFFE000L, 19), (0xFFFFC000L, 18), (0xFFFF8000L, 17),
-                    (0xFFFF0000L, 16), (0xFFFE0000L, 15), (0xFFFC0000L, 14), (0xFFF80000L, 13),
-                    (0xFFF00000L, 12), (0xFFE00000L, 11), (0xFFC00000L, 10), (0xFF800000L, 9),
-                    (0xFF000000L, 8), (0xFE000000L, 7), (0xFC000000L, 6), (0xF8000000L, 5),
-                    (0xF0000000L, 4), (0xE0000000L, 3), (0xC0000000L, 2), (0x80000000L, 1)]
+    known4Values = [(0xFFFFFFFFL, 32), (0xFFFFFFFEL, 31), (0xFFFFFFFCL, 30), (0xFFFFFFF8, 29),
+                    (0xFFFFFFF0, 28), (0xFFFFFFE0, 27), (0xFFFFFFC0, 26), (0xFFFFFF80, 25),
+                    (0xFFFFFF00, 24), (0xFFFFFE00, 23), (0xFFFFFC00, 22), (0xFFFFF800, 21),
+                    (0xFFFFF000, 20), (0xFFFFE000, 19), (0xFFFFC000, 18), (0xFFFF8000, 17),
+                    (0xFFFF0000, 16), (0xFFFE0000, 15), (0xFFFC0000, 14), (0xFFF80000, 13),
+                    (0xFFF00000, 12), (0xFFE00000, 11), (0xFFC00000, 10), (0xFF800000, 9),
+                    (0xFF000000, 8), (0xFE000000, 7), (0xFC000000, 6), (0xF8000000, 5),
+                    (0xF0000000, 4), (0xE0000000, 3), (0xC0000000, 2), (0x80000000, 1)]
     known6Values = [(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, 128),
                     (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEL, 127),
-                    (0xFFFFFFFFFFFFFFFFFFFFFFFF80000000L, 97),
-                    (0xFFFFFFFFFFFFFFFFFFFFFFFF00000000L, 96),
-                    (0xFFFFFFFFFFFFFFFFFFFFFFFE00000000L, 95),
-                    (0xFFFFFFFFFFFFFFFF8000000000000000L, 65),
-                    (0xFFFFFFFFFFFFFFFF0000000000000000L, 64),
-                    (0xFFFFFFFFFFFFFFFE0000000000000000L, 63),
-                    (0xFFFFFFFF800000000000000000000000L, 33),
-                    (0xFFFFFFFF000000000000000000000000L, 32),
-                    (0xFFFFFFFE000000000000000000000000L, 31),
-                    (0xC0000000000000000000000000000000L, 2),
-                    (0x80000000000000000000000000000000L, 1)]
+                    (0xFFFFFFFFFFFFFFFFFFFFFFFF80000000, 97),
+                    (0xFFFFFFFFFFFFFFFFFFFFFFFF00000000, 96),
+                    (0xFFFFFFFFFFFFFFFFFFFFFFFE00000000, 95),
+                    (0xFFFFFFFFFFFFFFFF8000000000000000, 65),
+                    (0xFFFFFFFFFFFFFFFF0000000000000000, 64),
+                    (0xFFFFFFFFFFFFFFFE0000000000000000, 63),
+                    (0xFFFFFFFF800000000000000000000000, 33),
+                    (0xFFFFFFFF000000000000000000000000, 32),
+                    (0xFFFFFFFE000000000000000000000000, 31),
+                    (0xC0000000000000000000000000000000, 2),
+                    (0x80000000000000000000000000000000, 1)]
 
     def testKnownValuesv4n2p(self):
         """conversion of known values values should give known results"""
@@ -311,11 +311,11 @@ class netmaskPrefixlenConv(unittest.TestCase):
 
     def testInvalidv4n2p(self):
         """Netmasks should be all ones in the first part and all zeros in the second part"""
-        self.failUnlessRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00L)
+        self.failUnlessRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00)
 
     def testInvalidv6n2p(self):
         """Netmasks should be all ones in the first part and all zeros in the second part"""
-        self.failUnlessRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00ff00ff00ff00ff00ff00ff00L)
+        self.failUnlessRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00ff00ff00ff00ff00ff00ff00)
 
 
 class checkChecks(unittest.TestCase):
@@ -323,55 +323,55 @@ class checkChecks(unittest.TestCase):
     def testCheckNetmaskOk(self):
         """Legal Netmasks should be allowed."""
         self.failIf(IPy._checkNetmask(0xffffffffL, 32))
-        self.failIf(IPy._checkNetmask(0xffffff00L, 32))
-        self.failIf(IPy._checkNetmask(0xffff0000L, 32))
-        self.failIf(IPy._checkNetmask(0xff000000L, 32))
+        self.failIf(IPy._checkNetmask(0xffffff00, 32))
+        self.failIf(IPy._checkNetmask(0xffff0000, 32))
+        self.failIf(IPy._checkNetmask(0xff000000, 32))
         self.failIf(IPy._checkNetmask(0, 32))
 
     def testCheckNetmaskFail(self):
         """Illegal Netmasks should be rejected."""
         self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xf0ffffffL, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xf0f0f0f0L, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xff00ff00L, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0x70000001L, 32)
+        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xf0f0f0f0, 32)
+        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xff00ff00, 32)
+        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0x70000001, 32)
         self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xfffffffL, 32)
 
     def testCheckPrefixOk(self):
         """Legal IP/prefix combinations should check ok."""
         self.failUnless(IPy._checkPrefix(0x0, 32, 4))
         self.failUnless(IPy._checkPrefix(0xffffffffL, 32, 4))
-        self.failUnless(IPy._checkPrefix(0x7f000001L, 32, 4))
-        self.failUnless(IPy._checkPrefix(0x80000000L, 1, 4))
-        self.failUnless(IPy._checkPrefix(0x40000000L, 2, 4))
-        self.failUnless(IPy._checkPrefix(0x80000000L, 3, 4))
-        self.failUnless(IPy._checkPrefix(0x80000000L, 4, 4))
-        self.failUnless(IPy._checkPrefix(0xffffff00L, 24, 4))
-        self.failUnless(IPy._checkPrefix(0xffffff00L, 24, 4))
-        self.failUnless(IPy._checkPrefix(0xfffffff0L, 28, 4))
+        self.failUnless(IPy._checkPrefix(0x7f000001, 32, 4))
+        self.failUnless(IPy._checkPrefix(0x80000000, 1, 4))
+        self.failUnless(IPy._checkPrefix(0x40000000, 2, 4))
+        self.failUnless(IPy._checkPrefix(0x80000000, 3, 4))
+        self.failUnless(IPy._checkPrefix(0x80000000, 4, 4))
+        self.failUnless(IPy._checkPrefix(0xffffff00, 24, 4))
+        self.failUnless(IPy._checkPrefix(0xffffff00, 24, 4))
+        self.failUnless(IPy._checkPrefix(0xfffffff0, 28, 4))
         self.failUnless(IPy._checkPrefix(0x0, 32, 4))
         self.failUnless(IPy._checkPrefix(0x0, 1, 4))
         self.failUnless(IPy._checkPrefix(0x0, 0, 4))
-        self.failUnless(IPy._checkPrefix(0xffffffffffffffff0000000000000000L, 64, 6))
-        self.failUnless(IPy._checkPrefix(0x0L, 64, 6))
-        self.failUnless(IPy._checkPrefix(0x0L, 0, 6))
-        self.failUnless(IPy._checkPrefix(0x0L, 128, 6))
+        self.failUnless(IPy._checkPrefix(0xffffffffffffffff0000000000000000, 64, 6))
+        self.failUnless(IPy._checkPrefix(0x0, 64, 6))
+        self.failUnless(IPy._checkPrefix(0x0, 0, 6))
+        self.failUnless(IPy._checkPrefix(0x0, 128, 6))
         self.failUnless(IPy._checkPrefix(0xffffffffffffffffffffffffffffffffL, 128, 6))
 
 
     def testCheckPrefixFail(self):
         """Illegal Prefixes should be catched."""
-        self.failIf(IPy._checkPrefix(0x7f000001L, -1, 4))
-        self.failIf(IPy._checkPrefix(0x7f000001L, 33, 4))
-        self.failIf(IPy._checkPrefix(0x7f000001L, 24, 4))
-        self.failIf(IPy._checkPrefix(0x7f000001L, 31, 4))
-        self.failIf(IPy._checkPrefix(0x7f000080L, 24, 4))
-        self.failIf(IPy._checkPrefix(0x7f000100L, 23, 4))
-        self.failIf(IPy._checkPrefix(0x7f000000L, 1, 4))
-        self.failIf(IPy._checkPrefix(0x7f000000L, 0, 4))
-        self.failIf(IPy._checkPrefix(0x1L, -1, 6))
-        self.failIf(IPy._checkPrefix(0x1L, 129, 6))
-        self.failIf(IPy._checkPrefix(0xffffffffffffffff0000000000000001L, 64, 6))
-        self.failIf(IPy._checkPrefix(0xffffffffffffffff1000000000000000L, 64, 6))
+        self.failIf(IPy._checkPrefix(0x7f000001, -1, 4))
+        self.failIf(IPy._checkPrefix(0x7f000001, 33, 4))
+        self.failIf(IPy._checkPrefix(0x7f000001, 24, 4))
+        self.failIf(IPy._checkPrefix(0x7f000001, 31, 4))
+        self.failIf(IPy._checkPrefix(0x7f000080, 24, 4))
+        self.failIf(IPy._checkPrefix(0x7f000100, 23, 4))
+        self.failIf(IPy._checkPrefix(0x7f000000, 1, 4))
+        self.failIf(IPy._checkPrefix(0x7f000000, 0, 4))
+        self.failIf(IPy._checkPrefix(0x1, -1, 6))
+        self.failIf(IPy._checkPrefix(0x1, 129, 6))
+        self.failIf(IPy._checkPrefix(0xffffffffffffffff0000000000000001, 64, 6))
+        self.failIf(IPy._checkPrefix(0xffffffffffffffff1000000000000000, 64, 6))
 
 
     # TODO: _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
@@ -536,41 +536,41 @@ class IPobject(unittest.TestCase):
 
     def testStrNormal(self):
         """Normal string Output."""
-        testValues = [(338770000845734292534325025077361652240L, 'fedc:ba98:7654:3210:fedc:ba98:7654:3210'),
-                      (21932261930451111902915077091070067066L, '1080:0:0:0:8:800:200c:417a'),
-                      (338958331222012082418099330867817087043L, 'ff01:0:0:0:0:0:0:43'),
-                      (0L, '0.0.0.0'),
-                      (2130706433L, '127.0.0.1'),
-                      (4294967295L, '255.255.255.255'),
-                      (1L, '0.0.0.1'),
-                      (3588059479L, '213.221.113.87')]
+        testValues = [(338770000845734292534325025077361652240, 'fedc:ba98:7654:3210:fedc:ba98:7654:3210'),
+                      (21932261930451111902915077091070067066, '1080:0:0:0:8:800:200c:417a'),
+                      (338958331222012082418099330867817087043, 'ff01:0:0:0:0:0:0:43'),
+                      (0, '0.0.0.0'),
+                      (2130706433, '127.0.0.1'),
+                      (4294967295, '255.255.255.255'),
+                      (1, '0.0.0.1'),
+                      (3588059479, '213.221.113.87')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strNormal(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testStrFullsize(self):
         """Normal / 0-padded string Output."""
-        testValues = [(338770000845734292534325025077361652240L, 'fedc:ba98:7654:3210:fedc:ba98:7654:3210'),
-                      (21932261930451111902915077091070067066L, '1080:0000:0000:0000:0008:0800:200c:417a'),
-                      (338958331222012082418099330867817087043L, 'ff01:0000:0000:0000:0000:0000:0000:0043'),
-                      (0L, '0.0.0.0'),
-                      (2130706433L, '127.0.0.1'),
-                      (4294967295L, '255.255.255.255'),
-                      (1L, '0.0.0.1'),
-                      (3588059479L, '213.221.113.87')]
+        testValues = [(338770000845734292534325025077361652240, 'fedc:ba98:7654:3210:fedc:ba98:7654:3210'),
+                      (21932261930451111902915077091070067066, '1080:0000:0000:0000:0008:0800:200c:417a'),
+                      (338958331222012082418099330867817087043, 'ff01:0000:0000:0000:0000:0000:0000:0043'),
+                      (0, '0.0.0.0'),
+                      (2130706433, '127.0.0.1'),
+                      (4294967295, '255.255.255.255'),
+                      (1, '0.0.0.1'),
+                      (3588059479, '213.221.113.87')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strFullsize(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
 
     def testStrHex(self):
         """Hex string Output."""
-        testValues = [(338770000845734292534325025077361652240L, '0xfedcba9876543210fedcba9876543210'),
-                      (21932261930451111902915077091070067066L, '0x108000000000000000080800200c417a'),
-                      (338958331222012082418099330867817087043L, '0xff010000000000000000000000000043'),
-                      (0L, '0x0'),
-                      (1L, '0x1'),
+        testValues = [(338770000845734292534325025077361652240, '0xfedcba9876543210fedcba9876543210'),
+                      (21932261930451111902915077091070067066, '0x108000000000000000080800200c417a'),
+                      (338958331222012082418099330867817087043, '0xff010000000000000000000000000043'),
+                      (0, '0x0'),
+                      (1, '0x1'),
                       (4294967295l, '0xffffffff'),
-                      (3588059479L, '0xd5dd7157'),
+                      (3588059479, '0xd5dd7157'),
                       (0x12345678, '0x12345678')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strHex(question).lower()
@@ -578,13 +578,13 @@ class IPobject(unittest.TestCase):
 
     def testStrDec(self):
         """Decimal string Output."""
-        testValues = [(338770000845734292534325025077361652240L, '338770000845734292534325025077361652240'),
-                      (21932261930451111902915077091070067066L, '21932261930451111902915077091070067066'),
-                      (338958331222012082418099330867817087043L, '338958331222012082418099330867817087043'),
-                      (0L, '0'),
-                      (1L, '1'),
+        testValues = [(338770000845734292534325025077361652240, '338770000845734292534325025077361652240'),
+                      (21932261930451111902915077091070067066, '21932261930451111902915077091070067066'),
+                      (338958331222012082418099330867817087043, '338958331222012082418099330867817087043'),
+                      (0, '0'),
+                      (1, '1'),
                       (0xFFFFFFFFL, '4294967295'),
-                      (0xD5DD7157L, '3588059479')]
+                      (0xD5DD7157, '3588059479')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strDec(question)
             self.failUnlessEqual(answer, result, (question, result, answer))
@@ -625,7 +625,7 @@ class IPobject(unittest.TestCase):
         self.failUnlessEqual(IPy.IP("255.255.255.255").int(), 0xffffffffL)
         self.failUnlessEqual(IPy.IP("0000:0000:0000:0000:0000:0000:0000:0000").int(), 0)
         self.failUnlessEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffffL)
-        self.failUnlessEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008L)
+        self.failUnlessEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008)
 
 
     def testPrefixlen(self):
@@ -667,13 +667,13 @@ class IPobject(unittest.TestCase):
 
     def testNetmask(self):
         """Normal string Output."""
-        testValues = [(338770000845734292534325025077361652240L, '0xfedcba9876543210fedcba9876543210'),
-                      (21932261930451111902915077091070067066L, '0x108000000000000000080800200c417a'),
-                      (338958331222012082418099330867817087043L, '0xff010000000000000000000000000043'),
-                      (0L, '0x0'),
-                      (1L, '0x1'),
+        testValues = [(338770000845734292534325025077361652240, '0xfedcba9876543210fedcba9876543210'),
+                      (21932261930451111902915077091070067066, '0x108000000000000000080800200c417a'),
+                      (338958331222012082418099330867817087043, '0xff010000000000000000000000000043'),
+                      (0, '0x0'),
+                      (1, '0x1'),
                       (4294967295l, '0xffffffff'),
-                      (3588059479L, '0xd5dd7157')]
+                      (3588059479, '0xd5dd7157')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strHex(question).lower()
             self.failUnlessEqual(answer, result, (question, result, answer))
@@ -688,7 +688,7 @@ class NetIPChecks(unittest.TestCase):
     """Checks taken from perls Net::IP"""
     def testMisc(self):
         ip = IPy.IP('195.114.80/24')
-        self.assertEqual(ip.int(), 3279048704L)
+        self.assertEqual(ip.int(), 3279048704)
         self.assertEqual(ip.reverseName(),'80.114.195.in-addr.arpa.')
         self.assertEqual(ip.strBin(),'11000011011100100101000000000000')
         self.assertEqual(str(ip.net()),'195.114.80.0')
@@ -730,7 +730,7 @@ class NetIPChecks(unittest.TestCase):
 
         ip = IPy.IP('dead:beef:0::/48')
         self.assertEqual(str(ip.net()),'dead:beef::')
-        self.assertEqual(ip.int(), 295990755014133383690938178081940045824L)
+        self.assertEqual(ip.int(), 295990755014133383690938178081940045824)
         self.assertEqual(ip.strBin(),'11011110101011011011111011101111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
         self.assertEqual(ip.strCompressed(),'dead:beef::/48')
         self.assertEqual(ip.prefixlen(), 48)

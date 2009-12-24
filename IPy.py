@@ -120,7 +120,7 @@ class IPint:
         if isinstance(data, (int, long)):
             self.ip = long(data)
             if ipversion == 0:
-                if self.ip < 0x100000000L:
+                if self.ip < 0x100000000:
                     ipversion = 4
                 else:
                     ipversion = 6
@@ -282,7 +282,7 @@ class IPint:
         # strFullsize   127.0.0.1    2001:0658:022a:cafe:0200:c0ff:fe8d:08fa
         # strNormal     127.0.0.1    2001:658:22a:cafe:200:c0ff:fe8d:08fa
         # strCompressed 127.0.0.1    2001:658:22a:cafe::1
-        # strHex        0x7F000001L  0x20010658022ACAFE0200C0FFFE8D08FA
+        # strHex        0x7F000001   0x20010658022ACAFE0200C0FFFE8D08FA
         # strDec        2130706433   42540616829182469433547974687817795834
 
     def strBin(self, wantprefixlen = None):
@@ -469,7 +469,7 @@ class IPint:
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
 
-        return ((2L ** self._prefixlen) - 1) << locallen
+        return ((2 ** self._prefixlen) - 1) << locallen
 
 
     def strNetmask(self):
@@ -484,7 +484,7 @@ class IPint:
         # TODO: unify with prefixlenToNetmask?
         if self._ipversion == 4:
             locallen = 32 - self._prefixlen
-            return intToIp(((2L ** self._prefixlen) - 1) << locallen, 4)
+            return intToIp(((2 ** self._prefixlen) - 1) << locallen, 4)
         elif self._ipversion == 6:
             locallen = 128 - self._prefixlen
             return "/%d" % self._prefixlen
@@ -507,7 +507,7 @@ class IPint:
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
 
-        return 2L ** locallen
+        return 2 ** locallen
 
 
     def __nonzero__(self):
@@ -571,7 +571,7 @@ class IPint:
 
         >>> IP('195.185.1.1').strHex()
         '0xc3b90101'
-        >>> 0xC3B90101L in IP('195.185.1.0/24')
+        >>> 0xC3B90101 in IP('195.185.1.0/24')
         1
         >>> '127.0.0.1' in IP('127.0.0.0/24')
         1
@@ -771,10 +771,10 @@ class IP(IPint):
             if self.len() < 2**8:
                 for x in self:
                     ret.append(x.reverseName())
-            elif self.len() < 2**16L:
+            elif self.len() < 2**16:
                 for i in xrange(0, self.len(), 2**8):
                     ret.append(self[i].reverseName()[2:])
-            elif self.len() < 2**24L:
+            elif self.len() < 2**24:
                 for i in xrange(0, self.len(), 2**16):
                     ret.append(self[i].reverseName()[4:])
             else:
@@ -908,51 +908,51 @@ def _parseAddressIPv6(ipstr):
     """
     Internal function used by parseAddress() to parse IPv6 address with ':'.
 
-    >>> _parseAddressIPv6('::')
-    0L
-    >>> _parseAddressIPv6('::1')
-    1L
-    >>> _parseAddressIPv6('0:0:0:0:0:0:0:1')
-    1L
-    >>> _parseAddressIPv6('0:0:0::0:0:1')
-    1L
-    >>> _parseAddressIPv6('0:0:0:0:0:0:0:0')
-    0L
-    >>> _parseAddressIPv6('0:0:0::0:0:0')
-    0L
+    >>> print _parseAddressIPv6('::')
+    0
+    >>> print _parseAddressIPv6('::1')
+    1
+    >>> print _parseAddressIPv6('0:0:0:0:0:0:0:1')
+    1
+    >>> print _parseAddressIPv6('0:0:0::0:0:1')
+    1
+    >>> print _parseAddressIPv6('0:0:0:0:0:0:0:0')
+    0
+    >>> print _parseAddressIPv6('0:0:0::0:0:0')
+    0
 
-    >>> _parseAddressIPv6('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210')
-    338770000845734292534325025077361652240L
-    >>> _parseAddressIPv6('1080:0000:0000:0000:0008:0800:200C:417A')
-    21932261930451111902915077091070067066L
-    >>> _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
-    21932261930451111902915077091070067066L
-    >>> _parseAddressIPv6('1080:0::8:800:200C:417A')
-    21932261930451111902915077091070067066L
-    >>> _parseAddressIPv6('1080::8:800:200C:417A')
-    21932261930451111902915077091070067066L
-    >>> _parseAddressIPv6('FF01:0:0:0:0:0:0:43')
-    338958331222012082418099330867817087043L
-    >>> _parseAddressIPv6('FF01:0:0::0:0:43')
-    338958331222012082418099330867817087043L
-    >>> _parseAddressIPv6('FF01::43')
-    338958331222012082418099330867817087043L
-    >>> _parseAddressIPv6('0:0:0:0:0:0:13.1.68.3')
-    218186755L
-    >>> _parseAddressIPv6('::13.1.68.3')
-    218186755L
-    >>> _parseAddressIPv6('0:0:0:0:0:FFFF:129.144.52.38')
-    281472855454758L
-    >>> _parseAddressIPv6('::FFFF:129.144.52.38')
-    281472855454758L
-    >>> _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
-    21932261930451111902915077091070067066L
-    >>> _parseAddressIPv6('1080::8:800:200C:417A')
-    21932261930451111902915077091070067066L
-    >>> _parseAddressIPv6('::1:2:3:4:5:6')
-    1208962713947218704138246L
-    >>> _parseAddressIPv6('1:2:3:4:5:6::')
-    5192455318486707404433266432802816L
+    >>> print _parseAddressIPv6('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210')
+    338770000845734292534325025077361652240
+    >>> print _parseAddressIPv6('1080:0000:0000:0000:0008:0800:200C:417A')
+    21932261930451111902915077091070067066
+    >>> print _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
+    21932261930451111902915077091070067066
+    >>> print _parseAddressIPv6('1080:0::8:800:200C:417A')
+    21932261930451111902915077091070067066
+    >>> print _parseAddressIPv6('1080::8:800:200C:417A')
+    21932261930451111902915077091070067066
+    >>> print _parseAddressIPv6('FF01:0:0:0:0:0:0:43')
+    338958331222012082418099330867817087043
+    >>> print _parseAddressIPv6('FF01:0:0::0:0:43')
+    338958331222012082418099330867817087043
+    >>> print _parseAddressIPv6('FF01::43')
+    338958331222012082418099330867817087043
+    >>> print _parseAddressIPv6('0:0:0:0:0:0:13.1.68.3')
+    218186755
+    >>> print _parseAddressIPv6('::13.1.68.3')
+    218186755
+    >>> print _parseAddressIPv6('0:0:0:0:0:FFFF:129.144.52.38')
+    281472855454758
+    >>> print _parseAddressIPv6('::FFFF:129.144.52.38')
+    281472855454758
+    >>> print _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
+    21932261930451111902915077091070067066
+    >>> print _parseAddressIPv6('1080::8:800:200C:417A')
+    21932261930451111902915077091070067066
+    >>> print _parseAddressIPv6('::1:2:3:4:5:6')
+    1208962713947218704138246
+    >>> print _parseAddressIPv6('1:2:3:4:5:6::')
+    5192455318486707404433266432802816
     """
 
     # Split string into a list, example:
@@ -1010,7 +1010,7 @@ def _parseAddressIPv6(ipstr):
         raise ValueError("%r: Invalid IPv6 address: should have 8 hextets" % ipstr)
 
     # Convert strings to long integer
-    value = 0L
+    value = 0
     index = 0
     for item in items:
         try:
@@ -1044,13 +1044,13 @@ def parseAddress(ipstr):
     >>> parseAddress('1080:0::8:800:200C:417A')
     (21932261930451111902915077091070067066L, 6)
     >>> parseAddress('::1')
-    (1L, 6)
+    (1, 6)
     >>> parseAddress('::')
-    (0L, 6)
+    (0, 6)
     >>> parseAddress('0:0:0:0:0:FFFF:129.144.52.38')
     (281472855454758L, 6)
     >>> parseAddress('::13.1.68.3')
-    (218186755L, 6)
+    (218186755, 6)
     >>> parseAddress('::FFFF:129.144.52.38')
     (281472855454758L, 6)
     """
@@ -1059,7 +1059,7 @@ def parseAddress(ipstr):
         ret = long(ipstr[2:], 16)
         if ret > 0xffffffffffffffffffffffffffffffffL:
             raise ValueError, "%r: IP Address can't be bigger than 2^128" % (ipstr)
-        if ret < 0x100000000L:
+        if ret < 0x100000000:
             return (ret, 4)
         else:
             return (ret, 6)
@@ -1220,13 +1220,13 @@ def _checkPrefix(ip, prefixlen, version):
     Checks if the variant part of a prefix only has 0s, and the length is
     correct.
 
-    >>> _checkPrefix(0x7f000000L, 24, 4)
+    >>> _checkPrefix(0x7f000000, 24, 4)
     1
-    >>> _checkPrefix(0x7f000001L, 24, 4)
+    >>> _checkPrefix(0x7f000001, 24, 4)
     0
-    >>> repr(_checkPrefix(0x7f000001L, -1, 4))
+    >>> repr(_checkPrefix(0x7f000001, -1, 4))
     'None'
-    >>> repr(_checkPrefix(0x7f000001L, 33, 4))
+    >>> repr(_checkPrefix(0x7f000001, 33, 4))
     'None'
     """
 
@@ -1297,7 +1297,7 @@ def _prefixlenToNetmask(prefixlen, version):
         return 0
     elif prefixlen < 0:
         raise ValueError, "Prefixlen must be > 0"
-    return ((2L<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
+    return ((2<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
 
 
 if __name__ == "__main__":
