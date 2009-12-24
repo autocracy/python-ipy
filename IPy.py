@@ -332,7 +332,7 @@ class IPint:
             # every element of followingzeros will contain the number of zeros
             # following the corresponding element of hextets
             followingzeros = [0] * 8
-            for i in range(len(hextets)):
+            for i in xrange(len(hextets)):
                 followingzeros[i] = _countFollowingZeros(hextets[i:])
             # compressionpos is the position where we can start removing zeros
             compressionpos = followingzeros.index(max(followingzeros))
@@ -449,7 +449,7 @@ class IPint:
             raise ValueError, "only IPv4 and IPv6 supported"
 
         bits = self.strBin()
-        for i in range(len(bits), 0, -1):
+        for i in xrange(len(bits), 0, -1):
             if iprange.has_key(bits[:i]):
                 return iprange[bits[:i]]
         return "unknown"
@@ -773,13 +773,13 @@ class IP(IPint):
                 for x in self:
                     ret.append(x.reverseName())
             elif self.len() < 2**16L:
-                for i in range(0, self.len(), 2**8):
+                for i in xrange(0, self.len(), 2**8):
                     ret.append(self[i].reverseName()[2:])
             elif self.len() < 2**24L:
-                for i in range(0, self.len(), 2**16):
+                for i in xrange(0, self.len(), 2**16):
                     ret.append(self[i].reverseName()[4:])
             else:
-                for i in range(0, self.len(), 2**24):
+                for i in xrange(0, self.len(), 2**24):
                     ret.append(self[i].reverseName()[6:])
             return ret
         elif self._ipversion == 6:
@@ -791,7 +791,7 @@ class IP(IPint):
             s = list(s)
             s.reverse()
             s = '.'.join(s)
-            first_nibble_index = int(32 - (self._prefixlen / 4)) * 2
+            first_nibble_index = int(32 - (self._prefixlen // 4)) * 2
             return ["%s.ip6.arpa." % s[first_nibble_index:]]
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
@@ -817,9 +817,9 @@ class IP(IPint):
             s = self.strFullsize(0)
             s = s.split('.')
             s.reverse()
-            first_byte_index = int(4 - (self._prefixlen / 8))
+            first_byte_index = int(4 - (self._prefixlen // 8))
             if self._prefixlen % 8 != 0:
-                nibblepart = "%s-%s" % (s[3-(self._prefixlen / 8)], intToIp(self.ip + self.len() - 1, 4).split('.')[-1])
+                nibblepart = "%s-%s" % (s[3-(self._prefixlen // 8)], intToIp(self.ip + self.len() - 1, 4).split('.')[-1])
                 if nibblepart[-1] == 'l':
                     nibblepart = nibblepart[:-1]
                 nibblepart += '.'
@@ -843,7 +843,7 @@ class IP(IPint):
             s = list(s)
             s.reverse()
             s = '.'.join(s)
-            first_nibble_index = int(32 - (self._prefixlen / 4)) * 2
+            first_nibble_index = int(32 - (self._prefixlen // 4)) * 2
             return "%s%s.ip6.arpa." % (nibblepart, s[first_nibble_index:])
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
@@ -1110,7 +1110,7 @@ def intToIp(ip, version):
     if version == 4:
         if ip > 0xffffffffL:
             raise ValueError, "IPv4 Addresses can't be larger than 0xffffffff: %s" % (hex(ip))
-        for l in range(4):
+        for l in xrange(4):
             ret = str(ip & 0xffL) + '.' + ret
             ip = ip >> 8
         ret = ret[:-1]
@@ -1118,7 +1118,7 @@ def intToIp(ip, version):
         if ip > 0xffffffffffffffffffffffffffffffffL:
             raise ValueError, "IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip))
         l = '0' * 32 + hex(ip)[2:-1]
-        for x in range(1, 33):
+        for x in xrange(1, 33):
             ret = l[-x] + ret
             if x % 4 == 0:
                 ret = ':' + ret

@@ -1,5 +1,6 @@
 Version 0.71
-	* xxx
+	* Use xrange() instead of range()
+	* Prepare support of Python3 (use integer division: x // y)
 
 Version 0.70 (2009-10-29)
 	* New "major" version because it may break compatibility
