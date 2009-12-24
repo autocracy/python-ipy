@@ -685,10 +685,20 @@ class IPint:
                 return 1
             elif self._ipversion != other._ipversion:
                 # IP('0.0.0.0'), IP('::/0')
-                return cmp(self._ipversion, other._ipversion)
+                if self._ipversion < other._ipversion:
+                    return -1
+                elif self._ipversion > other._ipversion:
+                    return 1
+                else:
+                    return 0
             else:
                 return 0
 
+    def __eq__(self, other):
+        return self.__cmp__(other) == 0
+
+    def __lt__(self, other):
+        return self.__cmp__(other) < 0
 
     def __hash__(self):
         """Called for the key object for dictionary operations, and by
@@ -990,7 +1000,7 @@ def _parseAddressIPv6(ipstr):
 
     if items and '.' in items[-1]:
         # IPv6 ending with IPv4 like '::ffff:192.168.0.1'
-        if not (fill_pos <= len(items)-1):
+        if (fill_pos is not None) and not (fill_pos <= len(items)-1):
             # Invalid IPv6: 'ffff:192.168.0.1::'
             raise ValueError("%r: Invalid IPv6 address: '::' after IPv4" % ipstr)
         value = parseAddress(items[-1])[0]
