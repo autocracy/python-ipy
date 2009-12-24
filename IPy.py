@@ -1118,7 +1118,7 @@ def intToIp(ip, version):
     elif version == 6:
         if ip > 0xffffffffffffffffffffffffffffffffL:
             raise ValueError, "IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip))
-        if sys.hexversion >= 0x03000000
+        if sys.hexversion >= 0x03000000:
             # Remove "0x" prefix
             l = hex(ip)[2:]
         else:
