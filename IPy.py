@@ -125,8 +125,12 @@ class IPint:
                 else:
                     ipversion = 6
             if ipversion == 4:
+                if self.ip > 0xffffffff:
+                    raise ValueError("IPv4 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %x" % self.ip)
                 prefixlen = 32
             elif ipversion == 6:
+                if self.ip > 0xffffffffffffffffffffffffffffffff:
+                    raise ValueError("IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %x" % self.ip)
                 prefixlen = 128
             else:
                 raise ValueError, "only IPv4 and IPv6 supported"

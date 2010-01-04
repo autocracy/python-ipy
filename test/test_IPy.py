@@ -825,6 +825,11 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(len(IPy.IP('192.168.0.0/24')), 256)
         self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
 
+class TestConstrutor(unittest.TestCase):
+    def testCheckAddrPrefixlenOff(self):
+        self.assertRaises(ValueError, IPy.IP, 0xffffffff + 1, ipversion=4)
+        self.assertRaises(ValueError, IPy.IP, 0xffffffffffffffffffffffffffffffff + 1, ipversion=6)
+
 if __name__ == "__main__":
     unittest.main()
 

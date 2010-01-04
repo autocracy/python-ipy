@@ -2,6 +2,7 @@ Version 0.71
 	* Use xrange() instead of range()
 	* Use isinstance(x, int) instead of type(x) == types.IntType
 	* Prepare support of Python3 (use integer division: x // y)
+	* Fix IP(long) constructor: ensure that the address is not too large
 
 Version 0.70 (2009-10-29)
 	* New "major" version because it may break compatibility
