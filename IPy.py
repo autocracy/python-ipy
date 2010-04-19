@@ -141,7 +141,7 @@ class IPint:
             self._ipversion = data._ipversion
             self._prefixlen = data._prefixlen
             self.ip = data.ip
-        else:
+        elif isinstance(data, (str, unicode)):
             # TODO: refactor me!
             # splitting of a string into IP and prefixlen et. al.
             x = data.split('-')
@@ -205,6 +205,8 @@ class IPint:
             if not _checkNetaddrWorksWithPrefixlen(self.ip,
             self._prefixlen, self._ipversion):
                 raise ValueError, "%s has invalid prefix length (%s)" % (repr(self), self._prefixlen)
+        else:
+            raise TypeError("Unsupported data type: %s" % type(data))
 
     def int(self):
         """Return the first / base / network addess as an (long) integer.
