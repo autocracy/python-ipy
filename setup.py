@@ -1,6 +1,16 @@
 #!/usr/bin/env python
 # $Id: setup.py 671 2004-08-22 21:02:29Z md $
 
+# Release process:
+#
+#  - set release date in ChangeLog
+#  - make (to run tests)
+#  - svn ci
+#  - svn cp trunk tags/IPy-xxx
+#  - svn ci
+#  - cd tags/IPy-xxx
+#  - ./setup.py register sdist upload
+
 import sys
 if "--setuptools" in sys.argv:
     sys.argv.remove("--setuptools")
