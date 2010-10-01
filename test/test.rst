@@ -31,3 +31,15 @@ False
 >>> addresses
 [IP('::'), IP('::3'), IP('::7'), IP('0.0.0.0'), IP('0.0.0.3'), IP('0.0.0.0/16'), IP('0.0.0.0/0'), IP('::/0')]
 
+IP types
+========
+
+>>> IP('10.8.3.0/24').iptype()
+'PRIVATE'
+>>> IP('88.164.127.124').iptype()
+'PUBLIC'
+>>> IP('223.0.0.0/8').iptype()
+'PUBLIC'
+>>> IP('224.0.0.0/8').iptype()
+'RESERVED'
+

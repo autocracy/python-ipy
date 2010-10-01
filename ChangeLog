@@ -1,10 +1,11 @@
-Version 0.71
+Version 0.71 (2010-10-01)
 	* Use xrange() instead of range()
 	* Use isinstance(x, int) instead of type(x) == types.IntType
 	* Prepare support of Python3 (use integer division: x // y)
 	* Fix IP(long) constructor: ensure that the address is not too large
 	* Constructor raise a TypeError if the type is not int, long,
 	  str or unicode
+	* 223.0.0.0/8 is now public (belongs to APNIC)
 
 Version 0.70 (2009-10-29)
 	* New "major" version because it may break compatibility
