@@ -1058,12 +1058,14 @@ def parseAddress(ipstr):
     (1, 6)
     >>> parseAddress('::')
     (0, 6)
-    >>> parseAddress('0:0:0:0:0:FFFF:129.144.52.38')
-    (281472855454758L, 6)
+    >>> ip, version = parseAddress('0:0:0:0:0:FFFF:129.144.52.38')
+    >>> print "%s (IPv%s)" % (ip, version)
+    281472855454758 (IPv6)
     >>> parseAddress('::13.1.68.3')
     (218186755, 6)
-    >>> parseAddress('::FFFF:129.144.52.38')
-    (281472855454758L, 6)
+    >>> ip, version = parseAddress('::FFFF:129.144.52.38')
+    >>> print "%s (IPv%s)" % (ip, version)
+    281472855454758 (IPv6)
     """
 
     if ipstr.startswith('0x'):
