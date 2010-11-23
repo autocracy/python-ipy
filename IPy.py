@@ -6,11 +6,7 @@ Further Information might be available at:
 http://software.inl.fr/trac/trac.cgi/wiki/IPy
 """
 
-# $HeadURL$
-# $Id$
-
-__rcsid__ = '$Id$'
-__version__ = '0.71'
+__version__ = '0.72'
 
 import sys
 

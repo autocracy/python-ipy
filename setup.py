@@ -1,15 +1,20 @@
 #!/usr/bin/env python
-# $Id: setup.py 671 2004-08-22 21:02:29Z md $
 
 # Release process:
 #
 #  - set release date in ChangeLog
 #  - make (to run tests)
-#  - svn ci
-#  - svn cp trunk tags/IPy-xxx
-#  - svn ci
-#  - cd tags/IPy-xxx
+#  - git commit -a
+#  - git tag -a IPy-xxx
+#  - git push --tags
 #  - ./setup.py register sdist upload
+#  - update the website
+#
+# After the release:
+#  - set version to n+1
+#  - add a new empty section in the changelog for version n+1
+#  - git commit -a
+#  - git push
 
 import sys
 if "--setuptools" in sys.argv:
