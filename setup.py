@@ -2,8 +2,8 @@
 
 # Release process:
 #
-#  - set release date in ChangeLog
 #  - make (to run tests)
+#  - set release date in ChangeLog
 #  - git commit -a
 #  - git tag -a IPy-xxx
 #  - git push --tags

@@ -1,7 +1,7 @@
-Version 0.72
+Version 0.72 (2010-11-23)
 	* Include examples and MANIFEST.in in source build (add them to
 	  MANIFEST.in)
-        * Remove __rcsid__ constant from IPy module
+	* Remove __rcsid__ constant from IPy module
 
 Version 0.71 (2010-10-01)
 	* Use xrange() instead of range()
