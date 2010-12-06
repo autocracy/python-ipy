@@ -29,6 +29,8 @@ Shell, Hin-lik Hung
    > bring IPy to OpenBSD ports
 Skinny Puppy
    > __add__() now always  returns a value
+Sander Steffann (sander AT steffann.nl)
+   > Fix the IPv6 address range descriptions
 William McVey <wam AT cisco.com>
    > Fix IP.__nonzero__()
 

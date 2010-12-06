@@ -1,3 +1,6 @@
+Version 0.73
+	* Update the ranges for IPv6 IPs
+
 Version 0.72
 	* Include examples and MANIFEST.in in source build (add them to
 	  MANIFEST.in)
