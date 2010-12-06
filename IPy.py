@@ -6,7 +6,7 @@ Further Information might be available at:
 http://software.inl.fr/trac/trac.cgi/wiki/IPy
 """
 
-__version__ = '0.72'
+__version__ = '0.73'
 
 import sys
 
