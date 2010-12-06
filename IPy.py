@@ -480,7 +480,7 @@ class IPint:
         >>> print IP('::1').iptype()
         LOOPBACK
         >>> print IP('2001:0658:022a:cafe:0200::1').iptype()
-        ASSIGNABLE RIPE
+        ALLOCATED RIPE NCC
 
         The type information for IPv6 is out of sync with reality.
         """
