@@ -1088,28 +1088,32 @@ def parseAddress(ipstr):
 
     Following address formats are recognized:
 
-    >>> parseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
-    (81985529216486895L, 6)
-    >>> parseAddress('123.123.123.123')              # IPv4
-    (2071690107L, 4)
-    >>> parseAddress('123.123')                      # 0-padded IPv4
-    (2071658496L, 4)
-    >>> parseAddress('1080:0000:0000:0000:0008:0800:200C:417A')
-    (21932261930451111902915077091070067066L, 6)
-    >>> parseAddress('1080:0:0:0:8:800:200C:417A')
-    (21932261930451111902915077091070067066L, 6)
-    >>> parseAddress('1080:0::8:800:200C:417A')
-    (21932261930451111902915077091070067066L, 6)
-    >>> parseAddress('::1')
-    (1, 6)
-    >>> parseAddress('::')
-    (0, 6)
-    >>> parseAddress('0:0:0:0:0:FFFF:129.144.52.38')
-    (281472855454758L, 6)
-    >>> parseAddress('::13.1.68.3')
-    (218186755, 6)
-    >>> parseAddress('::FFFF:129.144.52.38')
-    (281472855454758L, 6)
+    >>> def testParseAddress(address):
+    ...     ip, version = parseAddress(address)
+    ...     print("%s (IPv%s)" % (ip, version))
+    ...
+    >>> testParseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
+    81985529216486895 (IPv6)
+    >>> testParseAddress('123.123.123.123')              # IPv4
+    2071690107 (IPv4)
+    >>> testParseAddress('123.123')                      # 0-padded IPv4
+    2071658496 (IPv4)
+    >>> testParseAddress('1080:0000:0000:0000:0008:0800:200C:417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('1080:0:0:0:8:800:200C:417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('1080:0::8:800:200C:417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('::1')
+    1 (IPv6)
+    >>> testParseAddress('::')
+    0 (IPv6)
+    >>> testParseAddress('0:0:0:0:0:FFFF:129.144.52.38')
+    281472855454758 (IPv6)
+    >>> testParseAddress('::13.1.68.3')
+    218186755 (IPv6)
+    >>> testParseAddress('::FFFF:129.144.52.38')
+    281472855454758 (IPv6)
     """
 
     if ipstr.startswith('0x'):
