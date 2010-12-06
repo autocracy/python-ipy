@@ -737,7 +737,7 @@ class NetIPChecks(unittest.TestCase):
         self.assertEqual(ip.version(), 6)
         self.assertEqual(ip.strNetmask(),'/48')
         self.assertEqual(str(ip.netmask()),'ffff:ffff:ffff::')
-        self.assertEqual(ip.iptype(),'UNASSIGNED')
+        self.assertEqual(ip.iptype(),'RESERVED')
         self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.arpa.')
         self.assertEqual(str(ip.broadcast()),'dead:beef:0:ffff:ffff:ffff:ffff:ffff')
 
