@@ -43,3 +43,19 @@ IP types
 >>> IP('224.0.0.0/8').iptype()
 'RESERVED'
 
+Reverse name
+============
+
+>>> IP('::ffff:193.0.1.208').reverseName()
+'208.1.0.193.in-addr.arpa.'
+>>> IP('::ffff:193.0.1.208').reverseNames()
+['208.1.0.193.in-addr.arpa.']
+>>> IP('128.0.0.0/7').reverseName()
+'128-255..in-addr.arpa.'
+>>> IP('128.0.0.0/7').reverseNames()
+['128.in-addr.arpa.', '129.in-addr.arpa.']
+>>> IP('::ffff:128.0.0.0/103').reverseName() == IP('128.0.0.0/7').reverseName()
+True
+>>> IP('::ffff:128.0.0.0/103').reverseNames() == IP('128.0.0.0/7').reverseNames()
+True
+
