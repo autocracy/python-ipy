@@ -798,6 +798,15 @@ class IP(IPint):
          """
         return IP(IPint.netmask(self))
 
+    def _getIPv4Map(self):
+        if self._ipversion != 6:
+            return None
+        if (self.ip >> 32) != 0xffff:
+            return None
+        ipv4 = self.ip & 0xffffffff
+        if self._prefixlen != 128:
+            ipv4 = '%s/%s' % (ipv4, 32-(128-self._prefixlen))
+        return IP(ipv4, ipversion=4)
 
     def reverseNames(self):
         """Return a list with values forming the reverse lookup.
@@ -839,6 +848,9 @@ class IP(IPint):
                     ret.append(self[i].reverseName()[6:])
             return ret
         elif self._ipversion == 6:
+            ipv4 = self._getIPv4Map()
+            if ipv4 is not None:
+                return ipv4.reverseNames()
             s = hex(self.ip)[2:].lower()
             if s[-1] == 'l':
                 s = s[:-1]
@@ -851,8 +863,6 @@ class IP(IPint):
             return ["%s.ip6.arpa." % s[first_nibble_index:]]
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
-
-
 
     def reverseName(self):
         """Return the value for reverse lookup/PTR records as RFC 2317 look alike.
@@ -886,6 +896,9 @@ class IP(IPint):
             return "%s%s.in-addr.arpa." % (nibblepart, s)
 
         elif self._ipversion == 6:
+            ipv4 = self._getIPv4Map()
+            if ipv4 is not None:
+                return ipv4.reverseName()
             s = hex(self.ip)[2:].lower()
             if s[-1] == 'l':
                 s = s[:-1]

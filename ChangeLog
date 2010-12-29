@@ -1,10 +1,11 @@
 Version 0.73
 	* Update the ranges for IPv6 IPs
+	* Fix reverseName() and reverseNames() for IPv4 in IPv6 addresses
 
-Version 0.72
+Version 0.72 (2010-11-23)
 	* Include examples and MANIFEST.in in source build (add them to
 	  MANIFEST.in)
-        * Remove __rcsid__ constant from IPy module
+	* Remove __rcsid__ constant from IPy module
 
 Version 0.71 (2010-10-01)
 	* Use xrange() instead of range()
