@@ -6,7 +6,7 @@ Further Information might be available at:
 http://software.inl.fr/trac/trac.cgi/wiki/IPy
 """
 
-__version__ = '0.72'
+__version__ = '0.73'
 
 import sys
 
@@ -480,7 +480,7 @@ class IPint:
         >>> print IP('::1').iptype()
         LOOPBACK
         >>> print IP('2001:0658:022a:cafe:0200::1').iptype()
-        ASSIGNABLE RIPE
+        ALLOCATED RIPE NCC
 
         The type information for IPv6 is out of sync with reality.
         """
@@ -742,9 +742,6 @@ class IPint:
                 return 0
 
     def __eq__(self, other):
-        if not isinstance(other, IPint):
-            return False
-         
         return self.__cmp__(other) == 0
 
     def __lt__(self, other):
@@ -801,6 +798,15 @@ class IP(IPint):
          """
         return IP(IPint.netmask(self))
 
+    def _getIPv4Map(self):
+        if self._ipversion != 6:
+            return None
+        if (self.ip >> 32) != 0xffff:
+            return None
+        ipv4 = self.ip & 0xffffffff
+        if self._prefixlen != 128:
+            ipv4 = '%s/%s' % (ipv4, 32-(128-self._prefixlen))
+        return IP(ipv4, ipversion=4)
 
     def reverseNames(self):
         """Return a list with values forming the reverse lookup.
@@ -842,6 +848,9 @@ class IP(IPint):
                     ret.append(self[i].reverseName()[6:])
             return ret
         elif self._ipversion == 6:
+            ipv4 = self._getIPv4Map()
+            if ipv4 is not None:
+                return ipv4.reverseNames()
             s = hex(self.ip)[2:].lower()
             if s[-1] == 'l':
                 s = s[:-1]
@@ -854,8 +863,6 @@ class IP(IPint):
             return ["%s.ip6.arpa." % s[first_nibble_index:]]
         else:
             raise ValueError, "only IPv4 and IPv6 supported"
-
-
 
     def reverseName(self):
         """Return the value for reverse lookup/PTR records as RFC 2317 look alike.
@@ -889,6 +896,9 @@ class IP(IPint):
             return "%s%s.in-addr.arpa." % (nibblepart, s)
 
         elif self._ipversion == 6:
+            ipv4 = self._getIPv4Map()
+            if ipv4 is not None:
+                return ipv4.reverseName()
             s = hex(self.ip)[2:].lower()
             if s[-1] == 'l':
                 s = s[:-1]
@@ -1091,28 +1101,32 @@ def parseAddress(ipstr):
 
     Following address formats are recognized:
 
-    >>> parseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
-    (81985529216486895L, 6)
-    >>> parseAddress('123.123.123.123')              # IPv4
-    (2071690107L, 4)
-    >>> parseAddress('123.123')                      # 0-padded IPv4
-    (2071658496L, 4)
-    >>> parseAddress('1080:0000:0000:0000:0008:0800:200C:417A')
-    (21932261930451111902915077091070067066L, 6)
-    >>> parseAddress('1080:0:0:0:8:800:200C:417A')
-    (21932261930451111902915077091070067066L, 6)
-    >>> parseAddress('1080:0::8:800:200C:417A')
-    (21932261930451111902915077091070067066L, 6)
-    >>> parseAddress('::1')
-    (1, 6)
-    >>> parseAddress('::')
-    (0, 6)
-    >>> parseAddress('0:0:0:0:0:FFFF:129.144.52.38')
-    (281472855454758L, 6)
-    >>> parseAddress('::13.1.68.3')
-    (218186755, 6)
-    >>> parseAddress('::FFFF:129.144.52.38')
-    (281472855454758L, 6)
+    >>> def testParseAddress(address):
+    ...     ip, version = parseAddress(address)
+    ...     print("%s (IPv%s)" % (ip, version))
+    ...
+    >>> testParseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
+    81985529216486895 (IPv6)
+    >>> testParseAddress('123.123.123.123')              # IPv4
+    2071690107 (IPv4)
+    >>> testParseAddress('123.123')                      # 0-padded IPv4
+    2071658496 (IPv4)
+    >>> testParseAddress('1080:0000:0000:0000:0008:0800:200C:417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('1080:0:0:0:8:800:200C:417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('1080:0::8:800:200C:417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('::1')
+    1 (IPv6)
+    >>> testParseAddress('::')
+    0 (IPv6)
+    >>> testParseAddress('0:0:0:0:0:FFFF:129.144.52.38')
+    281472855454758 (IPv6)
+    >>> testParseAddress('::13.1.68.3')
+    218186755 (IPv6)
+    >>> testParseAddress('::FFFF:129.144.52.38')
+    281472855454758 (IPv6)
     """
 
     if ipstr.startswith('0x'):
