@@ -742,6 +742,9 @@ class IPint:
                 return 0
 
     def __eq__(self, other):
+        if not isinstance(other, IPint):
+            return False
+        
         return self.__cmp__(other) == 0
 
     def __lt__(self, other):
