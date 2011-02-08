@@ -3,7 +3,7 @@ IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 See README file for learn how to use IPy.
 
 Further Information might be available at:
-http://software.inl.fr/trac/trac.cgi/wiki/IPy
+https://github.com/haypo/python-ipy
 """
 
 __version__ = '0.73'

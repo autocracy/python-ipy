@@ -140,7 +140,7 @@ IPy 0.60 works on Python version 2.4 and 2.5.
 This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
-http://software.inl.fr/trac/trac.cgi/wiki/IPy
+https://github.com/haypo/python-ipy
 
 
 TODO

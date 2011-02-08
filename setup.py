@@ -48,7 +48,7 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Natural Language :: English',
     'Programming Language :: Python']
-URL = "http://software.inl.fr/trac/trac.cgi/wiki/IPy"
+URL = "https://github.com/haypo/python-ipy"
 
 setup(name="IPy",
       version=IPy.__version__,
