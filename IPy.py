@@ -563,7 +563,7 @@ class IPint:
         0.0.0.0/0, the __len__() of the object becomes 0, which is used
         as the boolean value of the object.
         """
-        return 1
+        return True
 
 
     def __len__(self):
@@ -619,18 +619,18 @@ class IPint:
         >>> IP('195.185.1.1').strHex()
         '0xc3b90101'
         >>> 0xC3B90101 in IP('195.185.1.0/24')
-        1
+        True
         >>> '127.0.0.1' in IP('127.0.0.0/24')
-        1
+        True
         >>> IP('127.0.0.0/24') in IP('127.0.0.0/25')
-        0
+        False
         """
 
         item = IP(item)
         if item.ip >= self.ip and item.ip < self.ip + self.len() - item.len() + 1:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
 
     def overlaps(self, item):
@@ -1339,10 +1339,7 @@ def _checkNetmask(netmask, masklen):
 
 def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
     """Check if a base addess of a network is compatible with a prefixlen"""
-    if net & _prefixlenToNetmask(prefixlen, version) == net:
-        return 1
-    else:
-        return 0
+    return (net & _prefixlenToNetmask(prefixlen, version) == net)
 
 
 def _netmaskToPrefixlen(netmask):

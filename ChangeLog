@@ -1,7 +1,7 @@
 Version 0.74
 ------------
 
-xxx
+ * ip.__nonzero__() and (ipa in ipb) return a bool instead of 0 or 1
 
 Version 0.73 (2011-02-15)
 -------------------------
