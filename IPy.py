@@ -136,13 +136,13 @@ class IPint:
         If make_net is True, an IP address will be transformed into the network
         address by applying the specified netmask.
 
-        >>> print IP('127.0.0.0/8')
+        >>> print(IP('127.0.0.0/8'))
         127.0.0.0/8
-        >>> print IP('127.0.0.0/255.0.0.0')
+        >>> print(IP('127.0.0.0/255.0.0.0'))
         127.0.0.0/8
-        >>> print IP('127.0.0.0-127.255.255.255')
+        >>> print(IP('127.0.0.0-127.255.255.255'))
         127.0.0.0/8
-        >>> print IP('127.0.0.1/255.0.0.0', make_net=True)
+        >>> print(IP('127.0.0.1/255.0.0.0', make_net=True))
         127.0.0.0/8
 
         See module documentation for more examples.
@@ -335,7 +335,7 @@ class IPint:
     def strBin(self, wantprefixlen = None):
         """Return a string representation as a binary value.
 
-        >>> print IP('127.0.0.1').strBin()
+        >>> print(IP('127.0.0.1').strBin())
         01111111000000000000000000000001
         """
 
@@ -400,9 +400,9 @@ class IPint:
     def strNormal(self, wantprefixlen = None):
         """Return a string representation in the usual format.
 
-        >>> print IP('127.0.0.1').strNormal()
+        >>> print(IP('127.0.0.1').strNormal())
         127.0.0.1
-        >>> print IP('2001:0658:022a:cafe:0200::1').strNormal()
+        >>> print(IP('2001:0658:022a:cafe:0200::1').strNormal())
         2001:658:22a:cafe:200:0:0:1
         """
 
@@ -423,9 +423,9 @@ class IPint:
     def strFullsize(self, wantprefixlen = None):
         """Return a string representation in the non-mangled format.
 
-        >>> print IP('127.0.0.1').strFullsize()
+        >>> print(IP('127.0.0.1').strFullsize())
         127.0.0.1
-        >>> print IP('2001:0658:022a:cafe:0200::1').strFullsize()
+        >>> print(IP('2001:0658:022a:cafe:0200::1').strFullsize())
         2001:0658:022a:cafe:0200:0000:0000:0001
         """
 
@@ -454,9 +454,9 @@ class IPint:
     def strDec(self, wantprefixlen = None):
         """Return a string representation in decimal format.
 
-        >>> print IP('127.0.0.1').strDec()
+        >>> print(IP('127.0.0.1').strDec())
         2130706433
-        >>> print IP('2001:0658:022a:cafe:0200::1').strDec()
+        >>> print(IP('2001:0658:022a:cafe:0200::1').strDec())
         42540616829182469433547762482097946625
         """
 
@@ -471,15 +471,15 @@ class IPint:
     def iptype(self):
         """Return a description of the IP type ('PRIVATE', 'RESERVERD', etc).
 
-        >>> print IP('127.0.0.1').iptype()
+        >>> print(IP('127.0.0.1').iptype())
         PRIVATE
-        >>> print IP('192.168.1.1').iptype()
+        >>> print(IP('192.168.1.1').iptype())
         PRIVATE
-        >>> print IP('195.185.1.2').iptype()
+        >>> print(IP('195.185.1.2').iptype())
         PUBLIC
-        >>> print IP('::1').iptype()
+        >>> print(IP('::1').iptype())
         LOOPBACK
-        >>> print IP('2001:0658:022a:cafe:0200::1').iptype()
+        >>> print(IP('2001:0658:022a:cafe:0200::1').iptype())
         ALLOCATED RIPE NCC
 
         The type information for IPv6 is out of sync with reality.
@@ -522,9 +522,9 @@ class IPint:
     def strNetmask(self):
         """Return netmask as an string. Mostly useful for IPv6.
 
-        >>> print IP('195.185.0.0/16').strNetmask()
+        >>> print(IP('195.185.0.0/16').strNetmask())
         255.255.0.0
-        >>> print IP('2001:0658:022a:cafe::0/64').strNetmask()
+        >>> print(IP('2001:0658:022a:cafe::0/64').strNetmask())
         /64
         """
 
@@ -541,9 +541,9 @@ class IPint:
     def len(self):
         """Return the length of a subnet.
 
-        >>> print IP('195.185.1.0/28').len()
+        >>> print(IP('195.185.1.0/28').len())
         16
-        >>> print IP('195.185.1.0/24').len()
+        >>> print(IP('195.185.1.0/24').len())
         256
         """
 
@@ -583,8 +583,8 @@ class IPint:
 
         >>> ip=IP('127.0.0.0/30')
         >>> for x in ip:
-        ...  print repr(x)
-        ...
+        ...  print(repr(x))
+        ... 
         IP('127.0.0.0')
         IP('127.0.0.1')
         IP('127.0.0.2')
@@ -673,7 +673,7 @@ class IPint:
         to an identical Object (without the wantprefixlen stuff - see
         module docstring.
 
-        >>> print repr(IP('10.0.0.0/24'))
+        >>> print(repr(IP('10.0.0.0/24')))
         IP('10.0.0.0/24')
         """
 
@@ -871,9 +871,9 @@ class IP(IPint):
         for /23. Do not use it. Better set up a zone for every
         address. See reverseName for a way to achieve that.
 
-        >>> print IP('195.185.1.1').reverseName()
+        >>> print(IP('195.185.1.1').reverseName())
         1.1.185.195.in-addr.arpa.
-        >>> print IP('195.185.1.0/28').reverseName()
+        >>> print(IP('195.185.1.0/28').reverseName())
         0-15.1.185.195.in-addr.arpa.
         >>> IP('::1:2').reverseName()
         '2.0.0.0.1.ip6.arpa.'
@@ -923,7 +923,7 @@ class IP(IPint):
 
         Returns a new IP instance.
 
-        >>> print IP('127.0.0.1').make_net('255.0.0.0')
+        >>> print(IP('127.0.0.1').make_net('255.0.0.0'))
         127.0.0.0/8
         """
         if '/' in str(netmask):
@@ -935,15 +935,15 @@ class IP(IPint):
 
         >>> ip=IP('127.0.0.0/30')
         >>> for x in ip:
-        ...  print str(x)
-        ...
+        ...  print(str(x))
+        ... 
         127.0.0.0
         127.0.0.1
         127.0.0.2
         127.0.0.3
-        >>> print str(ip[2])
+        >>> print(str(ip[2]))
         127.0.0.2
-        >>> print str(ip[-1])
+        >>> print(str(ip[-1]))
         127.0.0.3
         """
         return IP(IPint.__getitem__(self, key))
@@ -978,50 +978,50 @@ def _parseAddressIPv6(ipstr):
     """
     Internal function used by parseAddress() to parse IPv6 address with ':'.
 
-    >>> print _parseAddressIPv6('::')
+    >>> print(_parseAddressIPv6('::'))
     0
-    >>> print _parseAddressIPv6('::1')
+    >>> print(_parseAddressIPv6('::1'))
     1
-    >>> print _parseAddressIPv6('0:0:0:0:0:0:0:1')
+    >>> print(_parseAddressIPv6('0:0:0:0:0:0:0:1'))
     1
-    >>> print _parseAddressIPv6('0:0:0::0:0:1')
+    >>> print(_parseAddressIPv6('0:0:0::0:0:1'))
     1
-    >>> print _parseAddressIPv6('0:0:0:0:0:0:0:0')
+    >>> print(_parseAddressIPv6('0:0:0:0:0:0:0:0'))
     0
-    >>> print _parseAddressIPv6('0:0:0::0:0:0')
+    >>> print(_parseAddressIPv6('0:0:0::0:0:0'))
     0
 
-    >>> print _parseAddressIPv6('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210')
+    >>> print(_parseAddressIPv6('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210'))
     338770000845734292534325025077361652240
-    >>> print _parseAddressIPv6('1080:0000:0000:0000:0008:0800:200C:417A')
+    >>> print(_parseAddressIPv6('1080:0000:0000:0000:0008:0800:200C:417A'))
     21932261930451111902915077091070067066
-    >>> print _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
+    >>> print(_parseAddressIPv6('1080:0:0:0:8:800:200C:417A'))
     21932261930451111902915077091070067066
-    >>> print _parseAddressIPv6('1080:0::8:800:200C:417A')
+    >>> print(_parseAddressIPv6('1080:0::8:800:200C:417A'))
     21932261930451111902915077091070067066
-    >>> print _parseAddressIPv6('1080::8:800:200C:417A')
+    >>> print(_parseAddressIPv6('1080::8:800:200C:417A'))
     21932261930451111902915077091070067066
-    >>> print _parseAddressIPv6('FF01:0:0:0:0:0:0:43')
+    >>> print(_parseAddressIPv6('FF01:0:0:0:0:0:0:43'))
     338958331222012082418099330867817087043
-    >>> print _parseAddressIPv6('FF01:0:0::0:0:43')
+    >>> print(_parseAddressIPv6('FF01:0:0::0:0:43'))
     338958331222012082418099330867817087043
-    >>> print _parseAddressIPv6('FF01::43')
+    >>> print(_parseAddressIPv6('FF01::43'))
     338958331222012082418099330867817087043
-    >>> print _parseAddressIPv6('0:0:0:0:0:0:13.1.68.3')
+    >>> print(_parseAddressIPv6('0:0:0:0:0:0:13.1.68.3'))
     218186755
-    >>> print _parseAddressIPv6('::13.1.68.3')
+    >>> print(_parseAddressIPv6('::13.1.68.3'))
     218186755
-    >>> print _parseAddressIPv6('0:0:0:0:0:FFFF:129.144.52.38')
+    >>> print(_parseAddressIPv6('0:0:0:0:0:FFFF:129.144.52.38'))
     281472855454758
-    >>> print _parseAddressIPv6('::FFFF:129.144.52.38')
+    >>> print(_parseAddressIPv6('::FFFF:129.144.52.38'))
     281472855454758
-    >>> print _parseAddressIPv6('1080:0:0:0:8:800:200C:417A')
+    >>> print(_parseAddressIPv6('1080:0:0:0:8:800:200C:417A'))
     21932261930451111902915077091070067066
-    >>> print _parseAddressIPv6('1080::8:800:200C:417A')
+    >>> print(_parseAddressIPv6('1080::8:800:200C:417A'))
     21932261930451111902915077091070067066
-    >>> print _parseAddressIPv6('::1:2:3:4:5:6')
+    >>> print(_parseAddressIPv6('::1:2:3:4:5:6'))
     1208962713947218704138246
-    >>> print _parseAddressIPv6('1:2:3:4:5:6::')
+    >>> print(_parseAddressIPv6('1:2:3:4:5:6::'))
     5192455318486707404433266432802816
     """
 
@@ -1103,8 +1103,8 @@ def parseAddress(ipstr):
 
     >>> def testParseAddress(address):
     ...     ip, version = parseAddress(address)
-    ...     print("%s (IPv%s)" % (ip, version))
-    ...
+    ...     print(("%s (IPv%s)" % (ip, version)))
+    ... 
     >>> testParseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
     81985529216486895 (IPv6)
     >>> testParseAddress('123.123.123.123')              # IPv4
@@ -1380,4 +1380,5 @@ if __name__ == "__main__":
     if failure:
         import sys
         sys.exit(1)
+
 

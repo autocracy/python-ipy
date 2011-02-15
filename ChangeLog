@@ -1,6 +1,8 @@
 Version 0.73
 	* Update the ranges for IPv6 IPs
 	* Fix reverseName() and reverseNames() for IPv4 in IPv6 addresses
+	* Prepare support of Python 3
+	* Drop support of Python < 2.5
 
 Version 0.72 (2010-11-23)
 	* Include examples and MANIFEST.in in source build (add them to
