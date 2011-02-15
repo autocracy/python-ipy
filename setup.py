@@ -2,16 +2,19 @@
 
 # Release process:
 #
-#  - set release date in ChangeLog
+#  - set version in IPy.py
+#  - set version in setup.py
 #  - make (to run tests)
+#  - set release date in ChangeLog
 #  - git commit -a
-#  - git tag -a IPy-xxx
+#  - git tag -a IPy-x.py -m "tag IPy x.y"
+#  - git push
 #  - git push --tags
 #  - ./setup.py register sdist upload
 #  - update the website
 #
 # After the release:
-#  - set version to n+1
+#  - set version to n+1 (IPy.py and setup.py)
 #  - add a new empty section in the changelog for version n+1
 #  - git commit -a
 #  - git push
@@ -48,6 +51,7 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Natural Language :: English',
     'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
 ]
 URL = "https://github.com/haypo/python-ipy"
 
