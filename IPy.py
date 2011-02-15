@@ -961,7 +961,7 @@ class IP(IPint):
         """Emulate numeric objects through network aggregation"""
         if self.prefixlen() != other.prefixlen():
             raise ValueError("Only networks with the same prefixlen can be added.")
-        if self.prefixlen < 1:
+        if self.prefixlen() < 1:
             raise ValueError("Networks with a prefixlen longer than /1 can't be added.")
         if self.version() != other.version():
             raise ValueError("Only networks with the same IP version can be added.")

@@ -11,6 +11,8 @@ Contributors
 
 Aras Vaichas <arasv AT magtech.com.au>
    > fix __getitem__ for IP object of size 1
+Arfever
+   > IP('0.0.0.0/0') + IP('0.0.0.0/0') raises an error
 Bernhard Frauendienst <contact AT obeliks.de>
    > fix IPv6 parser
 James Teh <james.teh AT netboxblue.com>

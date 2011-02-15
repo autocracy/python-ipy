@@ -2,6 +2,7 @@ Version 0.74
 ------------
 
  * ip.__nonzero__() and (ipa in ipb) return a bool instead of 0 or 1
+ * IP('0.0.0.0/0') + IP('0.0.0.0/0') raises an error, fix written by Arfever
 
 Version 0.73 (2011-02-15)
 -------------------------

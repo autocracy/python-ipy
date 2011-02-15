@@ -1,3 +1,6 @@
+Non regression tests
+====================
+
 >>> from IPy import IP
 >>> IP('::ffff:1.2.3.4').strCompressed()
 '::ffff:1.2.3.4'
@@ -7,6 +10,10 @@
 '::ffff:192.168.10.0/120'
 >>> IP('::/0', make_net=True).net()
 IP('::')
+>>> IP('0.0.0.0/0') + IP('0.0.0.0/0')
+Traceback (most recent call last):
+  ...
+ValueError: Networks with a prefixlen longer than /1 can't be added.
 
 Compare 0.0.0.0/0 and ::/0 bug
 ==============================
