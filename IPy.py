@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '0.73'
+__version__ = '0.74'
 
 import sys
 import types
