@@ -311,67 +311,67 @@ class netmaskPrefixlenConv(unittest.TestCase):
 
     def testInvalidv4n2p(self):
         """Netmasks should be all ones in the first part and all zeros in the second part"""
-        self.failUnlessRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00)
+        self.assertRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00)
 
     def testInvalidv6n2p(self):
         """Netmasks should be all ones in the first part and all zeros in the second part"""
-        self.failUnlessRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00ff00ff00ff00ff00ff00ff00)
+        self.assertRaises(ValueError, IPy._netmaskToPrefixlen, 0xff00ff00ff00ff00ff00ff00ff00ff00)
 
 
 class checkChecks(unittest.TestCase):
 
     def testCheckNetmaskOk(self):
         """Legal Netmasks should be allowed."""
-        self.failIf(IPy._checkNetmask(0xffffffffL, 32))
-        self.failIf(IPy._checkNetmask(0xffffff00, 32))
-        self.failIf(IPy._checkNetmask(0xffff0000, 32))
-        self.failIf(IPy._checkNetmask(0xff000000, 32))
-        self.failIf(IPy._checkNetmask(0, 32))
+        self.assertFalse(IPy._checkNetmask(0xffffffffL, 32))
+        self.assertFalse(IPy._checkNetmask(0xffffff00, 32))
+        self.assertFalse(IPy._checkNetmask(0xffff0000, 32))
+        self.assertFalse(IPy._checkNetmask(0xff000000, 32))
+        self.assertFalse(IPy._checkNetmask(0, 32))
 
     def testCheckNetmaskFail(self):
         """Illegal Netmasks should be rejected."""
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xf0ffffffL, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xf0f0f0f0, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xff00ff00, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0x70000001, 32)
-        self.failUnlessRaises(ValueError, IPy._checkNetmask, 0xfffffffL, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0xf0ffffffL, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0xf0f0f0f0, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0xff00ff00, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0x70000001, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0xfffffffL, 32)
 
     def testCheckPrefixOk(self):
         """Legal IP/prefix combinations should check ok."""
-        self.failUnless(IPy._checkPrefix(0x0, 32, 4))
-        self.failUnless(IPy._checkPrefix(0xffffffffL, 32, 4))
-        self.failUnless(IPy._checkPrefix(0x7f000001, 32, 4))
-        self.failUnless(IPy._checkPrefix(0x80000000, 1, 4))
-        self.failUnless(IPy._checkPrefix(0x40000000, 2, 4))
-        self.failUnless(IPy._checkPrefix(0x80000000, 3, 4))
-        self.failUnless(IPy._checkPrefix(0x80000000, 4, 4))
-        self.failUnless(IPy._checkPrefix(0xffffff00, 24, 4))
-        self.failUnless(IPy._checkPrefix(0xffffff00, 24, 4))
-        self.failUnless(IPy._checkPrefix(0xfffffff0, 28, 4))
-        self.failUnless(IPy._checkPrefix(0x0, 32, 4))
-        self.failUnless(IPy._checkPrefix(0x0, 1, 4))
-        self.failUnless(IPy._checkPrefix(0x0, 0, 4))
-        self.failUnless(IPy._checkPrefix(0xffffffffffffffff0000000000000000, 64, 6))
-        self.failUnless(IPy._checkPrefix(0x0, 64, 6))
-        self.failUnless(IPy._checkPrefix(0x0, 0, 6))
-        self.failUnless(IPy._checkPrefix(0x0, 128, 6))
-        self.failUnless(IPy._checkPrefix(0xffffffffffffffffffffffffffffffffL, 128, 6))
+        self.assertTrue(IPy._checkPrefix(0x0, 32, 4))
+        self.assertTrue(IPy._checkPrefix(0xffffffffL, 32, 4))
+        self.assertTrue(IPy._checkPrefix(0x7f000001, 32, 4))
+        self.assertTrue(IPy._checkPrefix(0x80000000, 1, 4))
+        self.assertTrue(IPy._checkPrefix(0x40000000, 2, 4))
+        self.assertTrue(IPy._checkPrefix(0x80000000, 3, 4))
+        self.assertTrue(IPy._checkPrefix(0x80000000, 4, 4))
+        self.assertTrue(IPy._checkPrefix(0xffffff00, 24, 4))
+        self.assertTrue(IPy._checkPrefix(0xffffff00, 24, 4))
+        self.assertTrue(IPy._checkPrefix(0xfffffff0, 28, 4))
+        self.assertTrue(IPy._checkPrefix(0x0, 32, 4))
+        self.assertTrue(IPy._checkPrefix(0x0, 1, 4))
+        self.assertTrue(IPy._checkPrefix(0x0, 0, 4))
+        self.assertTrue(IPy._checkPrefix(0xffffffffffffffff0000000000000000, 64, 6))
+        self.assertTrue(IPy._checkPrefix(0x0, 64, 6))
+        self.assertTrue(IPy._checkPrefix(0x0, 0, 6))
+        self.assertTrue(IPy._checkPrefix(0x0, 128, 6))
+        self.assertTrue(IPy._checkPrefix(0xffffffffffffffffffffffffffffffffL, 128, 6))
 
 
     def testCheckPrefixFail(self):
         """Illegal Prefixes should be catched."""
-        self.failIf(IPy._checkPrefix(0x7f000001, -1, 4))
-        self.failIf(IPy._checkPrefix(0x7f000001, 33, 4))
-        self.failIf(IPy._checkPrefix(0x7f000001, 24, 4))
-        self.failIf(IPy._checkPrefix(0x7f000001, 31, 4))
-        self.failIf(IPy._checkPrefix(0x7f000080, 24, 4))
-        self.failIf(IPy._checkPrefix(0x7f000100, 23, 4))
-        self.failIf(IPy._checkPrefix(0x7f000000, 1, 4))
-        self.failIf(IPy._checkPrefix(0x7f000000, 0, 4))
-        self.failIf(IPy._checkPrefix(0x1, -1, 6))
-        self.failIf(IPy._checkPrefix(0x1, 129, 6))
-        self.failIf(IPy._checkPrefix(0xffffffffffffffff0000000000000001, 64, 6))
-        self.failIf(IPy._checkPrefix(0xffffffffffffffff1000000000000000, 64, 6))
+        self.assertFalse(IPy._checkPrefix(0x7f000001, -1, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000001, 33, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000001, 24, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000001, 31, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000080, 24, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000100, 23, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000000, 1, 4))
+        self.assertFalse(IPy._checkPrefix(0x7f000000, 0, 4))
+        self.assertFalse(IPy._checkPrefix(0x1, -1, 6))
+        self.assertFalse(IPy._checkPrefix(0x1, 129, 6))
+        self.assertFalse(IPy._checkPrefix(0xffffffffffffffff0000000000000001, 64, 6))
+        self.assertFalse(IPy._checkPrefix(0xffffffffffffffff1000000000000000, 64, 6))
 
 
     # TODO: _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
@@ -422,61 +422,61 @@ class PythonObjectBehaviour(unittest.TestCase):
         """__contains__() should work somewhat with ints"""
         ip = IPy.IP('127.0.0.0/28')
         for x in ip:
-            self.failUnless(x.int() in ip)
+            self.assertTrue(x.int() in ip)
         ip = IPy.IP('2001::/124')
         for x in ip:
-            self.failUnless(x.int() in ip)
+            self.assertTrue(x.int() in ip)
 
     def testIfContainsStr(self):
         """__contains__() should work somewhat with strings"""
         ip = IPy.IP('127.0.0.0/28')
         for x in ip:
-            self.failUnless(x.strNormal() in ip, "%r not in %r" % (x.strNormal(), ip))
+            self.assertTrue(x.strNormal() in ip, "%r not in %r" % (x.strNormal(), ip))
         ip = IPy.IP('2001::/124')
         for x in ip:
-            self.failUnless(x.strNormal() in ip, "%r not in %r" % (x.strNormal(), ip))
+            self.assertTrue(x.strNormal() in ip, "%r not in %r" % (x.strNormal(), ip))
 
     def testIfContainsIPobj(self):
         """__contains__() should work somewhat with IP instances"""
         ip = IPy.IP('127.0.0.0/28')
         for x in ip:
-            self.failUnless(x in ip)
+            self.assertTrue(x in ip)
         ip = IPy.IP('2001::/124')
         for x in ip:
-            self.failUnless(x in ip)
+            self.assertTrue(x in ip)
 
     def testActingAsArray(self):
         """An IP-object should handle indices."""
         ip = IPy.IP('127.0.0.0/24')
         self.assertEqual(ip[0], ip.net())
         self.assertEqual(ip[-1], ip.broadcast())
-        self.failUnless(ip[255])
-        self.failUnlessRaises(IndexError, ip.__getitem__, 256)
+        self.assertTrue(ip[255])
+        self.assertRaises(IndexError, ip.__getitem__, 256)
 
     def testStr(self):
         """string() should work somewhat with IP instances"""
         ip = IPy.IP('127.0.0.0/28')
         for x in ip:
-            self.failUnless(str(x))
+            self.assertTrue(str(x))
         ip = IPy.IP('2001::/124')
         for x in ip:
-            self.failUnless(str(x))
+            self.assertTrue(str(x))
 
     def testRepr(self):
         """repr() should work somewhat with IP instances"""
         ip = IPy.IP('127.0.0.0/28')
         for x in ip:
-            self.failUnless(repr(x))
+            self.assertTrue(repr(x))
         ip = IPy.IP('2001::/124')
         for x in ip:
-            self.failUnless(repr(x))
+            self.assertTrue(repr(x))
 
     def testLen(self):
         """object should have an working __len__() interface."""
-        self.failUnlessEqual(len(IPy.IP('127.0.0.0/28')), 16)
-        self.failUnlessEqual(len(IPy.IP('127.0.0.0/30')), 4)
-        self.failUnlessEqual(len(IPy.IP('127.0.0.0/26')), 64)
-        self.failUnlessEqual(len(IPy.IP('127.0.0.0/16')), 2**16)
+        self.assertEqual(len(IPy.IP('127.0.0.0/28')), 16)
+        self.assertEqual(len(IPy.IP('127.0.0.0/30')), 4)
+        self.assertEqual(len(IPy.IP('127.0.0.0/26')), 64)
+        self.assertEqual(len(IPy.IP('127.0.0.0/16')), 2**16)
 
     # cmp
     # IP[0xffffffff]
@@ -512,7 +512,7 @@ class IPobject(unittest.TestCase):
                   '1::2:0:0:3']
         for question in testValues:
             result = IPy.IP(question).strCompressed()
-            self.failUnlessEqual(question, result, (question, result))
+            self.assertEqual(question, result, (question, result))
 
     def testStrBin(self):
         """Binary string Output."""
@@ -532,7 +532,7 @@ class IPobject(unittest.TestCase):
                       ('1::2:0:0:3', '00000000000000010000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000011')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strBin()
-            self.failUnlessEqual(answer, result, (question, answer, result))
+            self.assertEqual(answer, result, (question, answer, result))
 
     def testStrNormal(self):
         """Normal string Output."""
@@ -546,7 +546,7 @@ class IPobject(unittest.TestCase):
                       (3588059479, '213.221.113.87')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strNormal(question)
-            self.failUnlessEqual(answer, result, (question, result, answer))
+            self.assertEqual(answer, result, (question, result, answer))
 
     def testStrFullsize(self):
         """Normal / 0-padded string Output."""
@@ -560,7 +560,7 @@ class IPobject(unittest.TestCase):
                       (3588059479, '213.221.113.87')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strFullsize(question)
-            self.failUnlessEqual(answer, result, (question, result, answer))
+            self.assertEqual(answer, result, (question, result, answer))
 
     def testStrHex(self):
         """Hex string Output."""
@@ -574,7 +574,7 @@ class IPobject(unittest.TestCase):
                       (0x12345678, '0x12345678')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strHex(question).lower()
-            self.failUnlessEqual(answer, result, (question, result, answer))
+            self.assertEqual(answer, result, (question, result, answer))
 
     def testStrDec(self):
         """Decimal string Output."""
@@ -587,61 +587,61 @@ class IPobject(unittest.TestCase):
                       (0xD5DD7157, '3588059479')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strDec(question)
-            self.failUnlessEqual(answer, result, (question, result, answer))
+            self.assertEqual(answer, result, (question, result, answer))
 
     def testNet(self):
         """Returning of the Network Address"""
-        self.failUnlessEqual(str(IPy.IP("127.0.0.1").net()), "127.0.0.1")
-        self.failUnlessEqual(str(IPy.IP("0.0.0.0/0").net()), "0.0.0.0")
-        self.failUnlessEqual(str(IPy.IP("2001:1234:5678:1234::/64").net()), "2001:1234:5678:1234::")
+        self.assertEqual(str(IPy.IP("127.0.0.1").net()), "127.0.0.1")
+        self.assertEqual(str(IPy.IP("0.0.0.0/0").net()), "0.0.0.0")
+        self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").net()), "2001:1234:5678:1234::")
 
 
     def testBroadcast(self):
         """Returning of broadcast address."""
-        self.failUnlessEqual(str(IPy.IP("127.0.0.1").broadcast()), "127.0.0.1")
-        self.failUnlessEqual(str(IPy.IP("0.0.0.0/0").broadcast()), "255.255.255.255")
-        self.failUnlessEqual(str(IPy.IP("2001:1234:5678:1234::/64").broadcast()), "2001:1234:5678:1234:ffff:ffff:ffff:ffff")
+        self.assertEqual(str(IPy.IP("127.0.0.1").broadcast()), "127.0.0.1")
+        self.assertEqual(str(IPy.IP("0.0.0.0/0").broadcast()), "255.255.255.255")
+        self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").broadcast()), "2001:1234:5678:1234:ffff:ffff:ffff:ffff")
 
 
     def testStrNetmask(self):
         """StrNetmask should return netmasks"""
-        self.failUnlessEqual(IPy.IP("0.0.0.0/0").strNetmask(), "0.0.0.0")
-        self.failUnlessEqual(IPy.IP("0.0.0.0/32").strNetmask(), "255.255.255.255")
-        self.failUnlessEqual(IPy.IP("127.0.0.0/24").strNetmask(), "255.255.255.0")
-        self.failUnlessEqual(IPy.IP("2001:1234:5678:1234::/64").strNetmask(), "/64")
+        self.assertEqual(IPy.IP("0.0.0.0/0").strNetmask(), "0.0.0.0")
+        self.assertEqual(IPy.IP("0.0.0.0/32").strNetmask(), "255.255.255.255")
+        self.assertEqual(IPy.IP("127.0.0.0/24").strNetmask(), "255.255.255.0")
+        self.assertEqual(IPy.IP("2001:1234:5678:1234::/64").strNetmask(), "/64")
 
 
     def testNetmask(self):
         """Netmask should return netmasks"""
-        self.failUnlessEqual(str(IPy.IP("0.0.0.0/0").netmask()), "0.0.0.0")
-        self.failUnlessEqual(str(IPy.IP("0.0.0.0/32").netmask()), "255.255.255.255")
-        self.failUnlessEqual(str(IPy.IP("127.0.0.0/24").netmask()), "255.255.255.0")
-        self.failUnlessEqual(str(IPy.IP("2001:1234:5678:1234::/64").netmask()), "ffff:ffff:ffff:ffff:0000:0000:0000:0000")
+        self.assertEqual(str(IPy.IP("0.0.0.0/0").netmask()), "0.0.0.0")
+        self.assertEqual(str(IPy.IP("0.0.0.0/32").netmask()), "255.255.255.255")
+        self.assertEqual(str(IPy.IP("127.0.0.0/24").netmask()), "255.255.255.0")
+        self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").netmask()), "ffff:ffff:ffff:ffff:0000:0000:0000:0000")
 
     def testInt(self):
         """Prefixlen"""
-        self.failUnlessEqual(IPy.IP("127.0.0.1").int(), 2130706433)
-        self.failUnlessEqual(IPy.IP("0.0.0.0").int(), 0)
-        self.failUnlessEqual(IPy.IP("255.255.255.255").int(), 0xffffffffL)
-        self.failUnlessEqual(IPy.IP("0000:0000:0000:0000:0000:0000:0000:0000").int(), 0)
-        self.failUnlessEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffffL)
-        self.failUnlessEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008)
+        self.assertEqual(IPy.IP("127.0.0.1").int(), 2130706433)
+        self.assertEqual(IPy.IP("0.0.0.0").int(), 0)
+        self.assertEqual(IPy.IP("255.255.255.255").int(), 0xffffffffL)
+        self.assertEqual(IPy.IP("0000:0000:0000:0000:0000:0000:0000:0000").int(), 0)
+        self.assertEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffffL)
+        self.assertEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008)
 
 
     def testPrefixlen(self):
         """Prefixlen"""
-        self.failUnlessEqual(IPy.IP("127.0.0.1").prefixlen(), 32)
-        self.failUnlessEqual(IPy.IP("::1").prefixlen(), 128)
-        self.failUnlessEqual(IPy.IP("10.0.0.0/24").prefixlen(), 24)
-        self.failUnlessEqual(IPy.IP("10.0.0.0-10.0.0.255").prefixlen(), 24)
-        self.failUnlessEqual(IPy.IP("10.0.0.0/255.255.255.0").prefixlen(), 24)
-        self.failUnlessEqual(IPy.IP("2001::/64").prefixlen(), 64)
+        self.assertEqual(IPy.IP("127.0.0.1").prefixlen(), 32)
+        self.assertEqual(IPy.IP("::1").prefixlen(), 128)
+        self.assertEqual(IPy.IP("10.0.0.0/24").prefixlen(), 24)
+        self.assertEqual(IPy.IP("10.0.0.0-10.0.0.255").prefixlen(), 24)
+        self.assertEqual(IPy.IP("10.0.0.0/255.255.255.0").prefixlen(), 24)
+        self.assertEqual(IPy.IP("2001::/64").prefixlen(), 64)
 
 
     def testVersion(self):
         """IP-version detection should work"""
-        self.failUnlessEqual(IPy.IP("0.0.0.0/0").version(), 4)
-        self.failUnlessEqual(IPy.IP("::1").version(), 6)
+        self.assertEqual(IPy.IP("0.0.0.0/0").version(), 4)
+        self.assertEqual(IPy.IP("::1").version(), 6)
 
     # TODO:
     #def reverseNames(self):
@@ -663,7 +663,7 @@ class IPobject(unittest.TestCase):
                       ('127.0.0.1', '127.0.0.2', 0)]
         for (a, b, answer) in testValues:
             result = IPy.IP(a).overlaps(b)
-            self.failUnlessEqual(answer, result, (a, b, result, answer))
+            self.assertEqual(answer, result, (a, b, result, answer))
 
     def testNetmask(self):
         """Normal string Output."""
@@ -676,7 +676,7 @@ class IPobject(unittest.TestCase):
                       (3588059479, '0xd5dd7157')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strHex(question).lower()
-            self.failUnlessEqual(answer, result, (question, result, answer))
+            self.assertEqual(answer, result, (question, result, answer))
 
 # TODO
 #eval(repr(IPy))
@@ -705,7 +705,7 @@ class NetIPChecks(unittest.TestCase):
         ip = IPy.IP('202.31.4/24')
         self.assertEqual(str(ip.net()),'202.31.4.0')
 
-        self.failUnlessRaises(ValueError, IPy.IP, '234.245.252.253/2')
+        self.assertRaises(ValueError, IPy.IP, '234.245.252.253/2')
 
         # because we ar using integer representation we don't need a special "binadd"
         ip = IPy.IP('62.33.41.9')
