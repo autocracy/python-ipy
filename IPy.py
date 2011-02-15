@@ -9,6 +9,7 @@ https://github.com/haypo/python-ipy
 __version__ = '0.73'
 
 import sys
+import types
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -174,7 +175,7 @@ class IPint:
                     raise ValueError("IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %x" % self.ip)
                 prefixlen = 128
             else:
-                raise ValueError, "only IPv4 and IPv6 supported"
+                raise ValueError("only IPv4 and IPv6 supported")
             self._ipversion = ipversion
             self._prefixlen = prefixlen
         # handle IP instance as an parameter
@@ -191,20 +192,19 @@ class IPint:
                 (ip, last) = x
                 (self.ip, parsedVersion) = parseAddress(ip)
                 if parsedVersion != 4:
-                    raise ValueError, "first-last notation only allowed for IPv4"
+                    raise ValueError("first-last notation only allowed for IPv4")
                 (last, lastversion) = parseAddress(last)
                 if lastversion != 4:
-                    raise ValueError, "last address should be IPv4, too"
+                    raise ValueError("last address should be IPv4, too")
                 if last < self.ip:
-                    raise ValueError, "last address should be larger than first"
+                    raise ValueError("last address should be larger than first")
                 size = last - self.ip
                 netbits = _count1Bits(size)
                 # make sure the broadcast is the same as the last ip
                 # otherwise it will return /16 for something like:
                 # 192.168.0.0-192.168.191.255
                 if IP('%s/%s' % (ip, 32-netbits)).broadcast().int() != last:
-                    raise ValueError, \
-                        "the range %s is not on a network boundary." % data
+                    raise ValueError("the range %s is not on a network boundary." % data)
             elif len(x) == 1:
                 x = data.split('/')
                 # if no prefix is given use defaults
@@ -212,7 +212,7 @@ class IPint:
                     ip = x[0]
                     prefixlen = -1
                 elif len(x) > 2:
-                    raise ValueError, "only one '/' allowed in IP Address"
+                    raise ValueError("only one '/' allowed in IP Address")
                 else:
                     (ip, prefixlen) = x
                     if prefixlen.find('.') != -1:
@@ -220,12 +220,12 @@ class IPint:
                         # a.b.c.d/255.255.255.0
                         (netmask, vers) = parseAddress(prefixlen)
                         if vers != 4:
-                            raise ValueError, "netmask must be IPv4"
+                            raise ValueError("netmask must be IPv4")
                         prefixlen = _netmaskToPrefixlen(netmask)
             elif len(x) > 2:
-                raise ValueError, "only one '-' allowed in IP Address"
+                raise ValueError("only one '-' allowed in IP Address")
             else:
-                raise ValueError, "can't parse"
+                raise ValueError("can't parse")
 
             (self.ip, parsedVersion) = parseAddress(ip)
             if ipversion == 0:
@@ -236,7 +236,7 @@ class IPint:
                 elif ipversion == 6:
                     prefixlen = 128 - netbits
                 else:
-                    raise ValueError, "only IPv4 and IPv6 supported"
+                    raise ValueError("only IPv4 and IPv6 supported")
             self._ipversion = ipversion
             self._prefixlen = int(prefixlen)
 
@@ -245,7 +245,7 @@ class IPint:
 
             if not _checkNetaddrWorksWithPrefixlen(self.ip,
             self._prefixlen, self._ipversion):
-                raise ValueError, "%s has invalid prefix length (%s)" % (repr(self), self._prefixlen)
+                raise ValueError("%s has invalid prefix length (%s)" % (repr(self), self._prefixlen))
         else:
             raise TypeError("Unsupported data type: %s" % type(data))
 
@@ -345,7 +345,7 @@ class IPint:
         elif self._ipversion == 6:
             bits = 128
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
         if self.WantPrefixLen == None and wantprefixlen == None:
             wantprefixlen = 0
@@ -414,7 +414,7 @@ class IPint:
         elif self._ipversion == 6:
             ret = ':'.join([hex(x)[2:] for x in [int(x, 16) for x in self.strFullsize(0).split(':')]])
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
 
 
@@ -492,11 +492,11 @@ class IPint:
         elif self._ipversion == 6:
             iprange = IPv6ranges
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
         bits = self.strBin()
         for i in xrange(len(bits), 0, -1):
-            if iprange.has_key(bits[:i]):
+            if bits[:i] in iprange:
                 return iprange[bits[:i]]
         return "unknown"
 
@@ -514,7 +514,7 @@ class IPint:
         elif self._ipversion == 6:
             locallen = 128 - self._prefixlen
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
         return ((2 ** self._prefixlen) - 1) << locallen
 
@@ -536,7 +536,7 @@ class IPint:
             locallen = 128 - self._prefixlen
             return "/%d" % self._prefixlen
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
     def len(self):
         """Return the length of a subnet.
@@ -552,7 +552,7 @@ class IPint:
         elif self._ipversion == 6:
             locallen = 128 - self._prefixlen
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
         return 2 ** locallen
 
@@ -584,7 +584,7 @@ class IPint:
         >>> ip=IP('127.0.0.0/30')
         >>> for x in ip:
         ...  print(repr(x))
-        ... 
+        ...
         IP('127.0.0.0')
         IP('127.0.0.1')
         IP('127.0.0.2')
@@ -855,14 +855,14 @@ class IP(IPint):
             if s[-1] == 'l':
                 s = s[:-1]
             if self._prefixlen % 4 != 0:
-                raise NotImplementedError, "can't create IPv6 reverse names at sub nibble level"
+                raise NotImplementedError("can't create IPv6 reverse names at sub nibble level")
             s = list(s)
             s.reverse()
             s = '.'.join(s)
             first_nibble_index = int(32 - (self._prefixlen // 4)) * 2
             return ["%s.ip6.arpa." % s[first_nibble_index:]]
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
     def reverseName(self):
         """Return the value for reverse lookup/PTR records as RFC 2317 look alike.
@@ -915,7 +915,7 @@ class IP(IPint):
             first_nibble_index = int(32 - (self._prefixlen // 4)) * 2
             return "%s%s.ip6.arpa." % (nibblepart, s[first_nibble_index:])
         else:
-            raise ValueError, "only IPv4 and IPv6 supported"
+            raise ValueError("only IPv4 and IPv6 supported")
 
     def make_net(self, netmask):
         """Transform a single IP address into a network specification by
@@ -927,7 +927,7 @@ class IP(IPint):
         127.0.0.0/8
         """
         if '/' in str(netmask):
-            raise ValueError, "invalid netmask (%s)" % netmask
+            raise ValueError("invalid netmask (%s)" % netmask)
         return IP('%s/%s' % (self, netmask), make_net=True)
 
     def __getitem__(self, key):
@@ -936,7 +936,7 @@ class IP(IPint):
         >>> ip=IP('127.0.0.0/30')
         >>> for x in ip:
         ...  print(str(x))
-        ... 
+        ...
         127.0.0.0
         127.0.0.1
         127.0.0.2
@@ -960,11 +960,11 @@ class IP(IPint):
     def __add__(self, other):
         """Emulate numeric objects through network aggregation"""
         if self.prefixlen() != other.prefixlen():
-            raise ValueError, "Only networks with the same prefixlen can be added."
+            raise ValueError("Only networks with the same prefixlen can be added.")
         if self.prefixlen < 1:
-            raise ValueError, "Networks with a prefixlen longer than /1 can't be added."
+            raise ValueError("Networks with a prefixlen longer than /1 can't be added.")
         if self.version() != other.version():
-            raise ValueError, "Only networks with the same IP version can be added."
+            raise ValueError("Only networks with the same IP version can be added.")
         if self > other:
             # fixed by Skinny Puppy <skin_pup-IPy@happypoo.com>
             return other.__add__(self)
@@ -1104,7 +1104,7 @@ def parseAddress(ipstr):
     >>> def testParseAddress(address):
     ...     ip, version = parseAddress(address)
     ...     print(("%s (IPv%s)" % (ip, version)))
-    ... 
+    ...
     >>> testParseAddress('0x0123456789abcdef')           # IPv4 if <= 0xffffffff else IPv6
     81985529216486895 (IPv6)
     >>> testParseAddress('123.123.123.123')              # IPv4
@@ -1131,8 +1131,8 @@ def parseAddress(ipstr):
 
     if ipstr.startswith('0x'):
         ret = long(ipstr[2:], 16)
-        if ret > 0xffffffffffffffffffffffffffffffffL:
-            raise ValueError, "%r: IP Address can't be bigger than 2^128" % (ipstr)
+        if ret > 0xffffffffffffffffffffffffffffffff:
+            raise ValueError("%r: IP Address can't be bigger than 2^128" % (ipstr))
         if ret < 0x100000000:
             return (ret, 4)
         else:
@@ -1149,12 +1149,12 @@ def parseAddress(ipstr):
         # assume IPv4  ('127' gets interpreted as '127.0.0.0')
         bytes = ipstr.split('.')
         if len(bytes) > 4:
-            raise ValueError, "IPv4 Address with more than 4 bytes"
+            raise ValueError("IPv4 Address with more than 4 bytes")
         bytes += ['0'] * (4 - len(bytes))
         bytes = [long(x) for x in bytes]
         for x in bytes:
             if x > 255 or x < 0:
-                raise ValueError, "%r: single byte must be 0 <= byte < 256" % (ipstr)
+                raise ValueError("%r: single byte must be 0 <= byte < 256" % (ipstr))
         return ((bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3], 4)
 
     else:
@@ -1162,9 +1162,9 @@ def parseAddress(ipstr):
         # this ony works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
         ret = long(ipstr, 10)
-        if ret > 0xffffffffffffffffffffffffffffffffL:
-            raise ValueError, "IP Address can't be bigger than 2^128"
-        if ret <= 0xffffffffL:
+        if ret > 0xffffffffffffffffffffffffffffffff:
+            raise ValueError("IP Address can't be bigger than 2^128")
+        if ret <= 0xffffffff:
             return (ret, 4)
         else:
             return (ret, 6)
@@ -1177,19 +1177,19 @@ def intToIp(ip, version):
     ip = long(ip)
 
     if ip < 0:
-        raise ValueError, "IPs can't be negative: %d" % (ip)
+        raise ValueError("IPs can't be negative: %d" % (ip))
 
     ret = ''
     if version == 4:
-        if ip > 0xffffffffL:
-            raise ValueError, "IPv4 Addresses can't be larger than 0xffffffff: %s" % (hex(ip))
+        if ip > 0xffffffff:
+            raise ValueError("IPv4 Addresses can't be larger than 0xffffffff: %s" % (hex(ip)))
         for l in xrange(4):
-            ret = str(ip & 0xffL) + '.' + ret
+            ret = str(ip & 0xff) + '.' + ret
             ip = ip >> 8
         ret = ret[:-1]
     elif version == 6:
-        if ip > 0xffffffffffffffffffffffffffffffffL:
-            raise ValueError, "IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip))
+        if ip > 0xffffffffffffffffffffffffffffffff:
+            raise ValueError("IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip)))
         if sys.hexversion >= 0x03000000:
             # Remove "0x" prefix
             l = hex(ip)[2:]
@@ -1203,7 +1203,7 @@ def intToIp(ip, version):
                 ret = ':' + ret
         ret = ret[1:]
     else:
-        raise ValueError, "only IPv4 and IPv6 supported"
+        raise ValueError("only IPv4 and IPv6 supported")
 
     return ret
 
@@ -1218,7 +1218,7 @@ def _ipVersionToLen(version):
     Traceback (most recent call last):
       File "<stdin>", line 1, in ?
       File "IPy.py", line 1076, in _ipVersionToLen
-        raise ValueError, "only IPv4 and IPv6 supported"
+        raise ValueError("only IPv4 and IPv6 supported")
     ValueError: only IPv4 and IPv6 supported
     """
 
@@ -1227,7 +1227,7 @@ def _ipVersionToLen(version):
     elif version == 6:
         return 128
     else:
-        raise ValueError, "only IPv4 and IPv6 supported"
+        raise ValueError("only IPv4 and IPv6 supported")
 
 
 def _countFollowingZeros(l):
@@ -1249,15 +1249,12 @@ def _intToBin(val):
     """Return the binary representation of an integer as string."""
 
     if val < 0:
-        raise ValueError, "Only positive values allowed"
+        raise ValueError("Only positive values allowed")
     s = hex(val).lower()
     ret = ''
     if s[-1] == 'l':
         s = s[:-1]
     for x in s[2:]:
-        if __debug__:
-            if not _BitTable.has_key(x):
-                raise AssertionError, "hex() returned strange result"
         ret += _BitTable[x]
     # remove leading zeros
     while ret[0] == '0' and len(ret) > 1:
@@ -1278,7 +1275,7 @@ def _count0Bits(num):
     # this could be so easy if _count1Bits(~long(num)) would work as excepted
     num = long(num)
     if num < 0:
-        raise ValueError, "Only positive Numbers please: %s" % (num)
+        raise ValueError("Only positive Numbers please: %s" % (num))
     ret = 0
     while num > 0:
         if num & 1 == 1:
@@ -1335,7 +1332,7 @@ def _checkNetmask(netmask, masklen):
     # now check if the rest consists only of ones
     while bits > 0:
         if (num & 1) == 0:
-            raise ValueError, "Netmask %s can't be expressed as an prefix." % (hex(netmask))
+            raise ValueError("Netmask %s can't be expressed as an prefix." % (hex(netmask)))
         num = num >> 1
         bits -= 1
 
@@ -1370,7 +1367,7 @@ def _prefixlenToNetmask(prefixlen, version):
     if prefixlen == 0:
         return 0
     elif prefixlen < 0:
-        raise ValueError, "Prefixlen must be > 0"
+        raise ValueError("Prefixlen must be > 0")
     return ((2<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
 
 
