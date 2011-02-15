@@ -57,14 +57,14 @@ class parseAddress(unittest.TestCase):
                 ('256', 256),
                 ('0xffffffff', 4294967295),
                 ('0x100000000', 4294967296),
-                ('0xffffffffffffffffffffffffffffffff', 0xffffffffffffffffffffffffffffffffL),
-                ('0xdeadbeef', 0xdeadbeefL),
-                ('0xdeadbabe', 0xdeadbabeL),
-                ('0xdeadc0de', 0xdeadc0deL),
-                ('0xc0decafe', 0xc0decafeL),
-                ('0xc0debabe', 0xc0debabeL),
-                ('0xbabec0de', 0xbabec0deL),
-                ('0xcafebabe', 0xcafebabeL),
+                ('0xffffffffffffffffffffffffffffffff', 0xffffffffffffffffffffffffffffffff),
+                ('0xdeadbeef', 0xdeadbeef),
+                ('0xdeadbabe', 0xdeadbabe),
+                ('0xdeadc0de', 0xdeadc0de),
+                ('0xc0decafe', 0xc0decafe),
+                ('0xc0debabe', 0xc0debabe),
+                ('0xbabec0de', 0xbabec0de),
+                ('0xcafebabe', 0xcafebabe),
                 ('0x1', 1),
                 ('0xabcdef', 11259375)]
 
@@ -147,15 +147,15 @@ class _intToIP(unittest.TestCase):
                 (0x1, '0.0.0.1'),
                 (0xf, '0.0.0.15'),
                 (0xff, '0.0.0.255'),
-                (0xFFFFFFFFL, '255.255.255.255')]
+                (0xFFFFFFFF, '255.255.255.255')]
     v6values = [(0x7f000001, '0000:0000:0000:0000:0000:0000:7f00:0001'),
                 (0x0, '0000:0000:0000:0000:0000:0000:0000:0000'),
                 (0x1, '0000:0000:0000:0000:0000:0000:0000:0001'),
                 (0xf, '0000:0000:0000:0000:0000:0000:0000:000f'),
                 (0xff, '0000:0000:0000:0000:0000:0000:0000:00ff'),
-                (0xFFFFFFFFL, '0000:0000:0000:0000:0000:0000:ffff:ffff'),
+                (0xFFFFFFFF, '0000:0000:0000:0000:0000:0000:ffff:ffff'),
                 (0x100000000, '0000:0000:0000:0000:0000:0001:0000:0000'),
-                (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff')]
+                (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff')]
 
     def testKnownValuesv4(self):
         """printing of known IPv4 values should give known results"""
@@ -200,15 +200,15 @@ class _intToIP(unittest.TestCase):
 class ParseAndBack(unittest.TestCase):
     def testRandomValuesv4(self):
         for i in range(testloops):
-            question = long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))
+            question = random.randrange(0x7fffffff) + random.randrange(0x7fffffff)
             self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 4)), (question, 4), hex(question))
 
     def testRandomValuesv6(self):
         for i in range(testloops):
-            question = ((long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))) +
-                        ((long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))) << 32) +
-                        ((long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))) << 64) +
-                        ((long(random.randrange(0x7fffffff)) + long(random.randrange(0x7fffffff))) << 96))
+            question = ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) +
+                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 32) +
+                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 64) +
+                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 96))
             self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 6)), (question, 6), hex(question))
 
 
@@ -219,8 +219,8 @@ class _countXBits(unittest.TestCase):
         self.assertEqual(IPy._count1Bits(0x10), 5)
         self.assertEqual(IPy._count1Bits(0xff), 8)
         self.assertEqual(IPy._count1Bits(0xffff), 16)
-        self.assertEqual(IPy._count1Bits(0xffffffffL), 32)
-        self.assertEqual(IPy._count1Bits(0xffffffffffffffffffffffffffffffffL), 128)
+        self.assertEqual(IPy._count1Bits(0xffffffff), 32)
+        self.assertEqual(IPy._count1Bits(0xffffffffffffffffffffffffffffffff), 128)
 
     def testCount1Bits(self):
         self.assertEqual(IPy._count0Bits(0), 0)
@@ -242,9 +242,9 @@ class _intToBin(unittest.TestCase):
     knownValues = [(0, '0'), (1, '1'), (2, '10'), (3, '11'), (4, '100'), (5, '101'),
                    (6, '110'), (7, '111'), (8, '1000'), (9, '1001'),
                    (0xf, '1111'), (0xff, '11111111'),
-                   (0xFFFFFFFFL, '11111111111111111111111111111111'),
+                   (0xFFFFFFFF, '11111111111111111111111111111111'),
                    (0x100000000, '100000000000000000000000000000000'),
-                   (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, '11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'),
+                   (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, '11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'),
                    (0x100000000000000000000000000000000, '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')]
 
     def testKnownValues(self):
@@ -259,7 +259,7 @@ class _intToBin(unittest.TestCase):
         self.assertRaises(ValueError, IPy._intToBin, -1)
 
 class netmaskPrefixlenConv(unittest.TestCase):
-    known4Values = [(0xFFFFFFFFL, 32), (0xFFFFFFFEL, 31), (0xFFFFFFFCL, 30), (0xFFFFFFF8, 29),
+    known4Values = [(0xFFFFFFFF, 32), (0xFFFFFFFE, 31), (0xFFFFFFFC, 30), (0xFFFFFFF8, 29),
                     (0xFFFFFFF0, 28), (0xFFFFFFE0, 27), (0xFFFFFFC0, 26), (0xFFFFFF80, 25),
                     (0xFFFFFF00, 24), (0xFFFFFE00, 23), (0xFFFFFC00, 22), (0xFFFFF800, 21),
                     (0xFFFFF000, 20), (0xFFFFE000, 19), (0xFFFFC000, 18), (0xFFFF8000, 17),
@@ -267,8 +267,8 @@ class netmaskPrefixlenConv(unittest.TestCase):
                     (0xFFF00000, 12), (0xFFE00000, 11), (0xFFC00000, 10), (0xFF800000, 9),
                     (0xFF000000, 8), (0xFE000000, 7), (0xFC000000, 6), (0xF8000000, 5),
                     (0xF0000000, 4), (0xE0000000, 3), (0xC0000000, 2), (0x80000000, 1)]
-    known6Values = [(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFL, 128),
-                    (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEL, 127),
+    known6Values = [(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, 128),
+                    (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE, 127),
                     (0xFFFFFFFFFFFFFFFFFFFFFFFF80000000, 97),
                     (0xFFFFFFFFFFFFFFFFFFFFFFFF00000000, 96),
                     (0xFFFFFFFFFFFFFFFFFFFFFFFE00000000, 95),
@@ -322,7 +322,7 @@ class checkChecks(unittest.TestCase):
 
     def testCheckNetmaskOk(self):
         """Legal Netmasks should be allowed."""
-        self.assertFalse(IPy._checkNetmask(0xffffffffL, 32))
+        self.assertFalse(IPy._checkNetmask(0xffffffff, 32))
         self.assertFalse(IPy._checkNetmask(0xffffff00, 32))
         self.assertFalse(IPy._checkNetmask(0xffff0000, 32))
         self.assertFalse(IPy._checkNetmask(0xff000000, 32))
@@ -330,16 +330,16 @@ class checkChecks(unittest.TestCase):
 
     def testCheckNetmaskFail(self):
         """Illegal Netmasks should be rejected."""
-        self.assertRaises(ValueError, IPy._checkNetmask, 0xf0ffffffL, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0xf0ffffff, 32)
         self.assertRaises(ValueError, IPy._checkNetmask, 0xf0f0f0f0, 32)
         self.assertRaises(ValueError, IPy._checkNetmask, 0xff00ff00, 32)
         self.assertRaises(ValueError, IPy._checkNetmask, 0x70000001, 32)
-        self.assertRaises(ValueError, IPy._checkNetmask, 0xfffffffL, 32)
+        self.assertRaises(ValueError, IPy._checkNetmask, 0xfffffff, 32)
 
     def testCheckPrefixOk(self):
         """Legal IP/prefix combinations should check ok."""
         self.assertTrue(IPy._checkPrefix(0x0, 32, 4))
-        self.assertTrue(IPy._checkPrefix(0xffffffffL, 32, 4))
+        self.assertTrue(IPy._checkPrefix(0xffffffff, 32, 4))
         self.assertTrue(IPy._checkPrefix(0x7f000001, 32, 4))
         self.assertTrue(IPy._checkPrefix(0x80000000, 1, 4))
         self.assertTrue(IPy._checkPrefix(0x40000000, 2, 4))
@@ -355,7 +355,7 @@ class checkChecks(unittest.TestCase):
         self.assertTrue(IPy._checkPrefix(0x0, 64, 6))
         self.assertTrue(IPy._checkPrefix(0x0, 0, 6))
         self.assertTrue(IPy._checkPrefix(0x0, 128, 6))
-        self.assertTrue(IPy._checkPrefix(0xffffffffffffffffffffffffffffffffL, 128, 6))
+        self.assertTrue(IPy._checkPrefix(0xffffffffffffffffffffffffffffffff, 128, 6))
 
 
     def testCheckPrefixFail(self):
@@ -569,7 +569,7 @@ class IPobject(unittest.TestCase):
                       (338958331222012082418099330867817087043, '0xff010000000000000000000000000043'),
                       (0, '0x0'),
                       (1, '0x1'),
-                      (4294967295l, '0xffffffff'),
+                      (4294967295, '0xffffffff'),
                       (3588059479, '0xd5dd7157'),
                       (0x12345678, '0x12345678')]
         for (question, answer) in testValues:
@@ -583,7 +583,7 @@ class IPobject(unittest.TestCase):
                       (338958331222012082418099330867817087043, '338958331222012082418099330867817087043'),
                       (0, '0'),
                       (1, '1'),
-                      (0xFFFFFFFFL, '4294967295'),
+                      (0xFFFFFFFF, '4294967295'),
                       (0xD5DD7157, '3588059479')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strDec(question)
@@ -622,9 +622,9 @@ class IPobject(unittest.TestCase):
         """Prefixlen"""
         self.assertEqual(IPy.IP("127.0.0.1").int(), 2130706433)
         self.assertEqual(IPy.IP("0.0.0.0").int(), 0)
-        self.assertEqual(IPy.IP("255.255.255.255").int(), 0xffffffffL)
+        self.assertEqual(IPy.IP("255.255.255.255").int(), 0xffffffff)
         self.assertEqual(IPy.IP("0000:0000:0000:0000:0000:0000:0000:0000").int(), 0)
-        self.assertEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffffL)
+        self.assertEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffff)
         self.assertEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008)
 
 
@@ -672,7 +672,7 @@ class IPobject(unittest.TestCase):
                       (338958331222012082418099330867817087043, '0xff010000000000000000000000000043'),
                       (0, '0x0'),
                       (1, '0x1'),
-                      (4294967295l, '0xffffffff'),
+                      (4294967295, '0xffffffff'),
                       (3588059479, '0xd5dd7157')]
         for (question, answer) in testValues:
             result = IPy.IP(question).strHex(question).lower()
