@@ -1,6 +1,7 @@
-Version 0.74
-------------
+Version 0.74 (2011-02-16)
+-------------------------
 
+ * Fix tests for Python 3.1 and 3.2
  * ip.__nonzero__() and (ipa in ipb) return a bool instead of 0 or 1
  * IP('0.0.0.0/0') + IP('0.0.0.0/0') raises an error, fix written by Arfrever
 
