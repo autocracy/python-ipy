@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '0.74'
+__version__ = '0.75'
 
 import sys
 import types
@@ -796,7 +796,7 @@ class IP(IPint):
         >>> IP('10.0.0.0/8').netmask()
         IP('255.0.0.0')
          """
-        return IP(IPint.netmask(self))
+        return IP(IPint.netmask(self), ipversion=self._ipversion)
 
     def _getIPv4Map(self):
         if self._ipversion != 6:

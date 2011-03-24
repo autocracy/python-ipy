@@ -15,6 +15,7 @@ Traceback (most recent call last):
   ...
 ValueError: Networks with a prefixlen longer than /1 can't be added.
 
+
 Compare 0.0.0.0/0 and ::/0 bug
 ==============================
 
@@ -37,6 +38,10 @@ False
 >>> addresses.sort()
 >>> addresses
 [IP('::'), IP('::3'), IP('::7'), IP('0.0.0.0'), IP('0.0.0.3'), IP('0.0.0.0/16'), IP('0.0.0.0/0'), IP('::/0')]
+
+>>> IP('::/0').netmask()
+IP('::')
+
 
 IP types
 ========

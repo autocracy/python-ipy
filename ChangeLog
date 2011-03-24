@@ -1,3 +1,8 @@
+Version 0.75 (under development)
+--------------------------------
+
+ * IP('::/0').netmask() gives IP('::') instead of IP('0.0.0.0')
+
 Version 0.74 (2011-02-16)
 -------------------------
 
