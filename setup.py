@@ -7,7 +7,7 @@
 #  - make (to run tests)
 #  - set release date in ChangeLog
 #  - git commit -a
-#  - git tag -a IPy-x.py -m "tag IPy x.y"
+#  - git tag -a IPy-x.y -m "tag IPy x.y"
 #  - git push
 #  - git push --tags
 #  - ./setup.py register sdist upload
@@ -23,7 +23,7 @@ from __future__ import with_statement
 import sys
 from distutils.core import setup
 
-VERSION = '0.75'
+VERSION = '0.76'
 
 options = {}
 
