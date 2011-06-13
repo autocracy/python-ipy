@@ -230,12 +230,8 @@ class IPint(object):
             if ipversion == 0:
                 ipversion = parsedVersion
             if prefixlen == -1:
-                if ipversion == 4:
-                    prefixlen = 32 - netbits
-                elif ipversion == 6:
-                    prefixlen = 128 - netbits
-                else:
-                    raise ValueError("only IPv4 and IPv6 supported")
+                bits = _ipVersionToLen(ipversion)
+                prefixlen = bits - netbits
             self._ipversion = ipversion
             self._prefixlen = int(prefixlen)
 
@@ -340,13 +336,7 @@ class IPint(object):
         00100000000000010000011001011000000000100010101011001010111111100000001000000000000000000000000000000000000000000000000000000001
         """
 
-        if self._ipversion == 4:
-            bits = 32
-        elif self._ipversion == 6:
-            bits = 128
-        else:
-            raise ValueError("only IPv4 and IPv6 supported")
-
+        bits = _ipVersionToLen(self._ipversion)
         if self.WantPrefixLen == None and wantprefixlen == None:
             wantprefixlen = 0
         ret = _intToBin(self.ip)
@@ -505,12 +495,8 @@ class IPint(object):
         """
 
         # TODO: unify with prefixlenToNetmask?
-        if self._ipversion == 4:
-            locallen = 32 - self._prefixlen
-        elif self._ipversion == 6:
-            locallen = 128 - self._prefixlen
-        else:
-            raise ValueError("only IPv4 and IPv6 supported")
+        bits = _ipVersionToLen(self._ipversion)
+        locallen = bits - self._prefixlen
 
         return ((2 ** self._prefixlen) - 1) << locallen
 
@@ -525,14 +511,13 @@ class IPint(object):
         """
 
         # TODO: unify with prefixlenToNetmask?
+        # Note: call to _ipVersionToLen() also validates version is 4 or 6
+        bits = _ipVersionToLen(self._ipversion)
         if self._ipversion == 4:
-            locallen = 32 - self._prefixlen
+            locallen = bits - self._prefixlen
             return intToIp(((2 ** self._prefixlen) - 1) << locallen, 4)
         elif self._ipversion == 6:
-            locallen = 128 - self._prefixlen
             return "/%d" % self._prefixlen
-        else:
-            raise ValueError("only IPv4 and IPv6 supported")
 
     def len(self):
         """Return the length of a subnet.
@@ -543,13 +528,8 @@ class IPint(object):
         256
         """
 
-        if self._ipversion == 4:
-            locallen = 32 - self._prefixlen
-        elif self._ipversion == 6:
-            locallen = 128 - self._prefixlen
-        else:
-            raise ValueError("only IPv4 and IPv6 supported")
-
+        bits = _ipVersionToLen(self._ipversion)
+        locallen = bits - self._prefixlen
         return 2 ** locallen
 
 
