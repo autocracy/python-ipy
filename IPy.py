@@ -8,8 +8,6 @@ https://github.com/haypo/python-ipy
 
 __version__ = '0.76'
 
-import types
-
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
 # and www.iana.org/assignments/multicast-addresses
@@ -22,7 +20,7 @@ IPv4ranges = {
     '1010100111111110': 'PRIVATE',  # 169.254/16
     '101011000001':     'PRIVATE',  # 172.16/12
     '1100000010101000': 'PRIVATE',  # 192.168/16
-    '111':              'RESERVED'  # 224/3
+    '111':              'RESERVED', # 224/3
     }
 
 # Definition of the Ranges for IPv6 IPs
@@ -115,7 +113,7 @@ IPv6ranges = {
 MAX_IPV4_ADDRESS = 0xffffffff
 MAX_IPV6_ADDRESS = 0xffffffffffffffffffffffffffffffff
 
-class IPint:
+class IPint(object):
     """Handling of IP addresses returning integers.
 
     Use class IP instead because some features are not implemented for
@@ -338,8 +336,9 @@ class IPint:
 
         >>> print(IP('127.0.0.1').strBin())
         01111111000000000000000000000001
+        >>> print(IP('2001:0658:022a:cafe:0200::1').strBin())
+        00100000000000010000011001011000000000100010101011001010111111100000001000000000000000000000000000000000000000000000000000000001
         """
-
 
         if self._ipversion == 4:
             bits = 32
@@ -466,7 +465,7 @@ class IPint:
         return x + self._printPrefix(wantprefixlen)
 
     def iptype(self):
-        """Return a description of the IP type ('PRIVATE', 'RESERVERD', etc).
+        """Return a description of the IP type ('PRIVATE', 'RESERVED', etc).
 
         >>> print(IP('127.0.0.1').iptype())
         PRIVATE
@@ -1075,12 +1074,12 @@ def _parseAddressIPv6(ipstr):
         raise ValueError("%r: Invalid IPv6 address: should have 8 hextets" % ipstr)
 
     # Convert strings to long integer
-    value = 0
+    value = 0L
     index = 0
     for item in items:
         try:
             item = int(item, 16)
-            error = not(0 <= item <= 0xFFFF)
+            error = not(0 <= item <= 0xffff)
         except ValueError:
             error = True
         if error:
