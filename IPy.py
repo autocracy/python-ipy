@@ -1085,6 +1085,16 @@ def parseAddress(ipstr):
     2071690107 (IPv4)
     >>> testParseAddress('123.123')                      # 0-padded IPv4
     2071658496 (IPv4)
+    >>> testParseAddress('127')
+    2130706432 (IPv4)
+    >>> testParseAddress('255')
+    4278190080 (IPv4)
+    >>> testParseAddress('256')
+    256 (IPv4)
+    >>> testParseAddress('108000000000000000080800200C417A')
+    21932261930451111902915077091070067066 (IPv6)
+    >>> testParseAddress('0x108000000000000000080800200C417A')
+    21932261930451111902915077091070067066 (IPv6)
     >>> testParseAddress('1080:0000:0000:0000:0008:0800:200C:417A')
     21932261930451111902915077091070067066 (IPv6)
     >>> testParseAddress('1080:0:0:0:8:800:200C:417A')
@@ -1102,46 +1112,54 @@ def parseAddress(ipstr):
     >>> testParseAddress('::FFFF:129.144.52.38')
     281472855454758 (IPv6)
     """
+    try:
+        hexval = long(ipstr, 16)
+    except ValueError:
+        hexval = None
+    try:
+        intval = long(ipstr, 10)
+    except ValueError:
+        intval = None
 
-    if ipstr.startswith('0x'):
-        ret = long(ipstr, 16)
-        if ret > MAX_IPV6_ADDRESS:
-            raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, ret))
-        if ret <= MAX_IPV4_ADDRESS:
-            return (ret, 4)
+    if ipstr.startswith('0x') and hexval is not None:
+        if hexval > MAX_IPV6_ADDRESS:
+            raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, hexval))
+        if hexval <= MAX_IPV4_ADDRESS:
+            return (hexval, 4)
         else:
-            return (ret, 6)
+            return (hexval, 6)
 
     if ipstr.find(':') != -1:
         return (_parseAddressIPv6(ipstr), 6)
 
-    elif len(ipstr) == 32:
+    elif len(ipstr) == 32 and hexval is not None:
         # assume IPv6 in pure hexadecimal notation
-        return (long(ipstr, 16), 6)
+        return (hexval, 6)
 
-    elif  ipstr.find('.') != -1 or (len(ipstr) < 4 and int(ipstr) < 256):
+    elif ipstr.find('.') != -1 or (intval is not None and intval < 256):
         # assume IPv4  ('127' gets interpreted as '127.0.0.0')
         bytes = ipstr.split('.')
         if len(bytes) > 4:
             raise ValueError("IPv4 Address with more than 4 bytes")
         bytes += ['0'] * (4 - len(bytes))
-        bytes = [long(x) for x in bytes]
+        bytes = [int(x) for x in bytes]
         for x in bytes:
             if x > 255 or x < 0:
                 raise ValueError("%r: single byte must be 0 <= byte < 256" % (ipstr))
         return ((bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3], 4)
 
-    else:
+    elif intval is not None:
         # we try to interprete it as a decimal digit -
         # this ony works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
-        ret = long(ipstr, 10)
-        if ret > MAX_IPV6_ADDRESS:
-            raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, ret))
-        if ret <= MAX_IPV4_ADDRESS:
-            return (ret, 4)
+        if intval > MAX_IPV6_ADDRESS:
+            raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, intval))
+        if intval <= MAX_IPV4_ADDRESS:
+            return (intval, 4)
         else:
-            return (ret, 6)
+            return (intval, 6)
+
+    raise ValueError("IP Address format was invalid: %s" % ipstr)
 
 
 def intToIp(ip, version):
