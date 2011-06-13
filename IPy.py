@@ -167,12 +167,14 @@ class IPint:
                 else:
                     ipversion = 6
             if ipversion == 4:
-                if self.ip > 0xffffffff:
-                    raise ValueError("IPv4 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %x" % self.ip)
+                max_value = 0xffffffff
+                if self.ip > max_value:
+                    raise ValueError("IPv4 Address can't be larger than %x: %x" % (max_value, self.ip))
                 prefixlen = 32
             elif ipversion == 6:
-                if self.ip > 0xffffffffffffffffffffffffffffffff:
-                    raise ValueError("IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %x" % self.ip)
+                max_value = 0xffffffffffffffffffffffffffffffff
+                if self.ip > max_value:
+                    raise ValueError("IPv6 Address can't be larger than %x: %x" % (max_value, self.ip))
                 prefixlen = 128
             else:
                 raise ValueError("only IPv4 and IPv6 supported")
@@ -1131,8 +1133,9 @@ def parseAddress(ipstr):
 
     if ipstr.startswith('0x'):
         ret = long(ipstr[2:], 16)
-        if ret > 0xffffffffffffffffffffffffffffffff:
-            raise ValueError("%r: IP Address can't be bigger than 2^128" % (ipstr))
+        max_value = 0xffffffffffffffffffffffffffffffff
+        if ret > max_value:
+            raise ValueError("IP Address can't be larger than %x: %x" % (max_value, ret))
         if ret < 0x100000000:
             return (ret, 4)
         else:
@@ -1162,8 +1165,9 @@ def parseAddress(ipstr):
         # this ony works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
         ret = long(ipstr, 10)
-        if ret > 0xffffffffffffffffffffffffffffffff:
-            raise ValueError("IP Address can't be bigger than 2^128")
+        max_value = 0xffffffffffffffffffffffffffffffff
+        if ret > max_value:
+            raise ValueError("IP Address can't be larger than %x: %x" % (max_value, ret))
         if ret <= 0xffffffff:
             return (ret, 4)
         else:
@@ -1181,21 +1185,23 @@ def intToIp(ip, version):
 
     ret = ''
     if version == 4:
-        if ip > 0xffffffff:
-            raise ValueError("IPv4 Addresses can't be larger than 0xffffffff: %s" % (hex(ip)))
+        max_value = 0xffffffff
+        if ip > max_value:
+            raise ValueError("IPv4 Address can't be larger than %x: %x" % (max_value, ip))
         for l in xrange(4):
             ret = str(ip & 0xff) + '.' + ret
             ip = ip >> 8
         ret = ret[:-1]
     elif version == 6:
-        if ip > 0xffffffffffffffffffffffffffffffff:
-            raise ValueError("IPv6 Addresses can't be larger than 0xffffffffffffffffffffffffffffffff: %s" % (hex(ip)))
         if sys.hexversion >= 0x03000000:
             # Remove "0x" prefix
             l = hex(ip)[2:]
         else:
             # Remove "0x" prefix and "L" suffix
             l = hex(ip)[2:-1]
+        max_value = 0xffffffffffffffffffffffffffffffff
+        if ip > max_value:
+            raise ValueError("IPv6 Address can't be larger than %x: %x" % (max_value, ip))
         l = l.zfill(32)
         for x in xrange(1, 33):
             ret = l[-x] + ret
