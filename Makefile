@@ -1,4 +1,5 @@
-.PHONY: test
+.PHONY: tests egg install clean
+
 PYTHON=python
 
 tests:
