@@ -8,7 +8,6 @@ https://github.com/haypo/python-ipy
 
 __version__ = '0.76'
 
-import sys
 import types
 
 # Definition of the Ranges for IPv4 IPs
@@ -414,7 +413,7 @@ class IPint:
         if self._ipversion == 4:
             ret = self.strFullsize(0)
         elif self._ipversion == 6:
-            ret = ':'.join([hex(x)[2:] for x in [int(x, 16) for x in self.strFullsize(0).split(':')]])
+            ret = ':'.join(['%x' % x for x in [int(x, 16) for x in self.strFullsize(0).split(':')]])
         else:
             raise ValueError("only IPv4 and IPv6 supported")
 
@@ -434,24 +433,22 @@ class IPint:
         if self.WantPrefixLen == None and wantprefixlen == None:
             wantprefixlen = 1
 
-        return intToIp(self.ip, self._ipversion).lower() + self._printPrefix(wantprefixlen)
+        return intToIp(self.ip, self._ipversion) + self._printPrefix(wantprefixlen)
 
     def strHex(self, wantprefixlen = None):
         """Return a string representation in hex format in lower case.
 
-        >>> IP('127.0.0.1').strHex()
-        '0x7f000001'
-        >>> IP('2001:0658:022a:cafe:0200::1').strHex()
-        '0x20010658022acafe0200000000000001'
+        >>> print(IP('127.0.0.1').strHex())
+        0x7f000001
+        >>> print(IP('2001:0658:022a:cafe:0200::1').strHex())
+        0x20010658022acafe0200000000000001
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
             wantprefixlen = 0
 
-        x = hex(self.ip)
-        if x[-1] == 'L':
-            x = x[:-1]
-        return x.lower() + self._printPrefix(wantprefixlen)
+        x = '0x%x' % self.ip
+        return x + self._printPrefix(wantprefixlen)
 
     def strDec(self, wantprefixlen = None):
         """Return a string representation in decimal format.
@@ -465,9 +462,7 @@ class IPint:
         if self.WantPrefixLen == None and wantprefixlen == None:
             wantprefixlen = 0
 
-        x =  str(self.ip)
-        if x[-1] == 'L':
-            x = x[:-1]
+        x = '%d' % self.ip
         return x + self._printPrefix(wantprefixlen)
 
     def iptype(self):
@@ -853,7 +848,7 @@ class IP(IPint):
             ipv4 = self._getIPv4Map()
             if ipv4 is not None:
                 return ipv4.reverseNames()
-            s = hex(self.ip)[2:].lower()
+            s = '%x' % self.ip
             if s[-1] == 'l':
                 s = s[:-1]
             if self._prefixlen % 4 != 0:
@@ -901,13 +896,11 @@ class IP(IPint):
             ipv4 = self._getIPv4Map()
             if ipv4 is not None:
                 return ipv4.reverseName()
-            s = hex(self.ip)[2:].lower()
+            s = '%x' % self.ip
             if s[-1] == 'l':
                 s = s[:-1]
             if self._prefixlen % 4 != 0:
-                nibblepart = "%s-%s" % (s[self._prefixlen:], hex(self.ip + self.len() - 1)[2:].lower())
-                if nibblepart[-1] == 'l':
-                    nibblepart = nibblepart[:-1]
+                nibblepart = "%s-%x" % (s[self._prefixlen:], self.ip + self.len() - 1)
                 nibblepart += '.'
             else:
                 nibblepart = ""
@@ -1132,7 +1125,7 @@ def parseAddress(ipstr):
     """
 
     if ipstr.startswith('0x'):
-        ret = long(ipstr[2:], 16)
+        ret = long(ipstr, 16)
         if ret > MAX_IPV6_ADDRESS:
             raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, ret))
         if ret <= MAX_IPV4_ADDRESS:
@@ -1190,14 +1183,9 @@ def intToIp(ip, version):
             ip = ip >> 8
         ret = ret[:-1]
     elif version == 6:
-        if sys.hexversion >= 0x03000000:
-            # Remove "0x" prefix
-            l = hex(ip)[2:]
-        else:
-            # Remove "0x" prefix and "L" suffix
-            l = hex(ip)[2:-1]
         if ip > MAX_IPV6_ADDRESS:
             raise ValueError("IPv6 Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, ip))
+        l = '%x' % ip
         l = l.zfill(32)
         for x in xrange(1, 33):
             ret = l[-x] + ret
@@ -1252,11 +1240,9 @@ def _intToBin(val):
 
     if val < 0:
         raise ValueError("Only positive values allowed")
-    s = hex(val).lower()
+    s = '%x' % val
     ret = ''
-    if s[-1] == 'l':
-        s = s[:-1]
-    for x in s[2:]:
+    for x in s:
         ret += _BitTable[x]
     # remove leading zeros
     while ret[0] == '0' and len(ret) > 1:
@@ -1334,7 +1320,7 @@ def _checkNetmask(netmask, masklen):
     # now check if the rest consists only of ones
     while bits > 0:
         if (num & 1) == 0:
-            raise ValueError("Netmask %s can't be expressed as an prefix." % (hex(netmask)))
+            raise ValueError("Netmask 0x%x can't be expressed as an prefix." % netmask)
         num = num >> 1
         bits -= 1
 
