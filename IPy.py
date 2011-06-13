@@ -828,8 +828,6 @@ class IP(IPint):
             if ipv4 is not None:
                 return ipv4.reverseNames()
             s = '%x' % self.ip
-            if s[-1] == 'l':
-                s = s[:-1]
             if self._prefixlen % 4 != 0:
                 raise NotImplementedError("can't create IPv6 reverse names at sub nibble level")
             s = list(s)
@@ -862,8 +860,6 @@ class IP(IPint):
             first_byte_index = int(4 - (self._prefixlen // 8))
             if self._prefixlen % 8 != 0:
                 nibblepart = "%s-%s" % (s[3-(self._prefixlen // 8)], intToIp(self.ip + self.len() - 1, 4).split('.')[-1])
-                if nibblepart[-1] == 'l':
-                    nibblepart = nibblepart[:-1]
                 nibblepart += '.'
             else:
                 nibblepart = ""
@@ -876,8 +872,6 @@ class IP(IPint):
             if ipv4 is not None:
                 return ipv4.reverseName()
             s = '%x' % self.ip
-            if s[-1] == 'l':
-                s = s[:-1]
             if self._prefixlen % 4 != 0:
                 nibblepart = "%s-%x" % (s[self._prefixlen:], self.ip + self.len() - 1)
                 nibblepart += '.'
