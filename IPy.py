@@ -626,7 +626,8 @@ class IPint:
         False
         """
 
-        item = IP(item)
+        if not isinstance(item, IP):
+            item = IP(item)
         if item.ip >= self.ip and item.ip < self.ip + self.len() - item.len() + 1:
             return True
         else:
@@ -649,7 +650,8 @@ class IPint:
         -1
         """
 
-        item = IP(item)
+        if not isinstance(item, IP):
+            item = IP(item)
         if item.ip >= self.ip and item.ip < self.ip + self.len():
             return 1
         elif self.ip >= item.ip and self.ip < item.ip + item.len():
