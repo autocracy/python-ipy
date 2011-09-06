@@ -703,7 +703,7 @@ class IPint:
         0
 
         """
-	if other == None:
+	if other in [None, '']:
             return -2
 
         # Im not really sure if this is "the right thing to do"
