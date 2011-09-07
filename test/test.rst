@@ -78,6 +78,10 @@ Issue #2 and #9
 False
 >>> IP('1.2.3.4') == object()
 False
+>>> IP('1.2.3.4') != None
+True
+>>> IP('1.2.3.4') != object()
+True
 
 
 get_mac()

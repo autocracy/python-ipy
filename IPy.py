@@ -745,6 +745,9 @@ class IPint:
             return False
         return self.__cmp__(other) == 0
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __lt__(self, other):
         return self.__cmp__(other) < 0
 
