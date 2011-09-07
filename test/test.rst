@@ -79,6 +79,7 @@ False
 >>> IP('1.2.3.4') == object()
 False
 
+
 get_mac()
 =========
 

@@ -703,9 +703,6 @@ class IPint:
         0
 
         """
-        if not isinstance(other, IPint):
-            return 1
-
         # Im not really sure if this is "the right thing to do"
         if self._prefixlen < other.prefixlen():
             return (other.prefixlen() - self._prefixlen)
@@ -744,6 +741,8 @@ class IPint:
                 return 0
 
     def __eq__(self, other):
+        if not isinstance(other, IPint):
+            return False
         return self.__cmp__(other) == 0
 
     def __lt__(self, other):
