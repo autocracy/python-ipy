@@ -974,7 +974,25 @@ class IP(IPint):
             ret = IP(self.int())
             ret._prefixlen = self.prefixlen() - 1
             return ret
-
+    def to_mac(self):
+        """ 
+        get 802.3 MAC address from IPv6
+        rfc2464
+        """
+        mac = []
+        a = self.strFullsize().split(":")[4:8]
+        if a[1][2:]=="ff" and a[2][:2] == "fe":
+            a[0] = "%04x" % (int(a[0], 16) ^ 512)
+            mac.append(a[0][0:2])
+            mac.append(a[0][2:4])
+            mac.append(a[1][0:2])
+            mac.append(a[2][2:4])
+            mac.append(a[3][0:2])
+            mac.append(a[3][2:4])
+            return ":".join(mac)
+        else:
+            print "not from mac"
+            return 
 
 def _parseAddressIPv6(ipstr):
     """
