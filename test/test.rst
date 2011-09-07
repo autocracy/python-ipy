@@ -79,4 +79,14 @@ False
 >>> IP('1.2.3.4') == object()
 False
 
+get_mac()
+=========
 
+>>> IP('fe80::f66d:04ff:fe47:2fae').get_mac()
+'f4:6d:04:47:2f:ae'
+>>> IP('2001:DB8::212:7FFF:FEEB:6B40').get_mac()
+'00:12:7f:eb:6b:40'
+>>> IP('::1').get_mac() is None
+True
+>>> IP('1.2.3.4').get_mac() is None
+True
