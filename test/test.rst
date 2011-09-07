@@ -71,3 +71,12 @@ True
 >>> IP('::ffff:128.0.0.0/103').reverseNames() == IP('128.0.0.0/7').reverseNames()
 True
 
+Issue #2 and #9
+===============
+
+>>> IP('1.2.3.4') == None
+False
+>>> IP('1.2.3.4') == object()
+False
+
+

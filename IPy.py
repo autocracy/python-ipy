@@ -703,6 +703,8 @@ class IPint:
         0
 
         """
+        if not isinstance(other, IPint):
+            return 1
 
         # Im not really sure if this is "the right thing to do"
         if self._prefixlen < other.prefixlen():

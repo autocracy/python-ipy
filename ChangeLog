@@ -1,7 +1,8 @@
 Version 0.76 (under development)
 --------------------------------
 
-(no change yet)
+* IP.__cmp__(other) doesn't raise an exception anymore if other is not an IP
+  object
 
 Version 0.75 (2011-04-12)
 -------------------------
