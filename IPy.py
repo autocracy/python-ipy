@@ -809,7 +809,7 @@ class IP(IPint):
         >>> IP('128.0.0.0/7').reverseNames()
         ['128.in-addr.arpa.', '129.in-addr.arpa.']
         >>> IP('::1:2').reverseNames()
-        ['2.0.0.0.1.ip6.arpa.']
+        ['2.0.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa.']
         """
 
         if self._ipversion == 4:
@@ -832,7 +832,7 @@ class IP(IPint):
             ipv4 = self._getIPv4Map()
             if ipv4 is not None:
                 return ipv4.reverseNames()
-            s = '%x' % self.ip
+            s = '%032x' % self.ip
             if self._prefixlen % 4 != 0:
                 raise NotImplementedError("can't create IPv6 reverse names at sub nibble level")
             s = list(s)
@@ -855,7 +855,7 @@ class IP(IPint):
         >>> print(IP('195.185.1.0/28').reverseName())
         0-15.1.185.195.in-addr.arpa.
         >>> IP('::1:2').reverseName()
-        '2.0.0.0.1.ip6.arpa.'
+        '2.0.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa.'
         """
 
         if self._ipversion == 4:
@@ -876,7 +876,7 @@ class IP(IPint):
             ipv4 = self._getIPv4Map()
             if ipv4 is not None:
                 return ipv4.reverseName()
-            s = '%x' % self.ip
+            s = '%032x' % self.ip
             if self._prefixlen % 4 != 0:
                 nibblepart = "%s-%x" % (s[self._prefixlen:], self.ip + self.len() - 1)
                 nibblepart += '.'
