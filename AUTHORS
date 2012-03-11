@@ -3,7 +3,7 @@ Authors
 
 Maximillian Dornseif <md AT hudora.de>
    > IPy author and maintainer until the version 0.42
-Victor Stinner <victor.stinner AT inl.fr>
+Victor Stinner <victor.stinner AT haypocalc.com>
    > new maintainer since the version 0.5
 
 Contributors
@@ -11,6 +11,8 @@ Contributors
 
 Aras Vaichas <arasv AT magtech.com.au>
    > fix __getitem__ for IP object of size 1
+Arfrever Frehtes Taifersar Arahesis <Arfrever.FTA@gmail.com>
+   > IP('0.0.0.0/0') + IP('0.0.0.0/0') raises an error
 Bernhard Frauendienst <contact AT obeliks.de>
    > fix IPv6 parser
 James Teh <james.teh AT netboxblue.com>

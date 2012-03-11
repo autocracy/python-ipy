@@ -1,5 +1,7 @@
 IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 
+Website: https://github.com/haypo/python-ipy/
+
 Presentation of the API
 =======================
 
@@ -12,7 +14,7 @@ so funky stuff like a netmask of 0xffffff0f can't be done here.
     >>> from IPy import IP
     >>> ip = IP('127.0.0.0/30')
     >>> for x in ip:
-    ...  print x
+    ...  print(x)
     ...
     127.0.0.0
     127.0.0.1
@@ -43,35 +45,35 @@ and networks, parse them and distinguish between IPv4 and IPv6 addresses:
 IPv4 addresses
 --------------
 
-    >>> print IP(0x7f000001)
+    >>> print(IP(0x7f000001))
     127.0.0.1
-    >>> print IP('0x7f000001')
+    >>> print(IP('0x7f000001'))
     127.0.0.1
-    >>> print IP('127.0.0.1')
+    >>> print(IP('127.0.0.1'))
     127.0.0.1
-    >>> print IP('10')
+    >>> print(IP('10'))
     10.0.0.0
 
 IPv6 addresses
 --------------
 
-    >>> print IP('1080:0:0:0:8:800:200C:417A')
+    >>> print(IP('1080:0:0:0:8:800:200C:417A'))
     1080::8:800:200c:417a
-    >>> print IP('1080::8:800:200C:417A')
+    >>> print(IP('1080::8:800:200C:417A'))
     1080::8:800:200c:417a
-    >>> print IP('::1')
+    >>> print(IP('::1'))
     ::1
-    >>> print IP('::13.1.68.3')
+    >>> print(IP('::13.1.68.3'))
     ::d01:4403
 
 Network mask and prefixes
 -------------------------
 
-    >>> print IP('127.0.0.0/8')
+    >>> print(IP('127.0.0.0/8'))
     127.0.0.0/8
-    >>> print IP('127.0.0.0/255.0.0.0')
+    >>> print(IP('127.0.0.0/255.0.0.0'))
     127.0.0.0/8
-    >>> print IP('127.0.0.0-127.255.255.255')
+    >>> print(IP('127.0.0.0-127.255.255.255'))
     127.0.0.0/8
 
 
@@ -80,11 +82,11 @@ Derive network address
 
 IPy can transform an IP address into a network address by applying the given
 netmask:
->>> print IP('127.0.0.1/255.0.0.0', make_net=True)
+>>> print(IP('127.0.0.1/255.0.0.0', make_net=True))
 127.0.0.0/8
 
 This can also be done for existing IP instances:
->>> print IP('127.0.0.1').make_net('255.0.0.0')
+>>> print(IP('127.0.0.1').make_net('255.0.0.0'))
 127.0.0.0/8
 
 
@@ -122,25 +124,25 @@ Examples of string conversions:
     >>> IP('10.0.0.0/24').strNormal(3)
     '10.0.0.0-10.0.0.255'
     >>> ip = IP('10.0.0.0')
-    >>> print ip
+    >>> print(ip)
     10.0.0.0
     >>> ip.NoPrefixForSingleIp = None
-    >>> print ip
+    >>> print(ip)
     10.0.0.0/32
     >>> ip.WantPrefixLen = 3
-    >>> print ip
+    >>> print(ip)
     10.0.0.0-10.0.0.0
 
 
 Compatibility and links
 =======================
 
-IPy 0.60 works on Python version 2.4 and 2.5.
+IPy 0.73 works on Python version 2.5-2.7.
 
 This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
-http://software.inl.fr/trac/trac.cgi/wiki/IPy
+https://github.com/haypo/python-ipy
 
 
 TODO
@@ -168,4 +170,5 @@ TODO
  * rename checkPrefix to checkPrefixOk
  * add more documentation and doctests
  * refactor
+
 

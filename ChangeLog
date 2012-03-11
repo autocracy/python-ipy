@@ -1,45 +1,85 @@
-Version 0.73
-	* Update the ranges for IPv6 IPs
-	* Fix reverseName() and reverseNames() for IPv4 in IPv6 addresses
+Version 0.76 (under development)
+--------------------------------
+
+* ip == other and ip != other doesn't fail with an exception anymore if other
+  is not a IP object
+* Add IP.get_mac() method: get the 802.3 MAC address from IPv6 RFC 2464
+  address.
+
+Version 0.75 (2011-04-12)
+-------------------------
+
+ * IP('::/0').netmask() gives IP('::') instead of IP('0.0.0.0')
+
+Version 0.74 (2011-02-16)
+-------------------------
+
+ * Fix tests for Python 3.1 and 3.2
+ * ip.__nonzero__() and (ipa in ipb) return a bool instead of 0 or 1
+ * IP('0.0.0.0/0') + IP('0.0.0.0/0') raises an error, fix written by Arfrever
+
+Version 0.73 (2011-02-15)
+-------------------------
+
+ * Support Python 3: setup.py runs 2to3
+ * Update the ranges for IPv6 IPs
+ * Fix reverseName() and reverseNames() for IPv4 in IPv6 addresses
+ * Drop support of Python < 2.5
 
 Version 0.72 (2010-11-23)
-	* Include examples and MANIFEST.in in source build (add them to
-	  MANIFEST.in)
-	* Remove __rcsid__ constant from IPy module
+-------------------------
+
+ * Include examples and MANIFEST.in in source build (add them to
+   MANIFEST.in)
+ * Remove __rcsid__ constant from IPy module
 
 Version 0.71 (2010-10-01)
-	* Use xrange() instead of range()
-	* Use isinstance(x, int) instead of type(x) == types.IntType
-	* Prepare support of Python3 (use integer division: x // y)
-	* Fix IP(long) constructor: ensure that the address is not too large
-	* Constructor raise a TypeError if the type is not int, long,
-	  str or unicode
-	* 223.0.0.0/8 is now public (belongs to APNIC)
+-------------------------
+
+ * Use xrange() instead of range()
+ * Use isinstance(x, int) instead of type(x) == types.IntType
+ * Prepare support of Python3 (use integer division: x // y)
+ * Fix IP(long) constructor: ensure that the address is not too large
+ * Constructor raise a TypeError if the type is not int, long,
+   str or unicode
+ * 223.0.0.0/8 is now public (belongs to APNIC)
 
 Version 0.70 (2009-10-29)
-	* New "major" version because it may break compatibility
-	* Fix __cmp__(): IP('0.0.0.0/0') and IP('0.0.0.0') are not equal
-	* Fix IP.net() of the network "::/0": "::" instead of "0.0.0.0".
-	  IPy 0.63 should fix this bug, but it wasn't.
+-------------------------
+
+ * New "major" version because it may break compatibility
+ * Fix __cmp__(): IP('0.0.0.0/0') and IP('0.0.0.0') are not equal
+ * Fix IP.net() of the network "::/0": "::" instead of "0.0.0.0".
+   IPy 0.63 should fix this bug, but it wasn't.
 
 Version 0.64 (2009-08-19)
-	* Create MANIFEST.in to fix setup.py bdist_rpm, fix by Robert Nickel
+-------------------------
+
+ * Create MANIFEST.in to fix setup.py bdist_rpm, fix by Robert Nickel
 
 Version 0.63 (2009-06-23)
-	* Fix formatting of "IPv4 in IPv6" network, eg. IP('::ffff:192.168.10.0/120'),
-	  the netmask ("/120" in the example) was missing!
+-------------------------
+
+ * Fix formatting of "IPv4 in IPv6" network, eg. IP('::ffff:192.168.10.0/120'),
+   the netmask ("/120" in the example) was missing!
 
 Version 0.62 (2008-07-15)
-	* Fix reverse DNS of IPv6 address: use ".ip6.arpa." suffix instead of
-	  deprecated ".ip6.int." suffix
+-------------------------
+
+ * Fix reverse DNS of IPv6 address: use ".ip6.arpa." suffix instead of
+   deprecated ".ip6.int." suffix
 
 Version 0.61 (2008-06-12)
-	* Patch from Aras Vaichas allowing the [-1] operator
-	  to work with an IP object of size 1.
+-------------------------
+
+ * Patch from Aras Vaichas allowing the [-1] operator
+   to work with an IP object of size 1.
 
 Version 0.60 (2008-05-16)
-	* strCompressed() formats '::ffff:a.b.c.d' correctly
-	* Use strCompressed() instead of strFullsize() to format IP addresses,
-	  ouput is smarter with IPv6 address
-	* Remove check_addr_prefixlen because it generates invalid IP address
+-------------------------
+
+ * strCompressed() formats '::ffff:a.b.c.d' correctly
+ * Use strCompressed() instead of strFullsize() to format IP addresses,
+   ouput is smarter with IPv6 address
+ * Remove check_addr_prefixlen because it generates invalid IP address
 
