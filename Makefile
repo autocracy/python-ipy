@@ -1,4 +1,5 @@
-.PHONY: test
+.PHONY: tests egg install clean
+
 PYTHON=python
 
 tests:
@@ -18,5 +19,5 @@ install:
 	./setup.py install
 
 clean:
-	rm -rf README IPy.html *.pyc build dist IPy.egg-info
+	rm -rf IPy.html *.pyc build dist IPy.egg-info
 
