@@ -864,7 +864,7 @@ class IP(IPint):
             s.reverse()
             first_byte_index = int(4 - (self._prefixlen // 8))
             if self._prefixlen % 8 != 0:
-                nibblepart = "%s-%s" % (s[3-(self._prefixlen // 8)], intToIp(self.ip + self.len() - 1, 4).split('.')[-1])
+                nibblepart = "%s-%s" % (s[3-(self._prefixlen // 8)], intToIp(self.ip + self.len() - 1, 4).split('.')[(self._prefixlen // 8)-4])
                 nibblepart += '.'
             else:
                 nibblepart = ""
@@ -901,7 +901,7 @@ class IP(IPint):
         """
         if '/' in str(netmask):
             raise ValueError("invalid netmask (%s)" % netmask)
-        return IP('%s/%s' % (self, netmask), make_net=True)
+        return IP('%s/%s' % (self[0], netmask), make_net=True)
 
     def __getitem__(self, key):
         """Called to implement evaluation of self[key].
