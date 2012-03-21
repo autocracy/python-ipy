@@ -5,6 +5,7 @@ See README file for learn how to use IPy.
 Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
+import collections
 
 __version__ = '0.80'
 
@@ -565,7 +566,31 @@ class IPint(object):
 
         return int(self.len())
 
+    def __add__(self, other):
+        """Emulate numeric objects through network aggregation"""
+        if self._ipversion != other._ipversion:
+            raise ValueError("Only networks with the same IP version can be added.")
+        if self._prefixlen != other._prefixlen:
+            raise ValueError("Only networks with the same prefixlen can be added.")
+        if self._prefixlen < 1:
+            raise ValueError("Networks with a prefixlen longer than /1 can't be added.")
+        if self > other:
+            # fixed by Skinny Puppy <skin_pup-IPy@happypoo.com>
+            return other.__add__(self)
+        if other.int() - self[-1].int() != 1:
+            raise ValueError("Only adjacent networks can be added together.")
+        ret = IP(self.int(), ipversion=self._ipversion)
+        ret._prefixlen = self.prefixlen() - 1
+        if not _checkNetaddrWorksWithPrefixlen(ret.ip, ret._prefixlen,
+                                               ret._ipversion):
+            raise ValueError("The resulting %s has invalid prefix length (%s)"
+                             % (repr(ret), ret._prefixlen))
+        return ret
 
+    def __sub__(self, other):
+        """Return the prefixes that are in this IP but not in the other"""
+        return _remove_subprefix(self, other)                
+        
     def __getitem__(self, key):
         """Called to implement evaluation of self[key].
 
@@ -673,60 +698,55 @@ class IPint(object):
 
         Should return a negative integer if self < other, zero if self
         == other, a positive integer if self > other.
-
-        Networks with different prefixlen are considered non-equal.
-        Networks with the same prefixlen and differing addresses are
-        considered non equal but are compared by their base address
-        integer value to aid sorting of IP objects.
-
-        The version of Objects is not put into consideration.
-
+        
+        Order is first determined by the address family. IPv4 addresses
+        are always smaller than IPv6 addresses:
+        
+        >>> IP('10.0.0.0') < IP('2001:db8::')
+        1
+        
+        Then the first address is compared. Lower addresses are
+        always smaller:
+        
+        >>> IP('10.0.0.0') > IP('10.0.0.1')
+        0
+        >>> IP('10.0.0.0/24') > IP('10.0.0.1')
+        0
+        >>> IP('10.0.1.0') > IP('10.0.0.0/24')
+        1
+        >>> IP('10.0.1.0/24') > IP('10.0.0.0/24')
+        1
+        >>> IP('10.0.1.0/24') > IP('10.0.0.0')
+        1
+        
+        Then the prefix length is compared. Shorter prefixes are
+        considered smaller than longer prefixes:
+        
         >>> IP('10.0.0.0/24') > IP('10.0.0.0')
-        1
-        >>> IP('10.0.0.0/24') < IP('10.0.0.0')
         0
-        >>> IP('10.0.0.0/24') < IP('12.0.0.0/24')
-        1
-        >>> IP('10.0.0.0/24') > IP('12.0.0.0/24')
+        >>> IP('10.0.0.0/24') > IP('10.0.0.0/25')
         0
+        >>> IP('10.0.0.0/24') > IP('10.0.0.0/23')
+        1
 
         """
-        # Im not really sure if this is "the right thing to do"
-        if self._prefixlen < other.prefixlen():
-            return (other.prefixlen() - self._prefixlen)
-        elif self._prefixlen > other.prefixlen():
-
-            # Fixed bySamuel Krempp <krempp@crans.ens-cachan.fr>:
-
-            # The bug is quite obvious really (as 99% bugs are once
-            # spotted, isn't it ? ;-) Because of precedence of
-            # multiplication by -1 over the substraction, prefixlen
-            # differences were causing the __cmp__ function to always
-            # return positive numbers, thus the function was failing
-            # the basic assumptions for a __cmp__ function.
-
-            # Namely we could have (a > b AND b > a), when the
-            # prefixlen of a and b are different.  (eg let
-            # a=IP("1.0.0.0/24"); b=IP("2.0.0.0/16");) thus, anything
-            # could happen when launching a sort algorithm..
-            # everything's in order with the trivial, attached patch.
-
-            return other.prefixlen() - self._prefixlen
-        else:
-            if self.ip < other.ip:
-                return -1
-            elif self.ip > other.ip:
-                return 1
-            elif self._ipversion != other._ipversion:
-                # IP('0.0.0.0'), IP('::/0')
-                if self._ipversion < other._ipversion:
-                    return -1
-                elif self._ipversion > other._ipversion:
-                    return 1
-                else:
-                    return 0
-            else:
-                return 0
+        if not isinstance(other, IPint):
+            raise TypeError
+        
+        # Lower version -> lower result
+        if self._ipversion != other._ipversion:
+            return self._ipversion < other._ipversion and -1 or 1
+        
+        # Lower start address -> lower result
+        if self.ip != other.ip:
+            return self.ip < other.ip and -1 or 1
+        
+        # Shorter prefix length -> lower result
+        if self._prefixlen != other._prefixlen:
+            return self._prefixlen < other._prefixlen and -1 or 1
+            
+        # No differences found
+        return 0
 
     def __eq__(self, other):
         if not isinstance(other, IPint):
@@ -941,27 +961,6 @@ class IP(IPint):
 
         return("IP('%s')" % (self.strCompressed(1)))
 
-    def __add__(self, other):
-        """Emulate numeric objects through network aggregation"""
-        if self.prefixlen() != other.prefixlen():
-            raise ValueError("Only networks with the same prefixlen can be added.")
-        if self.prefixlen() < 1:
-            raise ValueError("Networks with a prefixlen longer than /1 can't be added.")
-        if self.version() != other.version():
-            raise ValueError("Only networks with the same IP version can be added.")
-        if self > other:
-            # fixed by Skinny Puppy <skin_pup-IPy@happypoo.com>
-            return other.__add__(self)
-        if other.int() - self[-1].int() != 1:
-            raise ValueError("Only adjacent networks can be added together.")
-        ret = IP(self.int(), ipversion=self._ipversion)
-        ret._prefixlen = self.prefixlen() - 1
-        if not _checkNetaddrWorksWithPrefixlen(ret.ip, ret._prefixlen,
-                                               ret._ipversion):
-            raise ValueError("The resulting %s has invalid prefix length (%s)"
-                             % (repr(ret), ret._prefixlen))
-        return ret
-
     def get_mac(self):
         """
         Get the 802.3 MAC address from IPv6 RFC 2464 address, in lower case.
@@ -982,6 +981,149 @@ class IP(IPint):
             (self.ip >> 8) & 0xff,
             self.ip & 0xff,
         )
+
+
+class IPSet(collections.MutableSet):
+    def __init__(self, iterable=[]):
+        # Make sure it's iterable, otherwise wrap
+        if not isinstance(iterable, collections.Iterable):
+            raise TypeError("'%s' object is not iterable" % type(iterable).__name__)
+        
+        # Make sure we only accept IP objects
+        for prefix in iterable:
+            if not isinstance(prefix, IP):
+                raise ValueError('Only IP objects can be added to an IPSet')
+            
+        # Store and optimize
+        self.prefixes = iterable[:]
+        self.optimize()
+            
+    def __contains__(self, ip):
+        for prefix in self.prefixes:
+            if ip in prefix:
+                return True
+            
+        return False
+
+    def __iter__(self):
+        for prefix in self.prefixes[:]:
+            yield prefix
+    
+    def __len__(self):
+        return reduce(lambda total, prefix: total+len(prefix), self.prefixes, 0)
+    
+    def __add__(self, other):
+        return IPSet(self.prefixes + other.prefixes)
+    
+    def __sub__(self, other):
+        new = IPSet(self.prefixes)
+        for prefix in other:
+            new.discard(prefix)
+        return new
+    
+    def __repr__(self):
+        return '%s([' % self.__class__.__name__ + ', '.join(map(repr, self.prefixes)) + '])'
+    
+    def add(self, value):
+        # Make sure it's iterable, otherwise wrap
+        if not isinstance(value, collections.Iterable):
+            value = [value]
+        
+        # Check type
+        for prefix in value:
+            if not isinstance(prefix, IP):
+                raise ValueError('Only IP objects can be added to an IPSet')
+        
+        # Append and optimize
+        self.prefixes.extend(value)
+        self.optimize()
+    
+    def discard(self, value):
+        # Make sure it's iterable, otherwise wrap
+        if not isinstance(value, collections.Iterable):
+            value = [value]
+            
+        # This is much faster than iterating over the addresses
+        if isinstance(value, IPSet):
+            value = value.prefixes
+
+        # Remove
+        for del_prefix in value:
+            if not isinstance(del_prefix, IP):
+                raise ValueError('Only IP objects can be removed from an IPSet')
+            
+            # First check if this prefix contains anything in our list
+            found = False
+            for i in range(len(self.prefixes)):
+                if self.prefixes[i] in del_prefix:
+                    self.prefixes[i] = None
+                    found = True
+                
+            if found:
+                # Filter None values
+                self.prefixes = filter(lambda a: a is not None, self.prefixes)
+                
+                # If the prefix was bigger than an existing prefix, then it's
+                # certainly not a subset of one, so skip the rest
+                continue
+            
+            # Maybe one of our prefixes contains this prefix
+            found = False
+            for i in range(len(self.prefixes)):
+                if del_prefix in self.prefixes[i]:
+                    self.prefixes[i:i+1] = self.prefixes[i] - del_prefix
+                    break
+                
+        self.optimize()
+
+    def optimize(self):
+        # The algorithm below *depends* on the sort order
+        self.prefixes.sort()
+
+        # First eliminate all values that are a subset of other values
+        addrlen = len(self.prefixes)
+        i = 0
+        while i < addrlen:
+            # Everything that might be inside this prefix follows
+            # directly behind it
+            j = i+1
+            while j < addrlen and self.prefixes[j] in self.prefixes[i]:
+                # Mark for deletion by overwriting with None
+                self.prefixes[j] = None
+                j += 1
+            
+            # Continue where we left off
+            i = j
+            
+        # Try to merge as many prefixes as possible
+        run_again = True
+        while run_again:
+            # Filter None values. This happens when a subset is eliminated
+            # above, or when two prefixes are merged below
+            self.prefixes = filter(lambda a: a is not None, self.prefixes)
+        
+            # We'll set run_again to True when we make changes that require
+            # re-evaluation of the whole list
+            run_again = False
+
+            # We can merge two prefixes that have the same version, same
+            # prefix length and differ only on the last bit of the prefix
+            addrlen = len(self.prefixes)
+            i = 0
+            while i < addrlen-1:
+                j = i + 1
+                
+                try:
+                    # The next line will throw an exception when merging
+                    # is not possible
+                    self.prefixes[i] += self.prefixes[j]
+                    self.prefixes[j] = None
+                    i = j + 1
+                    run_again = True
+                except ValueError:
+                    # Can't be merged, see if position j can be merged
+                    i = j
+                
 
 def _parseAddressIPv6(ipstr):
     """
@@ -1388,11 +1530,29 @@ def _prefixlenToNetmask(prefixlen, version):
     return ((2<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
 
 
+def _remove_subprefix(prefix, subprefix):
+    if prefix in subprefix:
+        # Nothing left
+        return IPSet()
+    
+    if subprefix not in prefix:
+        # That prefix isn't even in here
+        return IPSet([IP(prefix)])
+    
+    # Start cutting in half, recursively
+    prefixes = [
+        IP('%s/%d' % (prefix[0], prefix._prefixlen + 1)),
+        IP('%s/%d' % (prefix[prefix.len() / 2], prefix._prefixlen + 1)),
+    ]
+    if subprefix in prefixes[0]:
+        return _remove_subprefix(prefixes[0], subprefix) + IPSet([prefixes[1]])
+    else:
+        return IPSet([prefixes[0]]) + _remove_subprefix(prefixes[1], subprefix)
+
+
 if __name__ == "__main__":
     import doctest
     failure, nbtest = doctest.testmod()
     if failure:
         import sys
         sys.exit(1)
-
-
