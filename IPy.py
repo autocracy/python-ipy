@@ -986,17 +986,16 @@ class IPSet(collections.MutableSet):
         self.prefixes = iterable[:]
         self.optimize()
             
-    def __contains__(self, x):
-        for ip in self.prefixes:
-            if x in ip:
+    def __contains__(self, ip):
+        for prefix in self.prefixes:
+            if ip in prefix:
                 return True
             
         return False
 
     def __iter__(self):
-        for prefix in self.prefixes:
-            for address in prefix:
-                yield address
+        for prefix in self.prefixes[:]:
+            yield prefix
     
     def __len__(self):
         return reduce(lambda total, prefix: total+len(prefix), self.prefixes, 0)
