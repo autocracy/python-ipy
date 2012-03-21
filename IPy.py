@@ -983,7 +983,7 @@ class IPSet(collections.MutableSet):
                 raise ValueError('Only IP objects can be added to an IPSet')
             
         # Store and optimize
-        self.prefixes = iterable
+        self.prefixes = iterable[:]
         self.optimize()
             
     def __contains__(self, x):
@@ -1000,6 +1000,18 @@ class IPSet(collections.MutableSet):
     
     def __len__(self):
         return reduce(lambda total, prefix: total+len(prefix), self.prefixes, 0)
+    
+    def __add__(self, other):
+        return IPSet(self.prefixes + other.prefixes)
+    
+    def __sub__(self, other):
+        new = IPSet(self.prefixes)
+        for prefix in other:
+            new.discard(prefix)
+        return new
+    
+    def __repr__(self):
+        return '%s([' % self.__class__.__name__ + ', '.join(map(repr, self.prefixes)) + '])'
     
     def add(self, value):
         # Make sure it's iterable, otherwise wrap
@@ -1019,6 +1031,10 @@ class IPSet(collections.MutableSet):
         # Make sure it's iterable, otherwise wrap
         if not isinstance(value, collections.Iterable):
             value = [value]
+            
+        # This is much faster than iterating over the addresses
+        if isinstance(value, IPSet):
+            value = value.prefixes
 
         # Remove
         for del_prefix in value:
@@ -1046,6 +1062,8 @@ class IPSet(collections.MutableSet):
                 if del_prefix in self.prefixes[i]:
                     self.prefixes[i:i+1] = self.prefixes[i] - del_prefix
                     break
+                
+        self.optimize()
 
     def optimize(self):
         # The algorithm below *depends* on the sort order
@@ -1512,11 +1530,11 @@ if __name__ == "__main__":
 def _remove_subprefix(prefix, subprefix):
     if prefix in subprefix:
         # Nothing left
-        return []
+        return IPSet()
     
     if subprefix not in prefix:
         # That prefix isn't even in here
-        return [IP(prefix)]
+        return IPSet([IP(prefix)])
     
     # Start cutting in half, recursively
     prefixes = [
@@ -1524,6 +1542,6 @@ def _remove_subprefix(prefix, subprefix):
         IP('%s/%d' % (prefix[prefix.len() / 2], prefix._prefixlen + 1)),
     ]
     if subprefix in prefixes[0]:
-        return _remove_subprefix(prefixes[0], subprefix) + [prefixes[1]]
+        return _remove_subprefix(prefixes[0], subprefix) + IPSet([prefixes[1]])
     else:
-        return [prefixes[0]] + _remove_subprefix(prefixes[1], subprefix)
+        return IPSet([prefixes[0]]) + _remove_subprefix(prefixes[1], subprefix)
