@@ -1518,14 +1518,6 @@ def _prefixlenToNetmask(prefixlen, version):
     return ((2<<prefixlen-1)-1) << (_ipVersionToLen(version) - prefixlen)
 
 
-if __name__ == "__main__":
-    import doctest
-    failure, nbtest = doctest.testmod()
-    if failure:
-        import sys
-        sys.exit(1)
-
-
 def _remove_subprefix(prefix, subprefix):
     if prefix in subprefix:
         # Nothing left
@@ -1544,3 +1536,11 @@ def _remove_subprefix(prefix, subprefix):
         return _remove_subprefix(prefixes[0], subprefix) + IPSet([prefixes[1]])
     else:
         return IPSet([prefixes[0]]) + _remove_subprefix(prefixes[1], subprefix)
+
+
+if __name__ == "__main__":
+    import doctest
+    failure, nbtest = doctest.testmod()
+    if failure:
+        import sys
+        sys.exit(1)
