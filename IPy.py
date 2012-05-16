@@ -938,7 +938,7 @@ class IP(IPint):
         >>> print(str(ip[-1]))
         127.0.0.3
         """
-        return IP(IPint.__getitem__(self, key))
+        return IP(IPint.__getitem__(self, key), ipversion=self._ipversion)
 
     def __repr__(self):
         """Print a representation of the Object.
