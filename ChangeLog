@@ -1,7 +1,11 @@
 Version 0.76 (under development)
 --------------------------------
 
-(no change yet)
+* ip == other and ip != other doesn't fail with an exception anymore if other
+  is not a IP object
+* Add IP.get_mac() method: get the 802.3 MAC address from IPv6 RFC 2464
+  address.
+* Fix IP('::/0')[0]: return an IPv6 instead of an IPv4 address
 
 Version 0.75 (2011-04-12)
 -------------------------

@@ -705,7 +705,6 @@ class IPint:
         0
 
         """
-
         # Im not really sure if this is "the right thing to do"
         if self._prefixlen < other.prefixlen():
             return (other.prefixlen() - self._prefixlen)
@@ -744,7 +743,12 @@ class IPint:
                 return 0
 
     def __eq__(self, other):
+        if not isinstance(other, IPint):
+            return False
         return self.__cmp__(other) == 0
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __lt__(self, other):
         return self.__cmp__(other) < 0
@@ -948,7 +952,7 @@ class IP(IPint):
         >>> print(str(ip[-1]))
         127.0.0.3
         """
-        return IP(IPint.__getitem__(self, key))
+        return IP(IPint.__getitem__(self, key), ipversion=self._ipversion)
 
     def __repr__(self):
         """Print a representation of the Object.
@@ -975,6 +979,26 @@ class IP(IPint):
             ret._prefixlen = self.prefixlen() - 1
             return ret
 
+    def get_mac(self):
+        """
+        Get the 802.3 MAC address from IPv6 RFC 2464 address, in lower case.
+        Return None if the address is an IPv4 or not a IPv6 RFC 2464 address.
+
+        >>> IP('fe80::f66d:04ff:fe47:2fae').get_mac()
+        'f4:6d:04:47:2f:ae'
+        """
+        if self._ipversion != 6:
+            return None
+        if (self.ip & 0x20000ffff000000) != 0x20000fffe000000:
+            return None
+        return '%02x:%02x:%02x:%02x:%02x:%02x' % (
+            (((self.ip >> 56) & 0xff) & 0xfd),
+            (self.ip >> 48) & 0xff,
+            (self.ip >> 40) & 0xff,
+            (self.ip >> 16) & 0xff,
+            (self.ip >> 8) & 0xff,
+            self.ip & 0xff,
+        )
 
 def _parseAddressIPv6(ipstr):
     """

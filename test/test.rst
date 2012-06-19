@@ -71,3 +71,36 @@ True
 >>> IP('::ffff:128.0.0.0/103').reverseNames() == IP('128.0.0.0/7').reverseNames()
 True
 
+Issue #2 and #9
+===============
+
+>>> IP('1.2.3.4') == None
+False
+>>> IP('1.2.3.4') == object()
+False
+>>> IP('1.2.3.4') != None
+True
+>>> IP('1.2.3.4') != object()
+True
+
+
+get_mac()
+=========
+
+>>> IP('fe80::f66d:04ff:fe47:2fae').get_mac()
+'f4:6d:04:47:2f:ae'
+>>> IP('2001:DB8::212:7FFF:FEEB:6B40').get_mac()
+'00:12:7f:eb:6b:40'
+>>> IP('::1').get_mac() is None
+True
+>>> IP('1.2.3.4').get_mac() is None
+True
+
+Issue #12: IPv6[index] -> IPv4
+==============================
+
+>>> IP('1.2.3.0/24')[4]
+IP('1.2.3.4')
+>>> IP('::/0')[1]
+IP('::1')
+
