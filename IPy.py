@@ -7,7 +7,7 @@ https://github.com/haypo/python-ipy
 """
 import collections
 
-__version__ = '0.76.2'
+__version__ = '0.76.1'
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -738,7 +738,6 @@ class IPint(object):
     def __eq__(self, other):
         if not isinstance(other, IPint):
             return False
-        
         return self.__cmp__(other) == 0
 
     def __ne__(self, other):
@@ -948,6 +947,22 @@ class IP(IPint):
         """
 
         return("IP('%s')" % (self.strCompressed(1)))
+
+    def __add__(self, other):
+        """Emulate numeric objects through network aggregation"""
+        if self.prefixlen() != other.prefixlen():
+            raise ValueError("Only networks with the same prefixlen can be added.")
+        if self.prefixlen() < 1:
+            raise ValueError("Networks with a prefixlen longer than /1 can't be added.")
+        if self.version() != other.version():
+            raise ValueError("Only networks with the same IP version can be added.")
+        if self > other:
+            # fixed by Skinny Puppy <skin_pup-IPy@happypoo.com>
+            return other.__add__(self)
+        else:
+            ret = IP(self.int())
+            ret._prefixlen = self.prefixlen() - 1
+            return ret
 
     def get_mac(self):
         """
