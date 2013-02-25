@@ -435,8 +435,11 @@ class IPint:
         return intToIp(self.ip, self._ipversion).lower() + self._printPrefix(wantprefixlen)
 
     def encodeIPv6(self, wantprefixlen = None):
-        cls = self.__class__
-        return cls(self.ip, 6).strHex(wantprefixlen)[2:].zfill(32).decode('hex')
+        o = self
+        if o.version() == 4:
+            cls = self.__class__
+            o = cls("::ffff:"+o.strNormal(), 6)
+        return o.strHex(wantprefixlen)[2:].zfill(32).decode('hex')
    
     @classmethod 
     def decodeIPv6(cls, binary):
