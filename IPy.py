@@ -434,6 +434,13 @@ class IPint:
 
         return intToIp(self.ip, self._ipversion).lower() + self._printPrefix(wantprefixlen)
 
+    def strBinary(self, wantprefixlen = None):
+        return self.strHex(wantprefixlen)[2:].decode('hex')
+   
+    @classmethod 
+    def fromBinary(cls, binary):
+        return cls(int(binary.encode('hex'),16))
+
     def strHex(self, wantprefixlen = None):
         """Return a string representation in hex format in lower case.
 
