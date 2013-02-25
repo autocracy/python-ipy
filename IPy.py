@@ -433,13 +433,17 @@ class IPint:
             wantprefixlen = 1
 
         return intToIp(self.ip, self._ipversion).lower() + self._printPrefix(wantprefixlen)
-
-    def encodeIPv6(self, wantprefixlen = None):
+    
+    def IPv6(self):
+        """Return a IPv6 address , auto convert IPv4 to IPv6"""
         o = self
         if o.version() == 4:
             cls = self.__class__
             o = cls("::ffff:"+o.strNormal(), 6)
-        return o.strHex(wantprefixlen)[2:].zfill(32).decode('hex')
+        return o
+
+    def encodeIPv6(self, wantprefixlen = None):
+        return self.IPv6().strHex(wantprefixlen)[2:].zfill(32).decode('hex')
    
     @classmethod 
     def decodeIPv6(cls, binary):
