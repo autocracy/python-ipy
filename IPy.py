@@ -952,10 +952,15 @@ class IP(IPint):
         if self > other:
             # fixed by Skinny Puppy <skin_pup-IPy@happypoo.com>
             return other.__add__(self)
-        else:
-            ret = IP(self.int())
-            ret._prefixlen = self.prefixlen() - 1
-            return ret
+        if other.int() - self[-1].int() != 1:
+            raise ValueError("Only adjacent networks can be added together.")
+        ret = IP(self.int(), ipversion=self._ipversion)
+        ret._prefixlen = self.prefixlen() - 1
+        if not _checkNetaddrWorksWithPrefixlen(ret.ip, ret._prefixlen,
+                                               ret._ipversion):
+            raise ValueError("The resulting %s has invalid prefix length (%s)"
+                             % (repr(ret), ret._prefixlen))
+        return ret
 
     def get_mac(self):
         """

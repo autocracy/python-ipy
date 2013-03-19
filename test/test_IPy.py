@@ -720,7 +720,12 @@ class NetIPChecks(unittest.TestCase):
 
         ip = IPy.IP('133.45.0/24')
         ip2 = IPy.IP('133.45.1/24')
+        ip3 = IPy.IP('133.45.2/24')
         self.assertEqual((ip + ip2).prefixlen(),23)
+        # Non-adjacent ranges
+        self.assertRaises(ValueError, IPy.IP.__add__, ip, ip3)
+        # Resulting invalid prefix
+        self.assertRaises(ValueError, IPy.IP.__add__, ip2, ip3)
 
         ip2 = IPy.IP('133.44.255.255');
         #$T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
@@ -761,6 +766,7 @@ class NetIPChecks(unittest.TestCase):
         ip = IPy.IP('::e000:0/112')
         ip2 = IPy.IP('::e001:0/112')
         self.assertEqual(ip.__add__(ip2).prefixlen(),111)
+        self.assertEqual(ip.__add__(ip2).version(),6)
 
         ip2 = IPy.IP('::dfff:ffff')
         #$T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
