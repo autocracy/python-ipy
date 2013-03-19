@@ -1,5 +1,5 @@
-Version 0.76 (under development)
---------------------------------
+Version 0.76 (2013-03-19)
+-------------------------
 
 * ip == other and ip != other doesn't fail with an exception anymore if other
   is not a IP object
