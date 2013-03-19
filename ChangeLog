@@ -3,6 +3,12 @@ Version 0.80
 
 * Drop support of Python older than 2.4
 * Python 3 does not need 2to3 conversion anymore (same code base)
+* Fix adding of non-adjacent networks
+   192.168.0.0/24 + 192.168.255.0/24 made 192.168.0.0/23
+* Fix adding networks that don't create a valid subnet
+   192.168.1.0/24 + 192.168.2.0/24 made 192.168.1.0/23
+* Fix adding with an IPv6 address where .int() was < 32 bits made IPy believe it
+  was an IPv4 address.
 
 Version 0.76 (2013-03-19)
 -------------------------
