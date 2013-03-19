@@ -1,3 +1,9 @@
+Version 0.80
+------------
+
+* Drop support of Python older than 2.4
+* Python 3 does not need 2to3 conversion anymore (same code base)
+
 Version 0.76 (2013-03-19)
 -------------------------
 

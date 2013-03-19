@@ -4,13 +4,14 @@
 #
 #  - set version in IPy.py
 #  - set version in setup.py
-#  - make (to run tests)
+#  - run unit test: make
+#  - run unit test: make PYTHON=python3
 #  - set release date in ChangeLog
 #  - git commit -a
 #  - git tag -a IPy-x.y -m "tag IPy x.y"
 #  - git push
 #  - git push --tags
-#  - ./setup.py register sdist upload
+#  - python setup.py register sdist upload
 #  - update the website
 #
 # After the release:
@@ -23,7 +24,7 @@ from __future__ import with_statement
 import sys
 from distutils.core import setup
 
-VERSION = '0.76'
+VERSION = '0.80'
 
 options = {}
 
@@ -54,14 +55,6 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3',
 ]
 URL = "https://github.com/haypo/python-ipy"
-
-# Python 3: run 2to3
-try:
-    from distutils.command.build_py import build_py_2to3
-except ImportError:
-    pass
-else:
-    options['cmdclass'] = {'build_py': build_py_2to3}
 
 setup(
     name="IPy",

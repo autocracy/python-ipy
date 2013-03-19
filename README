@@ -137,7 +137,7 @@ Examples of string conversions:
 Compatibility and links
 =======================
 
-IPy 0.73 works on Python version 2.5-2.7.
+IPy 0.80 works on Python version 2.5 - 3.3.
 
 This Python module is under BSD license: see COPYING file.
 
