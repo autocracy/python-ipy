@@ -141,6 +141,11 @@ class parseAddress(unittest.TestCase):
         """'1111:2222:3333:4444:5555:6666:7777:8888:9999' should raise an exception"""
         self.assertRaises(ValueError, IPy.parseAddress, '1111:2222:3333:4444:5555:6666:7777:8888:9999')
 
+    def testBogusValues(self):
+        """Text values should raise an exception"""
+        self.assertRaises(ValueError, IPy.parseAddress, 'xx')
+        self.assertRaises(ValueError, IPy.parseAddress, 'foobar')
+
 class _intToIP(unittest.TestCase):
     v4values = [(0x7f000001, '127.0.0.1'),
                 (0x0, '0.0.0.0'),
