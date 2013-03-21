@@ -450,6 +450,13 @@ class PythonObjectBehaviour(unittest.TestCase):
         for x in ip:
             self.assertTrue(x in ip)
 
+    def testContainsVersionSeparation(self):
+        """__contains__() should return false if versions mismatch"""
+        four = IPy.IP('192.168.0.0/16')
+        six = IPy.IP('::c0a8:0/112')
+        self.assertFalse(four in six)
+        self.assertFalse(six in four)
+
     def testActingAsArray(self):
         """An IP-object should handle indices."""
         ip = IPy.IP('127.0.0.0/24')
@@ -806,6 +813,28 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
         return default
     else:
         return it.result
+
+class IPSet(unittest.TestCase):
+    def setUp(self):
+        #array
+        self.a = [IPy.IP("192.168." + str(i) + ".0/24") for i in range(256)]
+        #range
+        self.r = IPy.IP('192.168.0.0/16')
+        #testing set
+        self.t = IPy.IPSet(self.a)
+        #control set
+        self.c = IPy.IPSet(self.a)
+        #Could otherwise look like 192.168.128.0/17
+        self.sixRange = IPy.IP('::c0a8:8000/113')
+
+    def testVerionSeparation(self):
+        #Don't remove a matching IPv6 subnet from an IPv4 list
+        self.assertRaises(KeyError, self.t.remove, self.sixRange)
+        self.t.add(self.sixRange)
+        self.assertNotEqual(self.t, self.c)
+        self.t.remove(self.sixRange)
+        self.t.discard(self.sixRange)
+        self.assertEqual(self.t, self.c)
 
 class RegressionTest(unittest.TestCase):
     def testNulNetmask(self):

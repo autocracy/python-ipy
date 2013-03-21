@@ -639,7 +639,11 @@ class IPint(object):
         False
         """
 
-        item = IP(item)
+        if isinstance(item, IP):
+            if item._ipversion != self._ipversion:
+                return False
+        else:
+            item = IP(item)
         if item.ip >= self.ip and item.ip < self.ip + self.len() - item.len() + 1:
             return True
         else:
@@ -1501,7 +1505,10 @@ def _checkNetmask(netmask, masklen):
 
 def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
     """Check if a base addess of a network is compatible with a prefixlen"""
-    return (net & _prefixlenToNetmask(prefixlen, version) == net)
+    try:
+        return (net & _prefixlenToNetmask(prefixlen, version) == net)
+    except ValueError:
+        return False
 
 
 def _netmaskToPrefixlen(netmask):

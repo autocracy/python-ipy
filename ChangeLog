@@ -12,6 +12,7 @@ Version 0.80 (under development)
   ::ffff:0/112 + ::1:0:0/112 made 255.255.0.0/111
  * Add support of IPSets
  * Add support for subtracting a network range
+ * Prevent IPv4 and IPv6 ranges from saying they contain each other
 
 
 Version 0.76 (2013-03-19)
