@@ -1,23 +1,27 @@
-Version 0.80
+Version 0.80 (under development)
 ------------
 
-* Drop support of Python older than 2.4
-* Python 3 does not need 2to3 conversion anymore (same code base)
-* Fix adding of non-adjacent networks
+ * Drop support of Python older than 2.4
+ * Python 3 does not need 2to3 conversion anymore (same code base)
+ * Fix adding of non-adjacent networks:
    192.168.0.0/24 + 192.168.255.0/24 made 192.168.0.0/23
-* Fix adding networks that don't create a valid subnet
+ * Fix adding networks that don't create a valid subnet:
    192.168.1.0/24 + 192.168.2.0/24 made 192.168.1.0/23
-* Fix adding with an IPv6 address where .int() was < 32 bits made IPy believe it
-  was an IPv4 address.
+ * Fix adding with an IPv6 address where .int() was < 32 bits made IPy believe it
+  was an IPv4 address:
+  ::ffff:0/112 + ::1:0:0/112 made 255.255.0.0/111
+ * Add support of IPSets
+ * Add support for subtracting a network range
+
 
 Version 0.76 (2013-03-19)
 -------------------------
 
-* ip == other and ip != other doesn't fail with an exception anymore if other
+ * ip == other and ip != other doesn't fail with an exception anymore if other
   is not a IP object
-* Add IP.get_mac() method: get the 802.3 MAC address from IPv6 RFC 2464
+ * Add IP.get_mac() method: get the 802.3 MAC address from IPv6 RFC 2464
   address.
-* Fix IP('::/0')[0]: return an IPv6 instead of an IPv4 address
+ * Fix IP('::/0')[0]: return an IPv6 instead of an IPv4 address
 
 Version 0.75 (2011-04-12)
 -------------------------
