@@ -814,7 +814,7 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     else:
         return it.result
 
-class IPSet(unittest.TestCase):
+class IPSetChecks(unittest.TestCase):
     def setUp(self):
         #array
         self.a = [IPy.IP("192.168." + str(i) + ".0/24") for i in range(256)]
@@ -827,7 +827,7 @@ class IPSet(unittest.TestCase):
         #Could otherwise look like 192.168.128.0/17
         self.sixRange = IPy.IP('::c0a8:8000/113')
 
-    def testVerionSeparation(self):
+    def testVersionSeparation(self):
         #Don't remove a matching IPv6 subnet from an IPv4 list
         self.assertRaises(KeyError, self.t.remove, self.sixRange)
         self.t.add(self.sixRange)
@@ -835,6 +835,10 @@ class IPSet(unittest.TestCase):
         self.t.remove(self.sixRange)
         self.t.discard(self.sixRange)
         self.assertEqual(self.t, self.c)
+
+    def testContains(self):
+        self.assertTrue(IPy.IP('192.168.15.32/28') in self.t)
+        self.assertFalse(IPy.IP('192.169.15.32/28') in self.t)
 
 class RegressionTest(unittest.TestCase):
     def testNulNetmask(self):

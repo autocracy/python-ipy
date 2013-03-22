@@ -5,10 +5,11 @@ See README file for learn how to use IPy.
 Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
-import collections
 
 __version__ = '0.80'
 
+import bisect
+import collections
 import sys
 import types
 
@@ -1003,14 +1004,22 @@ class IPSet(collections.MutableSet):
         self.optimize()
             
     def __contains__(self, ip):
-        for prefix in self.prefixes:
-            if ip in prefix:
+        valid_masks = self.prefixtable.keys()
+        if isinstance(ip, IP):
+            #Don't dig through more-specific ranges
+            ip_mask = ip._prefixlen
+            valid_masks = [x for x in valid_masks if x <= ip_mask]
+        for mask in valid_masks:
+            i = bisect.bisect(self.prefixtable[mask], ip)
+            # Because of sorting order, a match can only occur in the prefix
+            # that comes before the result of the search.
+            if i == 0:
+                return False
+            if ip in self.prefixtable[mask][i - 1]:
                 return True
-            
-        return False
 
     def __iter__(self):
-        for prefix in self.prefixes[:]:
+        for prefix in self.prefixes:
             yield prefix
     
     def __len__(self):
@@ -1127,7 +1136,15 @@ class IPSet(collections.MutableSet):
                 except ValueError:
                     # Can't be merged, see if position j can be merged
                     i = j
-                
+
+        # O(n) insertion now by prefix means faster searching on __contains__
+        # when lots of ranges with the same length exist
+        self.prefixtable = {}
+        for address in self.prefixes:
+            try:
+                self.prefixtable[address._prefixlen].append(address)
+            except KeyError:
+                self.prefixtable[address._prefixlen] = [address]
 
 def _parseAddressIPv6(ipstr):
     """
