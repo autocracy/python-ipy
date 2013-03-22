@@ -1252,7 +1252,7 @@ def _parseAddressIPv6(ipstr):
         raise ValueError("%r: Invalid IPv6 address: should have 8 hextets" % ipstr)
 
     # Convert strings to long integer
-    value = 0L
+    value = 0
     index = 0
     for item in items:
         try:
@@ -1312,11 +1312,11 @@ def parseAddress(ipstr):
     """
 
     try:
-        hexval = long(ipstr, 16)
+        hexval = int(ipstr, 16)
     except ValueError:
         hexval = None
     try:
-        intval = long(ipstr, 10)
+        intval = int(ipstr, 10)
     except ValueError:
         intval = None
 
