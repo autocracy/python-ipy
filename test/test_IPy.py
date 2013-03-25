@@ -690,6 +690,14 @@ class IPobject(unittest.TestCase):
             result = IPy.IP(question).strHex(question).lower()
             self.assertEqual(answer, result, (question, result, answer))
 
+    def testV46map(self):
+        four    = IPy.IP('192.168.1.1')
+        six     = IPy.IP('::ffff:192.168.1.1')
+        invalid = IPy.IP('2001::ffff:192.168.1.1')
+        self.assertEqual(four.v46map(), six)
+        self.assertEqual(four, six.v46map())
+        self.assertRaises(ValueError, invalid.v46map)
+
 # TODO
 #eval(repr(IPy))
 # differences between IP and IPint

@@ -117,6 +117,8 @@ IPv6ranges = {
 
 MAX_IPV4_ADDRESS = 0xffffffff
 MAX_IPV6_ADDRESS = 0xffffffffffffffffffffffffffffffff
+IPV6_TEST_MAP    = 0xffffffffffffffffffffffff00000000
+IPV6_MAP_MASK    = 0x00000000000000000000ffff00000000
 
 if sys.version_info >= (3,):
     INT_TYPES = (int,)
@@ -988,6 +990,14 @@ class IP(IPint):
             self.ip & 0xff,
         )
 
+    def v46map(self):
+        if self._ipversion == 4:
+            return IP(IPV6_MAP_MASK + self.ip)
+        else:
+            if self.ip & IPV6_TEST_MAP == IPV6_MAP_MASK:
+                return IP(self.ip - IPV6_MAP_MASK)
+        raise ValueError("%s cannot be converted to an IPv4 address."
+                         % repr(self))
 
 class IPSet(collections.MutableSet):
     def __init__(self, iterable=[]):
