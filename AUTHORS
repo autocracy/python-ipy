@@ -5,6 +5,8 @@ Maximillian Dornseif <md AT hudora.de>
    > IPy author and maintainer until the version 0.42
 Victor Stinner <victor.stinner AT haypocalc.com>
    > new maintainer since the version 0.5
+Jeff Ferland <jeff AT storyinmemo.com>
+   > New maintainer from version 0.76
 
 Contributors
 ============
@@ -33,6 +35,11 @@ Skinny Puppy
    > __add__() now always  returns a value
 Sander Steffann (sander AT steffann.nl)
    > Fix the IPv6 address range descriptions
+   > Add IPSet functions
 William McVey <wam AT cisco.com>
    > Fix IP.__nonzero__()
+David <d1b AT d1b.org>
+   > Preserve IP object in comparisons
+Dan McGee <dpmcgee AT gmail.com>
+   > Cleaner bit-twiddling code
 
