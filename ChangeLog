@@ -15,6 +15,8 @@ Version 0.80 (under development)
  * Prevent IPv4 and IPv6 ranges from saying they contain each other
  * Add a .v46map() method to convert mapped address ranges
    such as IP('::ffff:192.168.1.1'); RFC 4291
+ * Change sort order to more natural: 
+   IPv4 before IPv6; less-specific prefixes first (/0 before /32)
 
 
 Version 0.76 (2013-03-19)
