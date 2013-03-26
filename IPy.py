@@ -991,6 +991,16 @@ class IP(IPint):
         )
 
     def v46map(self):
+        """
+        Returns the IPv6 mapped address of an IPv4 address, or the corresponding
+        IPv4 address if the IPv6 address is in the appropriate range.
+        Raises a ValueError if the IPv6 address is not translatable. See RFC 4291.
+
+        >>> IP('192.168.1.1').v46map()
+        IP('::ffff:192.168.1.1')
+        >>> IP('::ffff:192.168.1.1').v46map()
+        IP('192.168.1.1')
+        """
         if self._ipversion == 4:
             return IP(IPV6_MAP_MASK + self.ip)
         else:

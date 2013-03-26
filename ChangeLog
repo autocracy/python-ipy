@@ -13,6 +13,8 @@ Version 0.80 (under development)
  * Add support of IPSets
  * Add support for subtracting a network range
  * Prevent IPv4 and IPv6 ranges from saying they contain each other
+ * Add a .v46map() method to convert mapped address ranges
+   such as IP('::ffff:192.168.1.1'); RFC 4291
 
 
 Version 0.76 (2013-03-19)
