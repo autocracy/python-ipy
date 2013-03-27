@@ -3,8 +3,10 @@
 PYTHON=python
 
 tests:
-	@echo "[ run unit tests ]"
-	PYTHONPATH=$(PWD) $(PYTHON) test/test_IPy.py || exit $$?
+	@echo "[ run unit tests in python 2 ]"
+	PYTHONPATH=$(PWD) $(PYTHON)2 test/test_IPy.py || exit $$?
+	@echo "[ run unit tests in python 3 ]"
+	PYTHONPATH=$(PWD) $(PYTHON)3 test/test_IPy.py || exit $$?
 	@echo
 	@echo "[ test README ]"
 	$(PYTHON) test_doc.py || exit $$?

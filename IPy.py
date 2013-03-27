@@ -1046,7 +1046,7 @@ class IPSet(collections.MutableSet):
             yield prefix
     
     def __len__(self):
-        return reduce(lambda total, prefix: total+len(prefix), self.prefixes, 0)
+        return sum(len(prefix) for prefix in self.prefixes)
     
     def __add__(self, other):
         return IPSet(self.prefixes + other.prefixes)
@@ -1090,15 +1090,14 @@ class IPSet(collections.MutableSet):
             
             # First check if this prefix contains anything in our list
             found = False
+            d = 0
             for i in range(len(self.prefixes)):
-                if self.prefixes[i] in del_prefix:
-                    self.prefixes[i] = None
+                if self.prefixes[i - d] in del_prefix:
+                    self.prefixes.pop(i - d)
+                    d = d + 1
                     found = True
                 
             if found:
-                # Filter None values
-                self.prefixes = filter(lambda a: a is not None, self.prefixes)
-                
                 # If the prefix was bigger than an existing prefix, then it's
                 # certainly not a subset of one, so skip the rest
                 continue
@@ -1136,7 +1135,7 @@ class IPSet(collections.MutableSet):
         while run_again:
             # Filter None values. This happens when a subset is eliminated
             # above, or when two prefixes are merged below
-            self.prefixes = filter(lambda a: a is not None, self.prefixes)
+            self.prefixes = [a for a in self.prefixes if a is not None]
         
             # We'll set run_again to True when we make changes that require
             # re-evaluation of the whole list
