@@ -1004,10 +1004,12 @@ class IP(IPint):
         IP('192.168.1.1')
         """
         if self._ipversion == 4:
-            return IP(IPV6_MAP_MASK + self.ip)
+            return IP(str(IPV6_MAP_MASK + self.ip) + 
+                          "/%s" % (self._prefixlen + 96))
         else:
             if self.ip & IPV6_TEST_MAP == IPV6_MAP_MASK:
-                return IP(self.ip - IPV6_MAP_MASK)
+                return IP(str(self.ip - IPV6_MAP_MASK) +
+                          "/%s" % (self._prefixlen - 96))
         raise ValueError("%s cannot be converted to an IPv4 address."
                          % repr(self))
 
