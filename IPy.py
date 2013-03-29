@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '0.80'
+__version__ = '0.81'
 
 import bisect
 import collections
@@ -559,15 +559,14 @@ class IPint(object):
 
 
     def __len__(self):
-        """Return the length of a subnet.
+        """
+        Return the length of a subnet.
 
         Called to implement the built-in function len().
-        It breaks with IPv6 Networks. Anybody knows how to fix this."""
-
-        # Python < 2.2 has this silly restriction which breaks IPv6
-        # how about Python >= 2.2 ... ouch - it persists!
-
-        return int(self.len())
+        It will break with large IPv6 Networks.
+        Use the object's len() instead.
+        """
+        return self.len()
 
     def __add__(self, other):
         """Emulate numeric objects through network aggregation"""
@@ -1048,7 +1047,7 @@ class IPSet(collections.MutableSet):
             yield prefix
     
     def __len__(self):
-        return sum(len(prefix) for prefix in self.prefixes)
+        return self.len()
     
     def __add__(self, other):
         return IPSet(self.prefixes + other.prefixes)
@@ -1062,6 +1061,9 @@ class IPSet(collections.MutableSet):
     def __repr__(self):
         return '%s([' % self.__class__.__name__ + ', '.join(map(repr, self.prefixes)) + '])'
     
+    def len(self):
+        return sum(prefix.len() for prefix in self.prefixes)
+
     def add(self, value):
         # Make sure it's iterable, otherwise wrap
         if not isinstance(value, collections.Iterable):
