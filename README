@@ -143,32 +143,3 @@ This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
 https://github.com/haypo/python-ipy
-
-
-TODO
-====
-
- * better comparison (__cmp__ and friends)
- * tests for __cmp__
- * always write hex values lowercase
- * interpret 2001:1234:5678:1234/64 as 2001:1234:5678:1234::/64
- * move size in bits into class variables to get rid of
-   some "if self._ipversion ..."
- * support for base85 encoding
- * support for output of IPv6 encoded IPv4 Addresses
- * update address type tables
- * first-last notation should be allowed for IPv6
- * add IPv6 docstring examples
- * check better for negative parameters
- * add addition / aggregation
- * move reverse name stuff out of the classes and refactor it
- * support for aggregation of more than two nets at once
- * support for aggregation with "holes"
- * support for finding common prefix
- * '>>' and '<<' for prefix manipulation
- * add our own exceptions instead ValueError all the time
- * rename checkPrefix to checkPrefixOk
- * add more documentation and doctests
- * refactor
-
-
