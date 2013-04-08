@@ -1,7 +1,9 @@
-Version 0.81 (under development)
- * Correct reverseName() for IPv6 addresses. IP('::1').reverseName() fixed.
+Version 0.81 (2013-04-08)
+ * Correct reverseName() for IPv6 addresses, so IP('::1').reverseName() returns correct.
  * Add network mask awareness to v46map()
  * Fix Python 3 errors in IPSet class
+ * Make IPSet base class be object when MutableSet isn't available, fixing
+   errors in Python 2.5
 
 Version 0.80 (2013-03-26)
 ------------

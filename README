@@ -133,11 +133,31 @@ Examples of string conversions:
     >>> print(ip)
     10.0.0.0-10.0.0.0
 
+Work with multiple networks
+===========================
+
+Simple addition of neighboring netblocks that can be aggregated will yield
+a parent network of both, but more complex range mapping and aggregation
+requires is available with the IPSet class which will hold any number of
+unique address ranges and will aggregate overlapping ranges.
+
+    >>> from IPy import IP, IPSet
+    >>> IP('10.0.0.0/22') - IP('10.0.2.0/24')
+    IPSet([IP('10.0.0.0/23'), IP('10.0.3.0/24')])
+    >>> IPSet([IP('10.0.0.0/23'), IP('10.0.3.0/24'), IP('10.0.2.0/24')])
+    IPSet([IP('10.0.0.0/22')])
+    >>> s = IPSet([IP('10.0.0.0/22')])
+    >>> s.add(IP('192.168.1.0/29'))
+    >>> s
+    IPSet([IP('10.0.0.0/22'), IP('192.168.1.0/29')])
+    >>> s.discard(IP('192.168.1.2'))
+    >>> s
+    IPSet([IP('10.0.0.0/22'), IP('192.168.1.0/31'), IP('192.168.1.3'), IP('192.168.1.4/30')])
 
 Compatibility and links
 =======================
 
-IPy 0.80 works on Python version 2.5 - 3.3.
+IPy 0.81 works on Python version 2.5 - 3.3.
 
 This Python module is under BSD license: see COPYING file.
 
