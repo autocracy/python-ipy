@@ -157,7 +157,11 @@ unique address ranges and will aggregate overlapping ranges.
 Compatibility and links
 =======================
 
-IPy 0.81 works on Python version 2.5 - 3.3.
+IPy 0.82 works on Python version 2.6 - 3.3.
+
+The IP module should work in Python 2.5 as long as the subtraction operation
+is not used. IPSet requires features of the collecitons class which appear
+in Python 2.6, though they can be backported.
 
 This Python module is under BSD license: see COPYING file.
 
