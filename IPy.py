@@ -610,19 +610,23 @@ class IPint(object):
         IP('127.0.0.3')
         """
 
-        if not isinstance(key, INT_TYPES):
-            raise TypeError
-        if key < 0:
-            if abs(key) <= self.len():
-                key = self.len() - abs(key)
+        if isinstance(key, INT_TYPES):
+            if key < 0:
+                if abs(key) <= self.len():
+                    key = self.len() - abs(key)
+                else:
+                    raise IndexError
             else:
-                raise IndexError
-        else:
-            if key >= self.len():
-                raise IndexError
+                if key >= self.len():
+                    raise IndexError
+    
+            return self.ip + int(key)
 
-        return self.ip + int(key)
+        if isinstance(key, slice):
+            return [self.ip + int(x) for x in xrange(*key.indices(len(self)))]
 
+        #wasn't a slice or number, so raise
+        raise TypeError
 
 
     def __contains__(self, item):
@@ -959,6 +963,8 @@ class IP(IPint):
         >>> print(str(ip[-1]))
         127.0.0.3
         """
+        if isinstance(key, slice):
+            return [IP(IPint.__getitem__(self, x), ipversion=self._ipversion) for x in xrange(*key.indices(len(self)))]
         return IP(IPint.__getitem__(self, key), ipversion=self._ipversion)
 
     def __repr__(self):
