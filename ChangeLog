@@ -1,3 +1,6 @@
+Version 0.82 (under development)
+ * Add support for array slices
+
 Version 0.81 (2013-04-08)
  * Correct reverseName() for IPv6 addresses, so IP('::1').reverseName() returns correct.
  * Add network mask awareness to v46map()

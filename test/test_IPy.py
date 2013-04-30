@@ -463,6 +463,7 @@ class PythonObjectBehaviour(unittest.TestCase):
         self.assertEqual(ip[0], ip.net())
         self.assertEqual(ip[-1], ip.broadcast())
         self.assertTrue(ip[255])
+        self.assertTrue(isinstance(ip[4::4], list))
         self.assertRaises(IndexError, ip.__getitem__, 256)
 
     def testStr(self):
