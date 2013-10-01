@@ -739,6 +739,8 @@ class IPint(object):
         1
 
         """
+        if other is None:
+            return False
         if not isinstance(other, IPint):
             raise TypeError
         
