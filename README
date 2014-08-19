@@ -161,6 +161,11 @@ IPSet supports the `set` method `isdisjoint`:
     >>> s.isdisjoint([IP('172.16.0.0/12')])
     True
 
+IPSet supports intersection:
+
+    >>> s & IPSet([IP('10.0.0.0/8')])
+    IPSet([IP('10.0.0.0/22')])
+
 Compatibility and links
 =======================
 
