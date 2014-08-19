@@ -849,6 +849,22 @@ class IPSetChecks(unittest.TestCase):
         self.assertTrue(IPy.IP('192.168.15.32/28') in self.t)
         self.assertFalse(IPy.IP('192.169.15.32/28') in self.t)
 
+    def testIsdisjoint(self):
+        self.assertTrue(IPy.IPSet([IPy.IP('0.0.0.0/1')])
+                .isdisjoint(IPy.IPSet([IPy.IP('128.0.0.0/1')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/1')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/2')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/1')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/2')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.1.2.3')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('0.1.2.3')])
+                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
+        self.assertTrue(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3')])
+                .isdisjoint(IPy.IPSet([IPy.IP('1.1.1.2'), IPy.IP('1.1.1.4')])))
+        self.assertFalse(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3'), IPy.IP('1.1.2.0/24')])
+                .isdisjoint(IPy.IPSet([IPy.IP('1.1.2.2'), IPy.IP('1.1.1.4')])))
+
 class RegressionTest(unittest.TestCase):
     def testNulNetmask(self):
         ip = timeout(IPy.IP, ["0.0.0.0/0.0.0.0"], timeout_duration=0.250, default=None)
