@@ -1119,6 +1119,22 @@ class IPSet(collections.MutableSet):
                 
         self.optimize()
 
+    def isdisjoint(self, other):
+        left = iter(self.prefixes)
+        right = iter(other.prefixes)
+        try:
+            l = left.next()
+            r = right.next()
+            while True:
+                if l in r or r in l:
+                    return False
+                if l < r:
+                    l = left.next()
+                else:
+                    r = right.next()
+        except StopIteration:
+            return True
+
     def optimize(self):
         # The algorithm below *depends* on the sort order
         self.prefixes.sort()

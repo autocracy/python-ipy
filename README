@@ -154,6 +154,13 @@ unique address ranges and will aggregate overlapping ranges.
     >>> s
     IPSet([IP('10.0.0.0/22'), IP('192.168.1.0/31'), IP('192.168.1.3'), IP('192.168.1.4/30')])
 
+IPSet supports the `set` method `isdisjoint`:
+
+    >>> s.isdisjoint([IP('192.168.0.0/16')])
+    False
+    >>> s.isdisjoint([IP('172.16.0.0/12')])
+    True
+
 Compatibility and links
 =======================
 
