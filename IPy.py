@@ -1041,9 +1041,7 @@ class IPSet(collections.MutableSet):
             i = bisect.bisect(self.prefixtable[mask], ip)
             # Because of sorting order, a match can only occur in the prefix
             # that comes before the result of the search.
-            if i == 0:
-                return False
-            if ip in self.prefixtable[mask][i - 1]:
+            if i and ip in self.prefixtable[mask][i - 1]:
                 return True
 
     def __iter__(self):
