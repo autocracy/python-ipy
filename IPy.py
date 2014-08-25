@@ -1037,7 +1037,7 @@ class IPSet(collections.MutableSet):
             #Don't dig through more-specific ranges
             ip_mask = ip._prefixlen
             valid_masks = [x for x in valid_masks if x <= ip_mask]
-        for mask in valid_masks:
+        for mask in sorted(valid_masks):
             i = bisect.bisect(self.prefixtable[mask], ip)
             # Because of sorting order, a match can only occur in the prefix
             # that comes before the result of the search.
