@@ -16,8 +16,6 @@ import IPy
 import unittest
 import random
 
-testloops = 250
-
 class parseAddress(unittest.TestCase):
     okValues = [('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210', 338770000845734292534325025077361652240),
                 ('FEDCBA9876543210FEDCBA9876543210', 338770000845734292534325025077361652240),
@@ -201,21 +199,6 @@ class _intToIP(unittest.TestCase):
         self.assertRaises(ValueError, IPy.intToIp, 1, 5)
         self.assertRaises(ValueError, IPy.intToIp, 1, 7)
         self.assertRaises(ValueError, IPy.intToIp, 1, 8)
-
-class ParseAndBack(unittest.TestCase):
-    def testRandomValuesv4(self):
-        for i in range(testloops):
-            question = random.randrange(0x7fffffff) + random.randrange(0x7fffffff)
-            self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 4)), (question, 4), hex(question))
-
-    def testRandomValuesv6(self):
-        for i in range(testloops):
-            question = ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) +
-                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 32) +
-                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 64) +
-                        ((random.randrange(0x7fffffff) + random.randrange(0x7fffffff)) << 96))
-            self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 6)), (question, 6), hex(question))
-
 
 class _countXBits(unittest.TestCase):
     def testCount1Bits(self):
