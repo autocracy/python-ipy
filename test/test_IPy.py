@@ -849,6 +849,12 @@ class IPSetChecks(unittest.TestCase):
         self.assertTrue(IPy.IP('192.168.15.32/28') in self.t)
         self.assertFalse(IPy.IP('192.169.15.32/28') in self.t)
 
+        # test for a regression where __contains__ prematurely returns False
+        # after testing a prefix length where all IP instances are greater than
+        # the query IP.
+        ipset = IPy.IPSet([IPy.IP('10.0.0.0/8'), IPy.IP('128.0.0.0/1')])
+        self.assertTrue(IPy.IP('10.0.0.0') in ipset)
+
     def testIsdisjoint(self):
         self.assertTrue(IPy.IPSet([IPy.IP('0.0.0.0/1')])
                 .isdisjoint(IPy.IPSet([IPy.IP('128.0.0.0/1')])))
