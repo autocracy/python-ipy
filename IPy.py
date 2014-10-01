@@ -1060,6 +1060,31 @@ class IPSet(collections.MutableSet):
             new.discard(prefix)
         return new
     
+    def __and__(self, other):
+        left = iter(self.prefixes)
+        right = iter(other.prefixes)
+        result = []
+        try:
+            l = left.next()
+            r = right.next()
+            while True:
+                # iterate over prefixes in order, keeping the smaller of the
+                # two if they overlap
+                if l in r:
+                    result.append(l)
+                    l = left.next()
+                    continue
+                elif r in l:
+                    result.append(r)
+                    r = right.next()
+                    continue
+                if l < r:
+                    l = left.next()
+                else:
+                    r = right.next()
+        except StopIteration:
+            return IPSet(result)
+
     def __repr__(self):
         return '%s([' % self.__class__.__name__ + ', '.join(map(repr, self.prefixes)) + '])'
     

@@ -828,6 +828,27 @@ class IPSetChecks(unittest.TestCase):
         self.t.discard(self.sixRange)
         self.assertEqual(self.t, self.c)
 
+    def testAnd(self):
+        ten24s = IPy.IPSet([
+            IPy.IP('10.0.1.0/24'),
+            IPy.IP('10.0.3.0/24'),
+            IPy.IP('10.0.5.0/24'),
+            IPy.IP('10.0.7.0/24'),
+        ])
+
+        self.assertEqual(ten24s & IPy.IPSet([IPy.IP('10.0.1.10')]),
+                         IPy.IPSet([IPy.IP('10.0.1.10')]))
+
+        self.assertEqual(ten24s & IPy.IPSet([
+            IPy.IP('10.0.0.99'),
+            IPy.IP('10.0.1.10'),
+            IPy.IP('10.0.3.40'),
+            IPy.IP('11.1.1.99'),
+        ]), IPy.IPSet([
+            IPy.IP('10.0.1.10'),
+            IPy.IP('10.0.3.40'),
+        ]))
+
     def testContains(self):
         self.assertTrue(IPy.IP('192.168.15.32/28') in self.t)
         self.assertFalse(IPy.IP('192.169.15.32/28') in self.t)
