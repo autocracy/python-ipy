@@ -175,6 +175,17 @@ The IP module should work in Python 2.5 as long as the subtraction operation
 is not used. IPSet requires features of the collecitons class which appear
 in Python 2.6, though they can be backported.
 
+Eratta
+======
+
+When using IPv6 addresses, it is best to compare using IP().len() instead of
+len(IP). Addresses with an integer value > 64 bits can break the 2nd method.
+See http://stackoverflow.com/questions/15650878 for more info.
+
+Fuzz testing for IPSet will throw spurious errors when the IPSet module
+combines two smaller prefixes into a larger prefix that matches the random
+prefix tested against.
+
 This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
