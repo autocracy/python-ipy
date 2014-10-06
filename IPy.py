@@ -1146,15 +1146,15 @@ class IPSet(collections.MutableSet):
         left = iter(self.prefixes)
         right = iter(other.prefixes)
         try:
-            l = left.next()
-            r = right.next()
+            l = next(left)
+            r = next(right)
             while True:
                 if l in r or r in l:
                     return False
                 if l < r:
-                    l = left.next()
+                    l = next(left)
                 else:
-                    r = right.next()
+                    r = next(right)
         except StopIteration:
             return True
 
@@ -1635,7 +1635,7 @@ def _remove_subprefix(prefix, subprefix):
     # Start cutting in half, recursively
     prefixes = [
         IP('%s/%d' % (prefix[0], prefix._prefixlen + 1)),
-        IP('%s/%d' % (prefix[prefix.len() / 2], prefix._prefixlen + 1)),
+        IP('%s/%d' % (prefix[int(prefix.len() / 2)], prefix._prefixlen + 1)),
     ]
     if subprefix in prefixes[0]:
         return _remove_subprefix(prefixes[0], subprefix) + IPSet([prefixes[1]])

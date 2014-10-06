@@ -12,6 +12,9 @@ import IPy
 import unittest
 import random
 
+if sys.version_info >= (3,):
+    xrange = range
+
 # on Python-2.7 and higher, we use load_tests to multiply out the test cases so that unittest
 # represents each as an individual test case.
 def iterate_27(n):
