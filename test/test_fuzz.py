@@ -85,7 +85,7 @@ class TestIPSet(unittest.TestCase):
         answer = any(question in pfx for pfx in prefixes)
         ipset = IPy.IPSet(prefixes)
         self.assertEqual(question in ipset, answer,
-                "%s in %s != %s" % (question, ipset, answer))
+                "%s in %s != %s (made from %s)" % (question, ipset, answer, prefixes))
         
 
     @iterate(1000)

@@ -156,9 +156,9 @@ unique address ranges and will aggregate overlapping ranges.
 
 IPSet supports the `set` method `isdisjoint`:
 
-    >>> s.isdisjoint([IP('192.168.0.0/16')])
+    >>> s.isdisjoint(IPSet([IP('192.168.0.0/16')]))
     False
-    >>> s.isdisjoint([IP('172.16.0.0/12')])
+    >>> s.isdisjoint(IPSet([IP('172.16.0.0/12')]))
     True
 
 IPSet supports intersection:
