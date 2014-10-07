@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '0.82a'
+__version__ = '0.83'
 
 import bisect
 import collections
