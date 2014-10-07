@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '0.81'
+__version__ = '0.82a'
 
 import bisect
 import collections
@@ -1065,23 +1065,23 @@ class IPSet(collections.MutableSet):
         right = iter(other.prefixes)
         result = []
         try:
-            l = left.next()
-            r = right.next()
+            l = next(left)
+            r = next(right)
             while True:
                 # iterate over prefixes in order, keeping the smaller of the
                 # two if they overlap
                 if l in r:
                     result.append(l)
-                    l = left.next()
+                    l = next(left)
                     continue
                 elif r in l:
                     result.append(r)
-                    r = right.next()
+                    r = next(right)
                     continue
                 if l < r:
-                    l = left.next()
+                    l = next(left)
                 else:
-                    r = right.next()
+                    r = next(right)
         except StopIteration:
             return IPSet(result)
 

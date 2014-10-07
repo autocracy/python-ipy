@@ -24,7 +24,7 @@ from __future__ import with_statement
 import sys
 from distutils.core import setup
 
-VERSION = '0.81'
+VERSION = '0.82a'
 
 options = {}
 

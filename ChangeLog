@@ -1,3 +1,8 @@
+Version 0.82a (2014-10-07)
+------------
+ * Fix version numbers in files
+ * Correct x.next() -> next(x) python3 compatability
+
 Version 0.82 (2014-10-06)
 ------------
 
