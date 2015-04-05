@@ -1,6 +1,6 @@
 IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 
-Website: https://github.com/haypo/python-ipy/
+Website: https://github.com/autocracy/python-ipy/
 
 Presentation of the API
 =======================
@@ -189,4 +189,4 @@ prefix tested against.
 This Python module is under BSD license: see COPYING file.
 
 Further Information might be available at:
-https://github.com/haypo/python-ipy
+https://github.com/autocracy/python-ipy

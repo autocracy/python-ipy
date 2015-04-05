@@ -1,5 +1,7 @@
-Version 0.83
+Version 0.83 (2015-04-04)
 ------------
+ * Add carrier grade NAT ranges
+ * Unbreak lots of packing systems by not having a letter in the release version
 
 Version 0.82a (2014-10-07)
 ------------

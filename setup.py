@@ -54,7 +54,7 @@ CLASSIFIERS = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
 ]
-URL = "https://github.com/haypo/python-ipy"
+URL = "https://github.com/autocracy/python-ipy"
 
 setup(
     name="IPy",
