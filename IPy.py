@@ -316,24 +316,23 @@ class IPint(object):
 
         if (self._ipversion == 4 and self._prefixlen == 32) or \
            (self._ipversion == 6 and self._prefixlen == 128):
-            if self.NoPrefixForSingleIp:
+            if want == None and self.NoPrefixForSingleIp:
                 want = 0
         if want == None:
             want = self.WantPrefixLen
             if want == None:
                 want = 1
         if want:
-            if want == 2:
-                # this should work with IP and IPint
+           if want == 1:
+                return "/%d" % (self._prefixlen)
+           elif want == 2:
+               # this should work with IP and IPint
                 netmask = self.netmask()
                 if not isinstance(netmask, INT_TYPES):
                     netmask = netmask.int()
                 return "/%s" % (intToIp(netmask, self._ipversion))
-            elif want == 3:
+           elif want == 3:
                 return "-%s" % (intToIp(self.ip + self.len() - 1, self._ipversion))
-            else:
-                # default
-                return "/%d" % (self._prefixlen)
         else:
             return ''
 
@@ -355,7 +354,7 @@ class IPint(object):
 
         bits = _ipVersionToLen(self._ipversion)
         if self.WantPrefixLen == None and wantprefixlen == None:
-            wantprefixlen = 0
+            wantprefixlen = None
         ret = _intToBin(self.ip)
         return  '0' * (bits - len(ret)) + ret + self._printPrefix(wantprefixlen)
 
@@ -371,7 +370,7 @@ class IPint(object):
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
-            wantprefixlen = 1
+            wantprefixlen = None
 
         if self._ipversion == 4:
             return self.strFullsize(wantprefixlen)
@@ -414,7 +413,7 @@ class IPint(object):
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
-            wantprefixlen = 1
+            wantprefixlen = None
 
         if self._ipversion == 4:
             ret = self.strFullsize(0)
@@ -437,7 +436,7 @@ class IPint(object):
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
-            wantprefixlen = 1
+            wantprefixlen = None
 
         return intToIp(self.ip, self._ipversion) + self._printPrefix(wantprefixlen)
 
@@ -451,7 +450,7 @@ class IPint(object):
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
-            wantprefixlen = 0
+            wantprefixlen = None
 
         x = '0x%x' % self.ip
         return x + self._printPrefix(wantprefixlen)
@@ -466,7 +465,7 @@ class IPint(object):
         """
 
         if self.WantPrefixLen == None and wantprefixlen == None:
-            wantprefixlen = 0
+            wantprefixlen = None
 
         x = '%d' % self.ip
         return x + self._printPrefix(wantprefixlen)
