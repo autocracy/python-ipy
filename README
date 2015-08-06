@@ -28,7 +28,7 @@ so funky stuff like a netmask of 0xffffff0f can't be done here.
     >>> ip.reverseName()
     '0-3.0.0.127.in-addr.arpa.'
     >>> ip.iptype()
-    'PRIVATE'
+    'LOOPBACK'
 
 
 Supports most IP address formats

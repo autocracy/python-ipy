@@ -475,7 +475,7 @@ class IPint(object):
         """Return a description of the IP type ('PRIVATE', 'RESERVED', etc).
 
         >>> print(IP('127.0.0.1').iptype())
-        PRIVATE
+        LOOPBACK
         >>> print(IP('192.168.1.1').iptype())
         PRIVATE
         >>> print(IP('195.185.1.2').iptype())
