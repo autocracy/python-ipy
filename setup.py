@@ -28,7 +28,7 @@ VERSION = '0.83'
 
 options = {}
 
-with open('README') as fp:
+with open('README.rst') as fp:
     README = fp.read().strip() + "\n\n"
 
 ChangeLog = (
