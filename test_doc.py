@@ -5,7 +5,7 @@ if hasattr(doctest, "testfile"):
     total_failures, total_tests = (0, 0)
 
     print("=== Test file: README ===")
-    failure, tests = doctest.testfile('README', optionflags=doctest.ELLIPSIS)
+    failure, tests = doctest.testfile('README.rst', optionflags=doctest.ELLIPSIS)
     total_failures += failure
     total_tests += tests
 
