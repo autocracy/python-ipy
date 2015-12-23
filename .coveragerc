@@ -1,0 +1,14 @@
+[run]
+branch = True
+source = IPy
+
+[report]
+exclude_lines =
+    def __repr__
+    def __str__
+    if __name__ == .__main__.:
+
+ignore_errors = True
+
+[html]
+directory = coverage_html_report
