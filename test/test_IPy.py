@@ -210,7 +210,7 @@ class _countXBits(unittest.TestCase):
         self.assertEqual(IPy._count1Bits(0xffffffff), 32)
         self.assertEqual(IPy._count1Bits(0xffffffffffffffffffffffffffffffff), 128)
 
-    def testCount1Bits(self):
+    def testCount0Bits(self):
         self.assertEqual(IPy._count0Bits(0), 0)
         self.assertEqual(IPy._count0Bits(0xf0), 4)
         self.assertEqual(IPy._count0Bits(0xf00), 8)
@@ -660,19 +660,6 @@ class IPobject(unittest.TestCase):
         for (a, b, answer) in testValues:
             result = IPy.IP(a).overlaps(b)
             self.assertEqual(answer, result, (a, b, result, answer))
-
-    def testNetmask(self):
-        """Normal string Output."""
-        testValues = [(338770000845734292534325025077361652240, '0xfedcba9876543210fedcba9876543210'),
-                      (21932261930451111902915077091070067066, '0x108000000000000000080800200c417a'),
-                      (338958331222012082418099330867817087043, '0xff010000000000000000000000000043'),
-                      (0, '0x0'),
-                      (1, '0x1'),
-                      (4294967295, '0xffffffff'),
-                      (3588059479, '0xd5dd7157')]
-        for (question, answer) in testValues:
-            result = IPy.IP(question).strHex(question).lower()
-            self.assertEqual(answer, result, (question, result, answer))
 
     def testV46map(self):
         four    = IPy.IP('192.168.1.1')
