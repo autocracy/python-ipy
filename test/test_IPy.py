@@ -612,7 +612,7 @@ class IPobject(unittest.TestCase):
         self.assertEqual(str(IPy.IP("0.0.0.0/0").netmask()), "0.0.0.0")
         self.assertEqual(str(IPy.IP("0.0.0.0/32").netmask()), "255.255.255.255")
         self.assertEqual(str(IPy.IP("127.0.0.0/24").netmask()), "255.255.255.0")
-        self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").netmask()), "ffff:ffff:ffff:ffff:0000:0000:0000:0000")
+        self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").netmask()), "ffff:ffff:ffff:ffff::")
 
     def testInt(self):
         """Prefixlen"""
