@@ -769,6 +769,9 @@ class IPint(object):
     def __lt__(self, other):
         return self.__cmp__(other) < 0
 
+    def __le__(self, other):
+        return self.__cmp__(other) <= 0
+
     def __hash__(self):
         """Called for the key object for dictionary operations, and by
         the built-in function hash(). Should return a 32-bit integer
