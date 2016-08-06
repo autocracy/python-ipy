@@ -740,6 +740,9 @@ class IPint(object):
         1
 
         """
+        if other is None:
+            return 1
+
         if not isinstance(other, IPint):
             raise TypeError
         
