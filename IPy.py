@@ -1383,6 +1383,7 @@ def parseAddress(ipstr):
     >>> testParseAddress('::FFFF:129.144.52.38')
     281472855454758 (IPv6)
     """
+    if " " in ipstr: raise ValueError("IP Address format was invalid: %s" % ipstr)
 
     try:
         hexval = int(ipstr, 16)
@@ -1437,8 +1438,7 @@ def parseAddress(ipstr):
 def intToIp(ip, version):
     """Transform an integer string into an IP address."""
 
-    # just to be sure and hoping for Python 2.2
-    ip = int(ip)
+    # just to be sure and hoping for Python 2.2    ip = int(ip)
 
     if ip < 0:
         raise ValueError("IPs can't be negative: %d" % (ip))

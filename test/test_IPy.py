@@ -68,6 +68,10 @@ class parseAddress(unittest.TestCase):
 
     # TODO: check for more invalid input
 
+    def testSpaces(self):
+        with self.assertRaises(ValueError):
+            IPy.parseAddress("127. 0.0.1")
+
     def testKnownValues(self):
         """parsing of known values should give known results"""
         for x in self.okValues:
@@ -145,7 +149,7 @@ class parseAddress(unittest.TestCase):
         self.assertRaises(ValueError, IPy.parseAddress, 'foobar')
 
 class _intToIP(unittest.TestCase):
-    v4values = [(0x7f000001, '127.0.0.1'),
+    v4values = [(0x7f000001, '127.0.0.1'),\
                 (0x0, '0.0.0.0'),
                 (0x1, '0.0.0.1'),
                 (0xf, '0.0.0.15'),
