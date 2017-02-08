@@ -1438,7 +1438,8 @@ def parseAddress(ipstr):
 def intToIp(ip, version):
     """Transform an integer string into an IP address."""
 
-    # just to be sure and hoping for Python 2.2    ip = int(ip)
+    # just to be sure and hoping for Python 2.2
+    ip = int(ip)
 
     if ip < 0:
         raise ValueError("IPs can't be negative: %d" % (ip))

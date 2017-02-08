@@ -149,7 +149,7 @@ class parseAddress(unittest.TestCase):
         self.assertRaises(ValueError, IPy.parseAddress, 'foobar')
 
 class _intToIP(unittest.TestCase):
-    v4values = [(0x7f000001, '127.0.0.1'),\
+    v4values = [(0x7f000001, '127.0.0.1'),
                 (0x0, '0.0.0.0'),
                 (0x1, '0.0.0.1'),
                 (0xf, '0.0.0.15'),
