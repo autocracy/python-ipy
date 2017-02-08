@@ -69,6 +69,7 @@ class parseAddress(unittest.TestCase):
     # TODO: check for more invalid input
 
     def testSpaces(self):
+        """Test if there is space(s) in inputted string."""
         with self.assertRaises(ValueError):
             IPy.parseAddress("127. 0.0.1")
 

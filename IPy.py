@@ -1383,6 +1383,7 @@ def parseAddress(ipstr):
     >>> testParseAddress('::FFFF:129.144.52.38')
     281472855454758 (IPv6)
     """
+    """ Make sure there is no space in `ipstr`, if there is raise `ValueError`."""
     if " " in ipstr: raise ValueError("IP Address format was invalid: %s" % ipstr)
 
     try:
