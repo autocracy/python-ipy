@@ -558,6 +558,8 @@ class IPint(object):
         """
         return True
 
+    def __bool__(self):
+        return self.__nonzero__()
 
     def __len__(self):
         """
