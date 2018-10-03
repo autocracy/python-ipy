@@ -862,6 +862,25 @@ class IPSetChecks(unittest.TestCase):
         self.assertFalse(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3'), IPy.IP('1.1.2.0/24')])
                 .isdisjoint(IPy.IPSet([IPy.IP('1.1.2.2'), IPy.IP('1.1.1.4')])))
 
+    def testInitialization(self):
+        # Initialize with list of strings is the same if it is list of
+        # IP objects of the same strings
+        self.assertEqual(
+            IPy.IPSet([IPy.IP('10.0.0.0/8'), IPy.IP('128.0.0.0/1')]),
+            IPy.IPSet(['10.0.0.0/8', '128.0.0.0/1']),
+        )
+
+        # Initialize from generator expressions
+        self.assertEqual(
+            IPy.IPSet([IPy.IP('10.0.0.0/8'), IPy.IP('128.0.0.0/1')]),
+            IPy.IPSet(prefix for prefix in ('10.0.0.0/8', '128.0.0.0/1')),
+        )
+
+        self.assertRaises(ValueError, IPy.IPSet, ['Random string'])
+        self.assertRaises(TypeError, IPy.IPSet, [None])
+        self.assertRaises(TypeError, IPy.IPSet, [1.5])
+
+
 class RegressionTest(unittest.TestCase):
     def testNulNetmask(self):
         ip = timeout(IPy.IP, ["0.0.0.0/0.0.0.0"], timeout_duration=0.250, default=None)

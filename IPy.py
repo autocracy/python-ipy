@@ -1028,13 +1028,9 @@ class IPSet(collections.MutableSet):
         if not isinstance(iterable, collections.Iterable):
             raise TypeError("'%s' object is not iterable" % type(iterable).__name__)
         
-        # Make sure we only accept IP objects
-        for prefix in iterable:
-            if not isinstance(prefix, IP):
-                raise ValueError('Only IP objects can be added to an IPSet')
-            
         # Store and optimize
-        self.prefixes = iterable[:]
+        self.prefixes = [(IP(prefix) if not isinstance(prefix, IP) else prefix)
+                         for prefix in iterable]
         self.optimize()
             
     def __contains__(self, ip):
