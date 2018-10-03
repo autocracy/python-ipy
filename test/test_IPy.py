@@ -840,6 +840,19 @@ class IPSetChecks(unittest.TestCase):
         self.assertTrue(IPy.IP('192.168.15.32/28') in self.t)
         self.assertFalse(IPy.IP('192.169.15.32/28') in self.t)
 
+        # Test with simple strings
+        self.assertTrue('192.168.15.32/28' in self.t)
+        self.assertTrue('192.168.15.32' in self.t)
+        self.assertFalse('192.169.15.32/28' in self.t)
+        self.assertFalse('random string' in self.t)
+
+        # Test with other value types
+        self.assertFalse(None in self.t)
+        self.assertFalse(True in self.t)
+        self.assertFalse(False in self.t)
+        self.assertFalse(-1 in self.t)
+        self.assertFalse(1.5 in self.t)
+
         # test for a regression where __contains__ prematurely returns False
         # after testing a prefix length where all IP instances are greater than
         # the query IP.

@@ -1038,11 +1038,16 @@ class IPSet(collections.MutableSet):
         self.optimize()
             
     def __contains__(self, ip):
+        if not isinstance(ip, IP):
+            try:
+                ip = IP(ip)
+            except (ValueError, TypeError):
+                # If the value is not valid IP then it is not in the set
+                return False
+        #Don't dig through more-specific ranges
+        ip_mask = ip._prefixlen
         valid_masks = self.prefixtable.keys()
-        if isinstance(ip, IP):
-            #Don't dig through more-specific ranges
-            ip_mask = ip._prefixlen
-            valid_masks = [x for x in valid_masks if x <= ip_mask]
+        valid_masks = [x for x in valid_masks if x <= ip_mask]
         for mask in sorted(valid_masks):
             i = bisect.bisect(self.prefixtable[mask], ip)
             # Because of sorting order, a match can only occur in the prefix
