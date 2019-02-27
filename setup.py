@@ -4,15 +4,14 @@
 #
 #  - set version in IPy.py
 #  - set version in setup.py
+#  - set version in README.rst
 #  - run unit test: make
-#  - run unit test: make PYTHON=python3
 #  - set release date in ChangeLog
 #  - git commit -a
 #  - git tag -a IPy-x.y -m "tag IPy x.y"
 #  - git push
 #  - git push --tags
 #  - python setup.py register sdist upload
-#  - update the website
 #
 # After the release:
 #  - set version to n+1 (IPy.py and setup.py)
@@ -24,7 +23,7 @@ from __future__ import with_statement
 import sys
 from distutils.core import setup
 
-VERSION = '0.83'
+VERSION = '1.00'
 
 options = {}
 
