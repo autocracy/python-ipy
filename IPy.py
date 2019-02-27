@@ -243,7 +243,7 @@ class IPint(object):
             else:
                 raise ValueError("can't parse")
 
-            (self.ip, parsedVersion) = parseAddress(ip)
+            (self.ip, parsedVersion) = parseAddress(ip, ipversion)
             if ipversion == 0:
                 ipversion = parsedVersion
             if prefixlen == -1:
@@ -1341,7 +1341,7 @@ def _parseAddressIPv6(ipstr):
         index += 1
     return value
 
-def parseAddress(ipstr):
+def parseAddress(ipstr, ipversion=0):
     """
     Parse a string and return the corresponding IP address (as integer)
     and a guess of the IP version.
@@ -1410,7 +1410,7 @@ def parseAddress(ipstr):
         # assume IPv6 in pure hexadecimal notation
         return (hexval, 6)
 
-    elif ipstr.find('.') != -1 or (intval is not None and intval < 256):
+    elif ipstr.find('.') != -1 or (intval is not None and intval < 256 and ipversion != 6):
         # assume IPv4  ('127' gets interpreted as '127.0.0.0')
         bytes = ipstr.split('.')
         if len(bytes) > 4:
@@ -1428,7 +1428,7 @@ def parseAddress(ipstr):
         # will be interpreted as IPv4 first byte
         if intval > MAX_IPV6_ADDRESS:
             raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, intval))
-        if intval <= MAX_IPV4_ADDRESS:
+        if intval <= MAX_IPV4_ADDRESS and ipversion != 6:
             return (intval, 4)
         else:
             return (intval, 6)
