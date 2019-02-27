@@ -891,6 +891,9 @@ class RegressionTest(unittest.TestCase):
         self.assertEqual(len(IPy.IP('192.168.0.0/24')), 256)
         self.assertRaises(ValueError, IPy.IP, '192.168.1.0/42')
 
+    def testConsistentIP6StrInt(self):
+        self.assertEqual(IPy.IP('11', ipversion=6), IPy.IP(11, ipversion=6))
+
 class TestConstrutor(unittest.TestCase):
     def testCheckAddrPrefixlenOff(self):
         self.assertRaises(ValueError, IPy.IP, 0xffffffff + 1, ipversion=4)
