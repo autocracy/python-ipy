@@ -10,7 +10,6 @@ __version__ = '1.00'
 
 import bisect
 import collections
-import sys
 import types
 
 # Definition of the Ranges for IPv4 IPs
@@ -121,13 +120,14 @@ MAX_IPV6_ADDRESS = 0xffffffffffffffffffffffffffffffff
 IPV6_TEST_MAP    = 0xffffffffffffffffffffffff00000000
 IPV6_MAP_MASK    = 0x00000000000000000000ffff00000000
 
-if sys.version_info >= (3,):
+try:
+    INT_TYPES = (int, long)
+    STR_TYPES = (str, unicode)
+    xrange
+except NameError:
     INT_TYPES = (int,)
     STR_TYPES = (str,)
     xrange = range
-else:
-    INT_TYPES = (int, long)
-    STR_TYPES = (str, unicode)
 
 
 class IPint(object):
