@@ -126,7 +126,7 @@ for x in fd.readlines():
                             print("*** warning: no network for %s (%s) - ignoring" % (ip, name), file=sys.stderr)
                             print("# no network for %s (%s) - ignoring" % (ip, name))
                         else:  
-                            print("6%s.%s:%s"); (name, ip6map[net], ip.strHex()[2:])
+                            print("6%s.%s:%s" % (name, ip6map[net], ip.strHex()[2:]))
                             for z in aliases:
                                 print("3%s:%s" % (name, ip.strHex()[2:]))
                                 print("'%s:Host contact is %s" % (name, admin))
