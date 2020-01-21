@@ -9,4 +9,5 @@ python:
   - "3.7-dev"
   - "3.8-dev"
   - "nightly"
-script: nosetests -e fuzz
+install: pip install pytest
+script: pytest -k "not fuzz"
