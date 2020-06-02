@@ -788,7 +788,7 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     it.setDaemon(True)
     it.start()
     it.join(timeout_duration)
-    if it.isAlive():
+    if it.is_alive():
         return default
     else:
         return it.result
