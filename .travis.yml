@@ -1,3 +1,4 @@
+os: linux
 dist: xenial
 language: python
 python:
@@ -6,10 +7,9 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
-  - "3.7-dev"
-  - "3.8-dev"
+  - "3.8"
+  - "3.9-dev"
   - "nightly"
-before_install: pip install flake8
+install: pip install flake8 pytest
 before_script: flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
-install: pip install pytest
 script: pytest -k "not fuzz"
