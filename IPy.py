@@ -9,8 +9,11 @@ https://github.com/haypo/python-ipy
 __version__ = '1.00'
 
 import bisect
-import collections
 import types
+try:
+    import collections.abc as collections_abc
+except ImportError:
+    import collections as collections_abc
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -1022,10 +1025,10 @@ class IP(IPint):
         raise ValueError("%s cannot be converted to an IPv4 address."
                          % repr(self))
 
-class IPSet(collections.MutableSet):
+class IPSet(collections_abc.MutableSet):
     def __init__(self, iterable=[]):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(iterable, collections.Iterable):
+        if not isinstance(iterable, collections_abc.Iterable):
             raise TypeError("'%s' object is not iterable" % type(iterable).__name__)
         
         # Make sure we only accept IP objects
@@ -1099,7 +1102,7 @@ class IPSet(collections.MutableSet):
 
     def add(self, value):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(value, collections.Iterable):
+        if not isinstance(value, collections_abc.Iterable):
             value = [value]
         
         # Check type
@@ -1113,7 +1116,7 @@ class IPSet(collections.MutableSet):
     
     def discard(self, value):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(value, collections.Iterable):
+        if not isinstance(value, collections_abc.Iterable):
             value = [value]
             
         # This is much faster than iterating over the addresses
