@@ -9,5 +9,7 @@ python:
   - "3.7-dev"
   - "3.8-dev"
   - "nightly"
+before_install: pip install flake8
+before_script: flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
 install: pip install pytest
 script: pytest -k "not fuzz"

@@ -1,3 +1,4 @@
+from __future__ import print_function
 # This is a hack I use to generate my tinydns configuration
 # It serves as e test for converting from Perl Net::IP to
 # Python and IPy
@@ -15,11 +16,11 @@ ns = {'ns.nerxs.com': '213.221.113.70',
       'ns.dorsch.org': '195.143.234.25',
       'ns.c0re.jp': '217.6.214.130'}
 
-print "# *** nameservers ***"
-for x in ns.keys():
-    print "=%s:%s" % (x, ns[x])
+print("# *** nameservers ***")
+for x in ns:
+    print("=%s:%s" % (x, ns[x]))
 
-print "\n# *** domains ***"
+print("\n# *** domains ***")
 
 fd = open('domains')
 
@@ -28,13 +29,13 @@ for x in fd.readlines():
         if x[-1] == '\n':
             x = x[:-1]
         (domain, owner) = x.split(':')
-        print "'%s:Contact for this domain is %s" % (domain, owner)
-        for y in ns.keys(): 
-            print ".%s::%s" % (domain, y)
+        print("'%s:Contact for this domain is %s" % (domain, owner))
+        for y in ns: 
+            print(".%s::%s" % (domain, y))
 
 fd.close()
 
-print "\n# *** Networks ***"
+print("\n# *** Networks ***")
 
 fd = open('networks')
 ip6map = {}
@@ -47,12 +48,12 @@ for x in fd.readlines():
     if len(x) > 0 and x[0] != '#':
         nets = x.split(',')
         name = nets.pop(0)
-        print "# Network: %s" % name
+        print("# Network: %s" % name)
         for y in nets:
             ip = IPy.IP(y)
-            print "# Address range: %s (%s), %d addresses" % (ip.strCompressed(), ip.iptype(), ip.len())
-            print "=net.%s:%s" % (name, ip.net())
-            print "=broadcast.%s:%s" % (name, ip.broadcast())
+            print("# Address range: %s (%s), %d addresses" % (ip.strCompressed(), ip.iptype(), ip.len()))
+            print("=net.%s:%s" % (name, ip.net()))
+            print("=broadcast.%s:%s" % (name, ip.broadcast()))
             
             if ip.version() == 4:
                 for z in ip:
@@ -61,14 +62,14 @@ for x in fd.readlines():
                     rmap[z.int()] = z.strBin() + "." + name
             else:
                 # IPv6
-                for z in ns.keys():
+                for z in ns:
                     for v in ip.reverseName():
-                        print ".%s::%s" % (v, z) 
+                        print(".%s::%s" % (v, z)) 
                 ip6map[ip.strFullsize(0)] = name
 
 fd.close()
 
-print "\n# *** hosts ***"
+print("\n# *** hosts ***")
       
 fd = open('hosts')
 
@@ -77,12 +78,12 @@ for x in fd.readlines():
         x = x[:-1]
     if x != '' and x[0] != '#':
         if "@Z'.".find(x[0]) >= 0:
-            print x
+            print(x)
         else:
             if "=+'".find(x[0]) >= 0:
                 i = x.split(':')
                 rmap[IPy.IP(i[1]).int()] = ''
-                print x
+                print(x)
             else:
                 x = x[1:]
                 x += '||||'
@@ -107,35 +108,33 @@ for x in fd.readlines():
                     ip = IPy.IP(y) 
                     if ip.version() == 4:
                         # IPv4 is easy
-                        if not nmap.has_key(ip.int()):
-                            print >>sys.stderr, "*** warning: no network for %s (%s) - ignoring" % (y, name)
-                            print "# no network for %s (%s)" % (y, name)
+                        if ip.int() not in nmap:
+                            print("*** warning: no network for %s (%s) - ignoring" % (y, name), file=sys.stderr)
+                            print("# no network for %s (%s)" % (y, name))
                         else:
-                            print "=%s.%s:%s" % (name, nmap[ip.int()], y)
-                            print "'%s.%s:Host contact is %s" % (name, nmap[ip.int()], admin)
+                            print("=%s.%s:%s" % (name, nmap[ip.int()], y))
+                            print("'%s.%s:Host contact is %s" % (name, nmap[ip.int()], admin))
                             rmap[ip.int()] = ''      
                             for z in aliases:
-                                print "+%s:%s" % (z, ip)
-                                print "'%s:Host contact is %s" % (z, admin)
+                                print("+%s:%s" % (z, ip))
+                                print("'%s:Host contact is %s" % (z, admin))
                     else:
                         #IPv6 here
                         net = ip.strFullsize(0)
                         net = net[:19] + ':0000:0000:0000:0000'
-                        if ip6map.has_key(net):
-                            print >>sys.stderr, "*** warning: no network for %s (%s) - ignoring" % (ip, name)
-                            print "# no network for %s (%s) - ignoring" % (ip, name)
+                        if net in ip6map:
+                            print("*** warning: no network for %s (%s) - ignoring" % (ip, name), file=sys.stderr)
+                            print("# no network for %s (%s) - ignoring" % (ip, name))
                         else:  
-                            print "6%s.%s:%s"; (name, ip6map[net], ip.strHex()[2:])
+                            print("6%s.%s:%s" % (name, ip6map[net], ip.strHex()[2:]))
                             for z in aliases:
-                                print "3%s:%s" % (name, ip.strHex()[2:])
-                                print "'%s:Host contact is %s" % (name, admin)
+                                print("3%s:%s" % (name, ip.strHex()[2:]))
+                                print("'%s:Host contact is %s" % (name, admin))
 
 fd.close()
 
-print "\n# *** reverse lookup ***"
-k = nmap.keys()
-k.sort()
-for x in k:
-    if rmap.has_key(x) and rmap[x] != '':
-      print "=%s:%s" % (rmap[x], str(IPy.IP(x)))
+print("\n# *** reverse lookup ***")
+for x in sorted(nmap):
+    if rmap.get(x):
+      print("=%s:%s" % (rmap[x], str(IPy.IP(x))))
 
