@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '1.00'
+__version__ = '1.01'
 
 import bisect
 import types

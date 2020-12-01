@@ -1,4 +1,9 @@
+Version 1.01 (2020-12-01)
+------------
+ * Update to support up to Python 3.9
+
 Version 1.00 (2019-02-27)
+------------
  * Fix IPv6 string interpretation for small ints
  * Various Python3 language fixes
  * consider 127.0 range LOOPBACK not PRIVATE
