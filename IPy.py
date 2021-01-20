@@ -6,7 +6,7 @@ Further Information might be available at:
 https://github.com/haypo/python-ipy
 """
 
-__version__ = '1.01'
+__version__ = '1.02'
 
 import bisect
 import types
@@ -403,7 +403,12 @@ class IPint(object):
                     hextets.append('')
                 if compressionpos == 0:
                     hextets = [''] + hextets
-                return ':'.join(hextets) + self._printPrefix(wantprefixlen)
+                # fix the bug: `last_ip` can't be compressed
+                if wantprefixlen == 3:
+                    _last = "-%s" % (IPint(self.ip + self.len() - 1).strCompressed())
+                else:
+                    _last = self._printPrefix(wantprefixlen)
+                return ':'.join(hextets) + _last
             else:
                 return self.strNormal(0) + self._printPrefix(wantprefixlen)
 

@@ -1,3 +1,7 @@
+Version 1.02 (2021-01-20)
+------------
+ * Fix a bug: `last_ip` can't be compressed
+
 Version 1.01 (2020-12-01)
 ------------
  * Update to support up to Python 3.9
