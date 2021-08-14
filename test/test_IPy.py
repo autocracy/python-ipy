@@ -785,7 +785,7 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
                 self.result = default
 
     it = InterruptableThread()
-    it.setDaemon(True)
+    it.daemon = True
     it.start()
     it.join(timeout_duration)
     if hasattr(it, 'is_alive'):
