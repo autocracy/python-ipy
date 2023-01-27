@@ -10,20 +10,11 @@ __version__ = '1.01'
 
 import bisect
 import types
-try:
-    import collections 
-    if sys.version_info.major == 3 and sys.version_info.minor >= 10
-
-        from collections.abc import MutableMapping
-    else 
-        from collections import MutableMapping
-except ImportError:
-    import collections 
-    if sys.version_info.major == 3 and sys.version_info.minor >= 10
-
-        from collections.abc import MutableMapping
-    else 
-        from collections import MutableMapping
+import collections 
+if sys.version_info.major == 3 and sys.version_info.minor >= 10
+    from collections.abc import MutableMapping
+else 
+    from collections import MutableMapping
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
