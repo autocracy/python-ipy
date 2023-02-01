@@ -390,7 +390,7 @@ class IPint(object):
             # compressionpos is the position where we can start removing zeros
             compressionpos = followingzeros.index(max(followingzeros))
             if max(followingzeros) > 1:
-                # genererate string with the longest number of zeros cut out
+                # generate string with the longest number of zeros cut out
                 # now we need hextets as strings
                 hextets = [x for x in self.strNormal(0).split(':')]
                 while compressionpos < len(hextets) and hextets[compressionpos] == '0':
@@ -684,7 +684,7 @@ class IPint(object):
 
 
     def __str__(self):
-        """Dispatch to the prefered String Representation.
+        """Dispatch to the preferred String Representation.
 
         Used to implement str(IP)."""
 
@@ -1423,7 +1423,7 @@ def parseAddress(ipstr, ipversion=0):
         return ((bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3], 4)
 
     elif intval is not None:
-        # we try to interprete it as a decimal digit -
+        # we try to interpret it as a decimal digit -
         # this ony works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
         if intval > MAX_IPV6_ADDRESS:
