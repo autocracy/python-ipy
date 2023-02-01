@@ -3,18 +3,14 @@ IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 See README file for learn how to use IPy.
 
 Further Information might be available at:
-https://github.com/haypo/python-ipy
+https://github.com/autocracy/python-ipy
 """
 
-__version__ = '1.01'
+__version__ = '1.2'
 
 import bisect
-import types
-import collections 
-if sys.version_info.major == 3 and sys.version_info.minor >= 10
-    from collections.abc import MutableMapping
-else 
-    from collections import MutableMapping
+import sys
+from typing import Iterable, MutableSet
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -1026,10 +1022,10 @@ class IP(IPint):
         raise ValueError("%s cannot be converted to an IPv4 address."
                          % repr(self))
 
-class IPSet(collections_abc.MutableSet):
+class IPSet(MutableSet):
     def __init__(self, iterable=[]):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(iterable, collections_abc.Iterable):
+        if not isinstance(iterable, Iterable):
             raise TypeError("'%s' object is not iterable" % type(iterable).__name__)
         
         # Make sure we only accept IP objects
@@ -1103,7 +1099,7 @@ class IPSet(collections_abc.MutableSet):
 
     def add(self, value):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(value, collections_abc.Iterable):
+        if not isinstance(value, Iterable):
             value = [value]
         
         # Check type
@@ -1117,7 +1113,7 @@ class IPSet(collections_abc.MutableSet):
     
     def discard(self, value):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(value, collections_abc.Iterable):
+        if not isinstance(value, Iterable):
             value = [value]
             
         # This is much faster than iterating over the addresses
