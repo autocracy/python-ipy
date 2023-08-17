@@ -92,7 +92,7 @@ class TestIPSet(unittest.TestCase):
     def testRandomDisjoint(self):
         prefixes1 = [random_ipv4_prefix() for i in xrange(random.randrange(50))]
         prefixes2 = [random_ipv4_prefix() for i in xrange(random.randrange(50))]
-        # test disjointnes the stupid way
+        # test disjointness the stupid way
         disjoint = True
         for p1, p2 in itertools.product(prefixes1, prefixes2):
             if p1 in p2 or p2 in p1:

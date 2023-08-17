@@ -1,8 +1,6 @@
 """Unit test for IPy.py
 
-Further Information might be available at http://c0re.jp/c0de/IPy/
-
-Hacked 2001 by drt@un.bewaff.net
+Further Information might be available at https://github.com/autocracy/python-ipy/
 """
 
 # TODO: unify assert / FilIf usage
@@ -76,7 +74,7 @@ class parseAddress(unittest.TestCase):
             self.assertEqual(answer, result, "%r, %r, %r" % (question, answer, result))
 
     def testVersionDistinction(self):
-        """problems destinguishing IPv4 and IPv6"""
+        """problems distinguishing IPv4 and IPv6"""
         (result, version) = IPy.parseAddress('0xffffffff')
         self.assertEqual(version, 4)
         (result, version) = IPy.parseAddress('0x100000000')
@@ -766,7 +764,7 @@ class NetIPChecks(unittest.TestCase):
 
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     """
-    ASPN receipe written by dustin lee to call a function with
+    ASPN recipe written by dustin lee to call a function with
     a timeout using threads:
     http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/473878
 

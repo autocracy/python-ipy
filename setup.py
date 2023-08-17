@@ -21,7 +21,7 @@
 
 from __future__ import with_statement
 import sys
-from distutils.core import setup
+from setuptools import setup
 
 VERSION = '1.02'
 

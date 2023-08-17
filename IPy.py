@@ -3,17 +3,14 @@ IPy - class and tools for handling of IPv4 and IPv6 addresses and networks.
 See README file for learn how to use IPy.
 
 Further Information might be available at:
-https://github.com/haypo/python-ipy
+https://github.com/autocracy/python-ipy
 """
 
-__version__ = '1.02'
+__version__ = '1.2'
 
 import bisect
-import types
-try:
-    import collections.abc as collections_abc
-except ImportError:
-    import collections as collections_abc
+import sys
+from typing import Iterable, MutableSet
 
 # Definition of the Ranges for IPv4 IPs
 # this should include www.iana.org/assignments/ipv4-address-space
@@ -393,7 +390,7 @@ class IPint(object):
             # compressionpos is the position where we can start removing zeros
             compressionpos = followingzeros.index(max(followingzeros))
             if max(followingzeros) > 1:
-                # genererate string with the longest number of zeros cut out
+                # generate string with the longest number of zeros cut out
                 # now we need hextets as strings
                 hextets = [x for x in self.strNormal(0).split(':')]
                 while compressionpos < len(hextets) and hextets[compressionpos] == '0':
@@ -692,7 +689,7 @@ class IPint(object):
 
 
     def __str__(self):
-        """Dispatch to the prefered String Representation.
+        """Dispatch to the preferred String Representation.
 
         Used to implement str(IP)."""
 
@@ -1030,10 +1027,10 @@ class IP(IPint):
         raise ValueError("%s cannot be converted to an IPv4 address."
                          % repr(self))
 
-class IPSet(collections_abc.MutableSet):
+class IPSet(MutableSet):
     def __init__(self, iterable=[]):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(iterable, collections_abc.Iterable):
+        if not isinstance(iterable, Iterable):
             raise TypeError("'%s' object is not iterable" % type(iterable).__name__)
         
         # Make sure we only accept IP objects
@@ -1107,7 +1104,7 @@ class IPSet(collections_abc.MutableSet):
 
     def add(self, value):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(value, collections_abc.Iterable):
+        if not isinstance(value, Iterable):
             value = [value]
         
         # Check type
@@ -1121,7 +1118,7 @@ class IPSet(collections_abc.MutableSet):
     
     def discard(self, value):
         # Make sure it's iterable, otherwise wrap
-        if not isinstance(value, collections_abc.Iterable):
+        if not isinstance(value, Iterable):
             value = [value]
             
         # This is much faster than iterating over the addresses
@@ -1431,7 +1428,7 @@ def parseAddress(ipstr, ipversion=0):
         return ((bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3], 4)
 
     elif intval is not None:
-        # we try to interprete it as a decimal digit -
+        # we try to interpret it as a decimal digit -
         # this ony works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
         if intval > MAX_IPV6_ADDRESS:
