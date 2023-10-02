@@ -16,7 +16,7 @@ Version 0.83 (2015-04-04)
 Version 0.82a (2014-10-07)
 ------------
  * Fix version numbers in files
- * Correct x.next() -> next(x) python3 compatability
+ * Correct x.next() -> next(x) python3 compatibility
 
 Version 0.82 (2014-10-06)
 ------------
@@ -139,6 +139,6 @@ Version 0.60 (2008-05-16)
 
  * strCompressed() formats '::ffff:a.b.c.d' correctly
  * Use strCompressed() instead of strFullsize() to format IP addresses,
-   ouput is smarter with IPv6 address
+   output is smarter with IPv6 address
  * Remove check_addr_prefixlen because it generates invalid IP address
 
