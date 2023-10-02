@@ -345,7 +345,7 @@ class checkChecks(unittest.TestCase):
 
 
     def testCheckPrefixFail(self):
-        """Illegal Prefixes should be catched."""
+        """Illegal Prefixes should be caught."""
         self.assertFalse(IPy._checkPrefix(0x7f000001, -1, 4))
         self.assertFalse(IPy._checkPrefix(0x7f000001, 33, 4))
         self.assertFalse(IPy._checkPrefix(0x7f000001, 24, 4))
