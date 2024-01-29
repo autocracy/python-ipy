@@ -262,7 +262,7 @@ class IPint(object):
             raise TypeError("Unsupported data type: %s" % type(data))
 
     def int(self):
-        """Return the first / base / network addess as an (long) integer.
+        """Return the first / base / network address as an integer.
 
         The same as IP[0].
 
@@ -291,13 +291,13 @@ class IPint(object):
 
     def net(self):
         """
-        Return the base (first) address of a network as an (long) integer.
+        Return the base (first) address of a network as an integer.
         """
         return self.int()
 
     def broadcast(self):
         """
-        Return the broadcast (last) address of a network as an (long) integer.
+        Return the broadcast (last) address of a network as an integer.
 
         The same as IP[-1]."""
         return self.int() + self.len() - 1
@@ -1424,7 +1424,7 @@ def parseAddress(ipstr, ipversion=0):
 
     elif intval is not None:
         # we try to interpret it as a decimal digit -
-        # this ony works for numbers > 255 ... others
+        # this only works for numbers > 255 ... others
         # will be interpreted as IPv4 first byte
         if intval > MAX_IPV6_ADDRESS:
             raise ValueError("IP Address can't be larger than %x: %x" % (MAX_IPV6_ADDRESS, intval))
@@ -1576,7 +1576,7 @@ def _checkPrefix(ip, prefixlen, version):
 
 
 def _checkNetmask(netmask, masklen):
-    """Checks if a netmask is expressable as a prefixlen."""
+    """Checks if a netmask is expressible as a prefixlen."""
 
     num = int(netmask)
     bits = masklen
@@ -1596,7 +1596,7 @@ def _checkNetmask(netmask, masklen):
 
 
 def _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
-    """Check if a base addess of a network is compatible with a prefixlen"""
+    """Check if a base address of a network is compatible with a prefixlen"""
     try:
         return (net & _prefixlenToNetmask(prefixlen, version) == net)
     except ValueError:
