@@ -23,7 +23,7 @@ from __future__ import with_statement
 import sys
 from setuptools import setup
 
-VERSION = '1.01'
+VERSION = '1.02'
 
 options = {}
 
