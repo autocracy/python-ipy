@@ -197,5 +197,5 @@ prefix tested against.
 
 This Python module is under BSD license: see COPYING file.
 
-Further Information might be available at:
+Further Information will be available at:
 https://github.com/autocracy/python-ipy
