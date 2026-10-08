@@ -1,3 +1,11 @@
+Version 1.2 (unreleased)
+------------
+ * Drop Python 2 support; require Python 3.5+
+ * Add inline type annotations
+ * Fix IP.broadcast() returning an IPv4 address for IPv6 networks
+ * Fix IP.reverseName() for 0.0.0.0/0
+ * Fix typos
+
 Version 1.01 (2020-12-01)
 ------------
  * Update to support up to Python 3.9

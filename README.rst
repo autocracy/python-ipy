@@ -177,11 +177,7 @@ unique address ranges and will aggregate overlapping ranges. ::
 Compatibility and links
 =======================
 
-IPy 1.01 works on Python version 2.6 - 3.7.
-
-The IP module should work in Python 2.5 as long as the subtraction operation
-is not used. IPSet requires features of the collections class which appear
-in Python 2.6, though they can be backported.
+IPy 1.2 works on Python 3.5 and later. Use IPy 1.01 for Python 2.
 
 Eratta
 ======

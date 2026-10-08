@@ -19,11 +19,9 @@
 #  - git commit -a
 #  - git push
 
-from __future__ import with_statement
-import sys
 from setuptools import setup
 
-VERSION = '1.01'
+VERSION = '1.2'
 
 options = {}
 
@@ -37,7 +35,7 @@ ChangeLog = (
 with open('ChangeLog') as fp:
     ChangeLog += fp.read().strip()
 
-LONG_DESCRIPTION = README + ChangeLog
+LONG_DESCRIPTION = README
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
@@ -52,6 +50,17 @@ CLASSIFIERS = [
     'Natural Language :: English',
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+    'Typing :: Typed',
 ]
 URL = "https://github.com/autocracy/python-ipy"
 
@@ -62,7 +71,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     author="Maximillian Dornseif",
     maintainer="Jeff Ferland",
-    maintainer_email="jeff AT storyinmemo.com",
+    maintainer_email="jeff_ipy@storyinmemo.com",
     license="BSD License",
     keywords="ipv4 ipv6 netmask",
     url=URL,
@@ -70,5 +79,7 @@ setup(
     classifiers=CLASSIFIERS,
     packages=["IPy"],
     package_data={"IPy": ["py.typed"]},
+    python_requires=">=3.5",
+    test_suite="test.test_IPy",
     **options
 )
