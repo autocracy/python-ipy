@@ -10,3 +10,4 @@ include test/test_IPy.py
 include test/test.rst
 
 include setup.cfg
+include IPy/py.typed

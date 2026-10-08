@@ -2,7 +2,7 @@
 
 # Release process:
 #
-#  - set version in IPy.py
+#  - set version in IPy/__init__.py
 #  - set version in setup.py
 #  - set version in README.rst
 #  - run unit test: make
@@ -14,7 +14,7 @@
 #  - python setup.py register sdist upload
 #
 # After the release:
-#  - set version to n+1 (IPy.py and setup.py)
+#  - set version to n+1 (IPy/__init__.py and setup.py)
 #  - add a new empty section in the changelog for version n+1
 #  - git commit -a
 #  - git push
@@ -68,6 +68,7 @@ setup(
     url=URL,
     download_url=URL,
     classifiers=CLASSIFIERS,
-    py_modules=["IPy"],
+    packages=["IPy"],
+    package_data={"IPy": ["py.typed"]},
     **options
 )
