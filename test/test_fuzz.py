@@ -69,6 +69,24 @@ def random_ipv4_prefix():
                                      int_ip & 0xff)))
                   + '/%d' % prefixlen)
 
+
+def covered_by_union(question, prefixes):
+    """Return True if every address of question lies in the union of prefixes.
+
+    IPSet merges adjacent prefixes (for example 0.0.0.0/1 and 128.0.0.0/1
+    become 0.0.0.0/0), so a prefix can be covered by several prefixes
+    together without being inside any single one of them."""
+    ranges = sorted((pfx.int(), pfx.broadcast().int()) for pfx in prefixes)
+    merged = []
+    for first, last in ranges:
+        if merged and first <= merged[-1][1] + 1:
+            merged[-1][1] = max(merged[-1][1], last)
+        else:
+            merged.append([first, last])
+    return any(first <= question.int() and question.broadcast().int() <= last
+               for first, last in merged)
+
+
 # tests
 
 
@@ -87,11 +105,18 @@ class ParseAndBack(unittest.TestCase):
 
 class TestIPSet(unittest.TestCase):
 
+    def testContainsMergedPrefixes(self):
+        """Smaller prefixes that combine into a larger one contain it (issue #27)."""
+        ipset = IPy.IPSet([IPy.IP('0.0.0.0/1'), IPy.IP('128.0.0.0/1')])
+        self.assertTrue(IPy.IP('0.0.0.0/0') in ipset)
+        self.assertTrue(covered_by_union(IPy.IP('0.0.0.0/0'), [IPy.IP('0.0.0.0/1'), IPy.IP('128.0.0.0/1')]))
+        self.assertFalse(covered_by_union(IPy.IP('0.0.0.0/0'), [IPy.IP('0.0.0.0/1'), IPy.IP('192.0.0.0/2')]))
+
     @iterate(1000)
     def testRandomContains(self):
         prefixes = [random_ipv4_prefix() for i in xrange(random.randrange(50))]
         question = random_ipv4_prefix()
-        answer = any(question in pfx for pfx in prefixes)
+        answer = covered_by_union(question, prefixes)
         ipset = IPy.IPSet(prefixes)
         self.assertEqual(question in ipset, answer,
                          "%s in %s != %s (made from %s)" % (question, ipset, answer, prefixes))
