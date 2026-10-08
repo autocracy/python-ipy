@@ -900,6 +900,14 @@ class RegressionTest(unittest.TestCase):
 
 
 class TestConstrutor(unittest.TestCase):
+    def testIpversionForcesStringInterpretation(self):
+        """An explicit ipversion decides the version of a string address."""
+        ip = IPy.IP('110.201.210.134', ipversion=6)
+        self.assertEqual(ip.version(), 6)
+        self.assertEqual(ip.prefixlen(), 128)
+        self.assertEqual(ip, IPy.IP(0x6ec9d286, ipversion=6))
+        self.assertEqual(IPy.IP('110.201.210.134').version(), 4)
+
     def testCheckAddrPrefixlenOff(self):
         self.assertRaises(ValueError, IPy.IP, 0xffffffff + 1, ipversion=4)
         self.assertRaises(ValueError, IPy.IP, 0xffffffffffffffffffffffffffffffff + 1, ipversion=6)

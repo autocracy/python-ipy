@@ -239,10 +239,12 @@ class IPint(object):
                 raise ValueError("can't parse")
 
             (self.ip, parsedVersion) = parseAddress(ipStr, ipversion)
+            if ipversion == 0:
+                ipversion = parsedVersion
             if prefixlen == -1:
-                bits = _ipVersionToLen(parsedVersion)
+                bits = _ipVersionToLen(ipversion)
                 prefixlen = bits - netbits
-            self._ipversion = parsedVersion
+            self._ipversion = ipversion
             self._prefixlen = int(prefixlen)
 
             if make_net:
