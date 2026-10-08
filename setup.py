@@ -69,6 +69,7 @@ setup(
     version=VERSION,
     description="Class and tools for handling of IPv4 and IPv6 addresses and networks",
     long_description=LONG_DESCRIPTION,
+    long_description_content_type="text/x-rst",
     author="Maximillian Dornseif",
     maintainer="Jeff Ferland",
     maintainer_email="jeff_ipy@storyinmemo.com",

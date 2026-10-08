@@ -1,10 +1,12 @@
-Version 1.2 (unreleased)
+Version 1.2 (2026-10-07)
 ------------
  * Drop Python 2 support; require Python 3.5+
- * Add inline type annotations
+ * Remove the module-level names INT_TYPES, STR_TYPES and xrange
+ * Add inline type annotations; IPy is now a package that ships py.typed
  * Fix IP.broadcast() returning an IPv4 address for IPv6 networks
  * Fix IP.reverseName() for 0.0.0.0/0
- * Fix typos
+ * Fix flake8 warnings and typos
+ * Fix the flaky IPSet fuzz test
 
 Version 1.01 (2020-12-01)
 ------------

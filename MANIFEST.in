@@ -6,7 +6,9 @@ include MANIFEST.in
 include test_doc.py
 include example/confbuilder
 include example/confbuilder.py
+include test/__init__.py
 include test/test_IPy.py
+include test/test_fuzz.py
 include test/test.rst
 
 include setup.cfg
