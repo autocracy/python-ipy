@@ -67,8 +67,7 @@ setup(
     keywords="ipv4 ipv6 netmask",
     url=URL,
     download_url=URL,
-    classifiers= CLASSIFIERS,
+    classifiers=CLASSIFIERS,
     py_modules=["IPy"],
     **options
 )
-

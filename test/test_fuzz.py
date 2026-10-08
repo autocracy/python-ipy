@@ -17,11 +17,14 @@ if sys.version_info >= (3,):
 
 # on Python-2.7 and higher, we use load_tests to multiply out the test cases so that unittest
 # represents each as an individual test case.
+
+
 def iterate_27(n):
     def wrap(func):
         func.iterations = n
         return func
     return wrap
+
 
 def load_tests(loader, tests, pattern):
     def expand(tests):
@@ -36,6 +39,8 @@ def load_tests(loader, tests, pattern):
     return expand(tests)
 
 # On older Pythons, we run the requisite iterations directly, in a single test case.
+
+
 def iterate_old(n):
     def wrap(func):
         @functools.wraps(func)
@@ -45,24 +50,27 @@ def iterate_old(n):
         return replacement
     return wrap
 
-if sys.version_info >= (2,7):
+
+if sys.version_info >= (2, 7):
     iterate = iterate_27
 else:
     iterate = iterate_old
 
 # utilities
 
+
 def random_ipv4_prefix():
     prefixlen = random.randrange(32)
     int_ip = random.randrange(IPy.MAX_IPV4_ADDRESS)
-    int_ip &= 0xffffffff << (32-prefixlen)
+    int_ip &= 0xffffffff << (32 - prefixlen)
     return IPy.IP('.'.join(map(str, (int_ip >> 24,
-                                    (int_ip >> 16) & 0xff,
-                                    (int_ip >> 8) & 0xff,
-                                    int_ip & 0xff)))
-                           + '/%d' % prefixlen)
+                                     (int_ip >> 16) & 0xff,
+                                     (int_ip >> 8) & 0xff,
+                                     int_ip & 0xff)))
+                  + '/%d' % prefixlen)
 
 # tests
+
 
 class ParseAndBack(unittest.TestCase):
 
@@ -76,6 +84,7 @@ class ParseAndBack(unittest.TestCase):
         question = random.randrange(0xffffffffffffffffffffffffffffffff)
         self.assertEqual(IPy.parseAddress(IPy.intToIp(question, 6)), (question, 6), hex(question))
 
+
 class TestIPSet(unittest.TestCase):
 
     @iterate(1000)
@@ -85,8 +94,7 @@ class TestIPSet(unittest.TestCase):
         answer = any(question in pfx for pfx in prefixes)
         ipset = IPy.IPSet(prefixes)
         self.assertEqual(question in ipset, answer,
-                "%s in %s != %s (made from %s)" % (question, ipset, answer, prefixes))
-        
+                         "%s in %s != %s (made from %s)" % (question, ipset, answer, prefixes))
 
     @iterate(1000)
     def testRandomDisjoint(self):
@@ -101,9 +109,10 @@ class TestIPSet(unittest.TestCase):
         ipset1 = IPy.IPSet(prefixes1)
         ipset2 = IPy.IPSet(prefixes2)
         self.assertEqual(ipset1.isdisjoint(ipset2), disjoint,
-                "%s.isdisjoint(%s) != %s" % (ipset1, ipset2, disjoint))
+                         "%s.isdisjoint(%s) != %s" % (ipset1, ipset2, disjoint))
         self.assertEqual(ipset2.isdisjoint(ipset1), disjoint,
-                "%s.isdisjoint(%s) != %s" % (ipset2, ipset1, disjoint))
+                         "%s.isdisjoint(%s) != %s" % (ipset2, ipset1, disjoint))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -9,3 +9,4 @@ include example/confbuilder.py
 include test/test_IPy.py
 include test/test.rst
 
+include setup.cfg

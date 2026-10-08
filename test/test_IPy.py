@@ -12,7 +12,7 @@ sys.path.append('..')
 
 import IPy
 import unittest
-import random
+
 
 class parseAddress(unittest.TestCase):
     okValues = [('FEDC:BA98:7654:3210:FEDC:BA98:7654:3210', 338770000845734292534325025077361652240),
@@ -142,6 +142,7 @@ class parseAddress(unittest.TestCase):
         self.assertRaises(ValueError, IPy.parseAddress, 'xx')
         self.assertRaises(ValueError, IPy.parseAddress, 'foobar')
 
+
 class _intToIP(unittest.TestCase):
     v4values = [(0x7f000001, '127.0.0.1'),
                 (0x0, '0.0.0.0'),
@@ -162,14 +163,14 @@ class _intToIP(unittest.TestCase):
         """printing of known IPv4 values should give known results"""
         for x in self.v4values:
             (question, answer) = x
-            result  = IPy.intToIp(question, 4).lower()
+            result = IPy.intToIp(question, 4).lower()
             self.assertEqual(answer, result, "%r, %r, %r" % (question, answer, result))
 
     def testKnownValuesv6(self):
         """printing of known IPv6 values should give known results"""
         for x in self.v6values:
             (question, answer) = x
-            result  = IPy.intToIp(question, 6).lower()
+            result = IPy.intToIp(question, 6).lower()
             self.assertEqual(answer, result, "%r, %r, %r" % (question, answer, result))
 
     def testNegativeIPv4(self):
@@ -197,6 +198,7 @@ class _intToIP(unittest.TestCase):
         self.assertRaises(ValueError, IPy.intToIp, 1, 5)
         self.assertRaises(ValueError, IPy.intToIp, 1, 7)
         self.assertRaises(ValueError, IPy.intToIp, 1, 8)
+
 
 class _countXBits(unittest.TestCase):
     def testCount1Bits(self):
@@ -237,12 +239,13 @@ class _intToBin(unittest.TestCase):
         """conversion of known values values should give known results"""
         for x in self.knownValues:
             (question, answer) = x
-            result  = IPy._intToBin(question)
+            result = IPy._intToBin(question)
             self.assertEqual(answer, result, str(question))
 
     def testNegativeIPv4(self):
         """negative Values should raise an exception"""
         self.assertRaises(ValueError, IPy._intToBin, -1)
+
 
 class netmaskPrefixlenConv(unittest.TestCase):
     known4Values = [(0xFFFFFFFF, 32), (0xFFFFFFFE, 31), (0xFFFFFFFC, 30), (0xFFFFFFF8, 29),
@@ -271,28 +274,28 @@ class netmaskPrefixlenConv(unittest.TestCase):
         """conversion of known values values should give known results"""
         for x in self.known4Values:
             (question, answer) = x
-            result  = IPy._netmaskToPrefixlen(question)
+            result = IPy._netmaskToPrefixlen(question)
             self.assertEqual(answer, result, hex(question))
 
     def testKnownValuesv6n2p(self):
         """conversion of known values values should give known results"""
         for x in self.known6Values:
             (question, answer) = x
-            result  = IPy._netmaskToPrefixlen(question)
+            result = IPy._netmaskToPrefixlen(question)
             self.assertEqual(answer, result, hex(question))
 
     def testKnownValuesv4p2n(self):
         """conversion of known values values should give known results"""
         for x in self.known4Values:
             (answer, question) = x
-            result  = IPy._prefixlenToNetmask(question, 4)
+            result = IPy._prefixlenToNetmask(question, 4)
             self.assertEqual(answer, result, hex(question))
 
     def testKnownValuesv6p2n(self):
         """conversion of known values values should give known results"""
         for x in self.known6Values:
             (answer, question) = x
-            result  = IPy._prefixlenToNetmask(question, 6)
+            result = IPy._prefixlenToNetmask(question, 6)
             self.assertEqual(answer, result, "%d: %s != %s" % (question, hex(answer), result))
 
     def testInvalidv4n2p(self):
@@ -343,7 +346,6 @@ class checkChecks(unittest.TestCase):
         self.assertTrue(IPy._checkPrefix(0x0, 128, 6))
         self.assertTrue(IPy._checkPrefix(0xffffffffffffffffffffffffffffffff, 128, 6))
 
-
     def testCheckPrefixFail(self):
         """Illegal Prefixes should be caught."""
         self.assertFalse(IPy._checkPrefix(0x7f000001, -1, 4))
@@ -359,8 +361,8 @@ class checkChecks(unittest.TestCase):
         self.assertFalse(IPy._checkPrefix(0xffffffffffffffff0000000000000001, 64, 6))
         self.assertFalse(IPy._checkPrefix(0xffffffffffffffff1000000000000000, 64, 6))
 
-
     # TODO: _checkNetaddrWorksWithPrefixlen(net, prefixlen, version):
+
 
 class PythonObjectBehaviour(unittest.TestCase):
     def testIfUsuableAsDictionaryKey(self):
@@ -479,31 +481,32 @@ class PythonObjectBehaviour(unittest.TestCase):
     # netmsk
     # ip
 
+
 class IPobject(unittest.TestCase):
     def testStrCompressed(self):
         """Compressed string Output."""
         testValues = ['127.0.0.1',
-                  'dead::beef',
-                  'dead:beef::',
-                  'dead:beef::/48',
-                  'ff00:1::',
-                  'ff00:0:f000::',
-                  '0:0:1000::',
-                  '::e000:0/112',
-                  '::e001:0/112',
-                  'dead:beef::/48',
-                  'ff00:1::/64',
-                  'ff00:0:f000::/64',
-                  '0:0:1000::/64',
-                  '::e000:0/112',
-                  '::e001:0/112',
-                  '::1:0:0:0:2',
-                  '0:1:2:3:4:5:6:7',
-                  '1:2:3:4:0:5:6:7',
-                  '1:2:3:4:5:6:7:0',
-                  '1:0:0:2::',
-                  '1:0:0:2::3',
-                  '1::2:0:0:3']
+                      'dead::beef',
+                      'dead:beef::',
+                      'dead:beef::/48',
+                      'ff00:1::',
+                      'ff00:0:f000::',
+                      '0:0:1000::',
+                      '::e000:0/112',
+                      '::e001:0/112',
+                      'dead:beef::/48',
+                      'ff00:1::/64',
+                      'ff00:0:f000::/64',
+                      '0:0:1000::/64',
+                      '::e000:0/112',
+                      '::e001:0/112',
+                      '::1:0:0:0:2',
+                      '0:1:2:3:4:5:6:7',
+                      '1:2:3:4:0:5:6:7',
+                      '1:2:3:4:5:6:7:0',
+                      '1:0:0:2::',
+                      '1:0:0:2::3',
+                      '1::2:0:0:3']
         for question in testValues:
             result = IPy.IP(question).strCompressed()
             self.assertEqual(question, result, (question, result))
@@ -589,13 +592,11 @@ class IPobject(unittest.TestCase):
         self.assertEqual(str(IPy.IP("0.0.0.0/0").net()), "0.0.0.0")
         self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").net()), "2001:1234:5678:1234::")
 
-
     def testBroadcast(self):
         """Returning of broadcast address."""
         self.assertEqual(str(IPy.IP("127.0.0.1").broadcast()), "127.0.0.1")
         self.assertEqual(str(IPy.IP("0.0.0.0/0").broadcast()), "255.255.255.255")
         self.assertEqual(str(IPy.IP("2001:1234:5678:1234::/64").broadcast()), "2001:1234:5678:1234:ffff:ffff:ffff:ffff")
-
 
     def testStrNetmask(self):
         """StrNetmask should return netmasks"""
@@ -603,7 +604,6 @@ class IPobject(unittest.TestCase):
         self.assertEqual(IPy.IP("0.0.0.0/32").strNetmask(), "255.255.255.255")
         self.assertEqual(IPy.IP("127.0.0.0/24").strNetmask(), "255.255.255.0")
         self.assertEqual(IPy.IP("2001:1234:5678:1234::/64").strNetmask(), "/64")
-
 
     def testNetmask(self):
         """Netmask should return netmasks"""
@@ -621,7 +621,6 @@ class IPobject(unittest.TestCase):
         self.assertEqual(IPy.IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff").int(), 0xffffffffffffffffffffffffffffffff)
         self.assertEqual(IPy.IP("2001:1234:5678:9abc:de00:0000:0000:0000").int(), 42540857391974671903776007410583339008)
 
-
     def testPrefixlen(self):
         """Prefixlen"""
         self.assertEqual(IPy.IP("127.0.0.1").prefixlen(), 32)
@@ -631,18 +630,17 @@ class IPobject(unittest.TestCase):
         self.assertEqual(IPy.IP("10.0.0.0/255.255.255.0").prefixlen(), 24)
         self.assertEqual(IPy.IP("2001::/64").prefixlen(), 64)
 
-
     def testVersion(self):
         """IP-version detection should work"""
         self.assertEqual(IPy.IP("0.0.0.0/0").version(), 4)
         self.assertEqual(IPy.IP("::1").version(), 6)
 
     # TODO:
-    #def reverseNames(self):
-    #def reverseName(self):
-    #def __cmp__(self, other):
-    #def __add__(self, other):
-    #def _printPrefix(self, want):
+    # def reverseNames(self):
+    # def reverseName(self):
+    # def __cmp__(self, other):
+    # def __add__(self, other):
+    # def _printPrefix(self, want):
 
     def testOverlaps(self):
         """Overlapping Address Ranges."""
@@ -660,88 +658,89 @@ class IPobject(unittest.TestCase):
             self.assertEqual(answer, result, (a, b, result, answer))
 
     def testV46map(self):
-        four    = IPy.IP('192.168.1.1')
-        six     = IPy.IP('::ffff:192.168.1.1')
+        four = IPy.IP('192.168.1.1')
+        six = IPy.IP('::ffff:192.168.1.1')
         invalid = IPy.IP('2001::ffff:192.168.1.1')
         self.assertEqual(four.v46map(), six)
         self.assertEqual(four, six.v46map())
         self.assertRaises(ValueError, invalid.v46map)
 
 # TODO
-#eval(repr(IPy))
+# eval(repr(IPy))
 # differences between IP and IPint
 
 
 # I ported this checks to be sure that I don't have errors in my own checks.
 class NetIPChecks(unittest.TestCase):
     """Checks taken from perls Net::IP"""
+
     def testMisc(self):
         ip = IPy.IP('195.114.80/24')
         self.assertEqual(ip.int(), 3279048704)
-        self.assertEqual(ip.reverseName(),'80.114.195.in-addr.arpa.')
-        self.assertEqual(ip.strBin(),'11000011011100100101000000000000')
-        self.assertEqual(str(ip.net()),'195.114.80.0')
-        self.assertEqual(str(ip),'195.114.80.0/24')
-        self.assertEqual(ip.prefixlen(),24)
-        self.assertEqual(ip.version(),4)
-        self.assertEqual(ip.len(),256)
-        self.assertEqual(IPy._intToBin(ip.netmask().int()),'11111111111111111111111100000000')
-        self.assertEqual(ip.strNetmask(),'255.255.255.0')
+        self.assertEqual(ip.reverseName(), '80.114.195.in-addr.arpa.')
+        self.assertEqual(ip.strBin(), '11000011011100100101000000000000')
+        self.assertEqual(str(ip.net()), '195.114.80.0')
+        self.assertEqual(str(ip), '195.114.80.0/24')
+        self.assertEqual(ip.prefixlen(), 24)
+        self.assertEqual(ip.version(), 4)
+        self.assertEqual(ip.len(), 256)
+        self.assertEqual(IPy._intToBin(ip.netmask().int()), '11111111111111111111111100000000')
+        self.assertEqual(ip.strNetmask(), '255.255.255.0')
         self.assertEqual(ip.iptype(), 'PUBLIC')
-        self.assertEqual(ip.broadcast().strBin(),'11000011011100100101000011111111')
-        self.assertEqual(str(ip.broadcast()),'195.114.80.255')
+        self.assertEqual(ip.broadcast().strBin(), '11000011011100100101000011111111')
+        self.assertEqual(str(ip.broadcast()), '195.114.80.255')
 
         ip = IPy.IP('202.31.4/24')
-        self.assertEqual(str(ip.net()),'202.31.4.0')
+        self.assertEqual(str(ip.net()), '202.31.4.0')
 
         self.assertRaises(ValueError, IPy.IP, '234.245.252.253/2')
 
         # because we ar using integer representation we don't need a special "binadd"
         ip = IPy.IP('62.33.41.9')
         ip2 = IPy.IP('0.1.0.5')
-        self.assertEqual(str(IPy.IP(ip.int() + ip2.int())),'62.34.41.14')
-        #$T->ok_eq ($ip->binadd($ip2)->ip(),'62.34.41.14',$ip->error());
+        self.assertEqual(str(IPy.IP(ip.int() + ip2.int())), '62.34.41.14')
+        # $T->ok_eq ($ip->binadd($ip2)->ip(),'62.34.41.14',$ip->error());
 
         ip = IPy.IP('133.45.0/24')
         ip2 = IPy.IP('133.45.1/24')
         ip3 = IPy.IP('133.45.2/24')
-        self.assertEqual((ip + ip2).prefixlen(),23)
+        self.assertEqual((ip + ip2).prefixlen(), 23)
         # Non-adjacent ranges
         self.assertRaises(ValueError, IPy.IP.__add__, ip, ip3)
         # Resulting invalid prefix
         self.assertRaises(ValueError, IPy.IP.__add__, ip2, ip3)
 
-        ip2 = IPy.IP('133.44.255.255');
-        #$T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
+        ip2 = IPy.IP('133.44.255.255')
+        # $T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
 
         # this is something we can't do with IPy
-        #ip = IPy.IP('133.44.255.255-133.45.0.42');
-        #$T->ok_eq (($ip->find_prefixes())[3],'133.45.0.40/31',$ip->error());
+        # ip = IPy.IP('133.44.255.255-133.45.0.42');
+        # $T->ok_eq (($ip->find_prefixes())[3],'133.45.0.40/31',$ip->error());
 
-        ip = IPy.IP('201.33.128.0/22');
-        ip2 = IPy.IP('201.33.129.0/24');
-        #$T->ok_eqnum ($ip->overlaps($ip2),$IP_B_IN_A_OVERLAP,$ip->error());
+        ip = IPy.IP('201.33.128.0/22')
+        ip2 = IPy.IP('201.33.129.0/24')
+        # $T->ok_eqnum ($ip->overlaps($ip2),$IP_B_IN_A_OVERLAP,$ip->error());
 
         ip = IPy.IP('dead:beef:0::/48')
-        self.assertEqual(str(ip.net()),'dead:beef::')
+        self.assertEqual(str(ip.net()), 'dead:beef::')
         self.assertEqual(ip.int(), 295990755014133383690938178081940045824)
-        self.assertEqual(ip.strBin(),'11011110101011011011111011101111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
-        self.assertEqual(ip.strCompressed(),'dead:beef::/48')
+        self.assertEqual(ip.strBin(), '11011110101011011011111011101111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+        self.assertEqual(ip.strCompressed(), 'dead:beef::/48')
         self.assertEqual(ip.prefixlen(), 48)
         self.assertEqual(ip.version(), 6)
-        self.assertEqual(ip.strNetmask(),'/48')
-        self.assertEqual(str(ip.netmask()),'ffff:ffff:ffff::')
-        self.assertEqual(ip.iptype(),'RESERVED')
-        self.assertEqual(ip.reverseName(),'0.0.0.0.f.e.e.b.d.a.e.d.ip6.arpa.')
-        self.assertEqual(str(ip.broadcast()),'dead:beef:0:ffff:ffff:ffff:ffff:ffff')
+        self.assertEqual(ip.strNetmask(), '/48')
+        self.assertEqual(str(ip.netmask()), 'ffff:ffff:ffff::')
+        self.assertEqual(ip.iptype(), 'RESERVED')
+        self.assertEqual(ip.reverseName(), '0.0.0.0.f.e.e.b.d.a.e.d.ip6.arpa.')
+        self.assertEqual(str(ip.broadcast()), 'dead:beef:0:ffff:ffff:ffff:ffff:ffff')
 
         ip = IPy.IP('202.31.4/24')
-        self.assertEqual(str(ip.net()),'202.31.4.0')
+        self.assertEqual(str(ip.net()), '202.31.4.0')
 
         # TODO: fix this in IPy ... after rereading the RfC
         # ip = IPy.IP(':1/128');
-        #$T->ok_eq ($ip->error(),'Invalid address :1 (starts with :)',$ip->error());
-        #$T->ok_eqnum ($ip->errno(),109,$ip->error());
+        # $T->ok_eq ($ip->error(),'Invalid address :1 (starts with :)',$ip->error());
+        # $T->ok_eqnum ($ip->errno(),109,$ip->error());
 
         ip = IPy.IP('ff00:0:f000::')
         ip2 = IPy.IP('0:0:1000::')
@@ -749,18 +748,19 @@ class NetIPChecks(unittest.TestCase):
 
         ip = IPy.IP('::e000:0/112')
         ip2 = IPy.IP('::e001:0/112')
-        self.assertEqual(ip.__add__(ip2).prefixlen(),111)
-        self.assertEqual(ip.__add__(ip2).version(),6)
+        self.assertEqual(ip.__add__(ip2).prefixlen(), 111)
+        self.assertEqual(ip.__add__(ip2).version(), 6)
 
         ip2 = IPy.IP('::dfff:ffff')
-        #$T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
+        # $T->ok_eqnum ($ip->bincomp('gt',$ip2),1,$ip->error());
 
-        #ip = IPy.IP('::e000:0 - ::e002:42')
-        #$T->ok_eq (($ip->find_prefixes())[2],'0000:0000:0000:0000:0000:0000:e002:0040/127',$ip->error());
+        # ip = IPy.IP('::e000:0 - ::e002:42')
+        # $T->ok_eq (($ip->find_prefixes())[2],'0000:0000:0000:0000:0000:0000:e002:0040/127',$ip->error());
 
         ip = IPy.IP('ffff::/16')
         ip2 = IPy.IP('8000::/16')
-        #$T->ok_eqnum ($ip->overlaps($ip2),$IP_NO_OVERLAP,$ip->error());
+        # $T->ok_eqnum ($ip->overlaps($ip2),$IP_NO_OVERLAP,$ip->error());
+
 
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     """
@@ -779,7 +779,7 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
         def run(self):
             try:
                 self.result = func(*args, **kwargs)
-            except:
+            except Exception:
                 self.result = default
 
     it = InterruptableThread()
@@ -795,21 +795,22 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     else:
         return it.result
 
+
 class IPSetChecks(unittest.TestCase):
     def setUp(self):
-        #array
+        # array
         self.a = [IPy.IP("192.168." + str(i) + ".0/24") for i in range(256)]
-        #range
+        # range
         self.r = IPy.IP('192.168.0.0/16')
-        #testing set
+        # testing set
         self.t = IPy.IPSet(self.a)
-        #control set
+        # control set
         self.c = IPy.IPSet(self.a)
-        #Could otherwise look like 192.168.128.0/17
+        # Could otherwise look like 192.168.128.0/17
         self.sixRange = IPy.IP('::c0a8:8000/113')
 
     def testVersionSeparation(self):
-        #Don't remove a matching IPv6 subnet from an IPv4 list
+        # Don't remove a matching IPv6 subnet from an IPv4 list
         self.assertRaises(KeyError, self.t.remove, self.sixRange)
         self.t.add(self.sixRange)
         self.assertNotEqual(self.t, self.c)
@@ -850,19 +851,20 @@ class IPSetChecks(unittest.TestCase):
 
     def testIsdisjoint(self):
         self.assertTrue(IPy.IPSet([IPy.IP('0.0.0.0/1')])
-                .isdisjoint(IPy.IPSet([IPy.IP('128.0.0.0/1')])))
+                        .isdisjoint(IPy.IPSet([IPy.IP('128.0.0.0/1')])))
         self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/1')])
-                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
+                         .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
         self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/2')])
-                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/1')])))
+                         .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/1')])))
         self.assertFalse(IPy.IPSet([IPy.IP('0.0.0.0/2')])
-                .isdisjoint(IPy.IPSet([IPy.IP('0.1.2.3')])))
+                         .isdisjoint(IPy.IPSet([IPy.IP('0.1.2.3')])))
         self.assertFalse(IPy.IPSet([IPy.IP('0.1.2.3')])
-                .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
+                         .isdisjoint(IPy.IPSet([IPy.IP('0.0.0.0/2')])))
         self.assertTrue(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3')])
-                .isdisjoint(IPy.IPSet([IPy.IP('1.1.1.2'), IPy.IP('1.1.1.4')])))
+                        .isdisjoint(IPy.IPSet([IPy.IP('1.1.1.2'), IPy.IP('1.1.1.4')])))
         self.assertFalse(IPy.IPSet([IPy.IP('1.1.1.1'), IPy.IP('1.1.1.3'), IPy.IP('1.1.2.0/24')])
-                .isdisjoint(IPy.IPSet([IPy.IP('1.1.2.2'), IPy.IP('1.1.1.4')])))
+                         .isdisjoint(IPy.IPSet([IPy.IP('1.1.2.2'), IPy.IP('1.1.1.4')])))
+
 
 class RegressionTest(unittest.TestCase):
     def testNulNetmask(self):
@@ -896,11 +898,12 @@ class RegressionTest(unittest.TestCase):
     def testConsistentIP6StrInt(self):
         self.assertEqual(IPy.IP('11', ipversion=6), IPy.IP(11, ipversion=6))
 
+
 class TestConstrutor(unittest.TestCase):
     def testCheckAddrPrefixlenOff(self):
         self.assertRaises(ValueError, IPy.IP, 0xffffffff + 1, ipversion=4)
         self.assertRaises(ValueError, IPy.IP, 0xffffffffffffffffffffffffffffffff + 1, ipversion=6)
 
+
 if __name__ == "__main__":
     unittest.main()
-

@@ -30,7 +30,7 @@ for x in fd.readlines():
             x = x[:-1]
         (domain, owner) = x.split(':')
         print("'%s:Contact for this domain is %s" % (domain, owner))
-        for y in ns: 
+        for y in ns:
             print(".%s::%s" % (domain, y))
 
 fd.close()
@@ -54,7 +54,7 @@ for x in fd.readlines():
             print("# Address range: %s (%s), %d addresses" % (ip.strCompressed(), ip.iptype(), ip.len()))
             print("=net.%s:%s" % (name, ip.net()))
             print("=broadcast.%s:%s" % (name, ip.broadcast()))
-            
+
             if ip.version() == 4:
                 for z in ip:
                     # TODO reverse?
@@ -64,13 +64,13 @@ for x in fd.readlines():
                 # IPv6
                 for z in ns:
                     for v in ip.reverseName():
-                        print(".%s::%s" % (v, z)) 
+                        print(".%s::%s" % (v, z))
                 ip6map[ip.strFullsize(0)] = name
 
 fd.close()
 
 print("\n# *** hosts ***")
-      
+
 fd = open('hosts')
 
 for x in fd.readlines():
@@ -105,7 +105,7 @@ for x in fd.readlines():
                 if mxes == ['']:
                     mxes = []
                 for y in ips:
-                    ip = IPy.IP(y) 
+                    ip = IPy.IP(y)
                     if ip.version() == 4:
                         # IPv4 is easy
                         if ip.int() not in nmap:
@@ -114,7 +114,7 @@ for x in fd.readlines():
                         else:
                             print("=%s.%s:%s" % (name, nmap[ip.int()], y))
                             print("'%s.%s:Host contact is %s" % (name, nmap[ip.int()], admin))
-                            rmap[ip.int()] = ''      
+                            rmap[ip.int()] = ''
                             for z in aliases:
                                 print("+%s:%s" % (z, ip))
                                 print("'%s:Host contact is %s" % (z, admin))
@@ -125,7 +125,7 @@ for x in fd.readlines():
                         if net in ip6map:
                             print("*** warning: no network for %s (%s) - ignoring" % (ip, name), file=sys.stderr)
                             print("# no network for %s (%s) - ignoring" % (ip, name))
-                        else:  
+                        else:
                             print("6%s.%s:%s" % (name, ip6map[net], ip.strHex()[2:]))
                             for z in aliases:
                                 print("3%s:%s" % (name, ip.strHex()[2:]))
@@ -137,4 +137,3 @@ print("\n# *** reverse lookup ***")
 for x in sorted(nmap):
     if rmap.get(x):
       print("=%s:%s" % (rmap[x], str(IPy.IP(x))))
-

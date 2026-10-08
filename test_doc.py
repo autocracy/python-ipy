@@ -26,4 +26,3 @@ if hasattr(doctest, "testfile"):
         sys.exit(1)
 else:
     sys.stderr.write("WARNING: doctest has no function testfile (before Python 2.4), unable to check README\n")
-
