@@ -810,8 +810,10 @@ class IP(IPint):
 
         >>> IP('10.0.0.0/8').broadcast()
         IP('10.255.255.255')
+        >>> IP('::2/128').broadcast()
+        IP('::2')
         """
-        return IP(IPint.broadcast(self))
+        return IP(IPint.broadcast(self), ipversion=self._ipversion)
 
     def netmask(self) -> 'IP':  # type: ignore[override]
         """Return netmask as an IP object.
@@ -896,6 +898,8 @@ class IP(IPint):
         1.1.185.195.in-addr.arpa.
         >>> print(IP('195.185.1.0/28').reverseName())
         0-15.1.185.195.in-addr.arpa.
+        >>> print(IP('0.0.0.0/0').reverseName())
+        in-addr.arpa.
         >>> IP('::1:2').reverseName()
         '2.0.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa.'
         >>> IP('ff02::/64').reverseName()
@@ -914,6 +918,8 @@ class IP(IPint):
                 nibblepart = ""
 
             s = '.'.join(s[first_byte_index:])
+            if not s and not nibblepart:
+                return "in-addr.arpa."
             return "%s%s.in-addr.arpa." % (nibblepart, s)
 
         elif self._ipversion == 6:
